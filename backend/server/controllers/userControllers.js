@@ -78,19 +78,94 @@ class UserController {
     const { username, password } = req.body;
     const hashedPassword = security.hashPassword(password);
 
-    const $findUserByIDSQL = "SELECT password FROM users where username = ?";
+    const $findUserByIDSQL =
+      "SELECT password, userID FROM users where username = ?";
     this.createConn((connect) => {
       connect.query($findUserByIDSQL, [username], (err, result) => {
         connect.release();
         if (result.length !== 0) {
           if (hashedPassword === result[0].password) {
-            res
-              .status(202)
-              .json({ info: "Authenticated", username: result[0].username });
+            res.status(202).json({
+              info: "Authenticated",
+              username: result[0].username,
+              userID: result[0].userID,
+            });
           } else res.status(403).json({ error: "Incorect Password" });
         } else res.status(404).json({ error: "User Not Found" });
       });
     }, res);
+  }
+
+  addAddresses(req, res) {
+    const { userID, addressLine, city, state, postalCode, country } = req.body;
+    const createTime = generalUtils.getFullCurrentDate();
+
+    const $insertAddressSQL =
+      "INSERT INTO addresses VALUES (?,?,?,?,?,?,?,?,?)";
+    this.createConn((connect) => {
+      connect.query(
+        $insertAddressSQL,
+        [
+          userID,
+          addressLine,
+          city,
+          state,
+          postalCode,
+          country,
+          createTime,
+          createTime,
+        ],
+        (err) => {
+          connect.release();
+          if (err) {
+            res.sendStatus(500);
+          }
+
+          res.status(200).json({ info: "Success" });
+        }
+      );
+    });
+  }
+  updateUsername(req, res) {
+    const { userID, newUsername, password } = req.body;
+    const updateTime = generalUtils.getFullCurrentDate();
+    const hashedPassword = security.hashPassword(password);
+
+    const $updateUsernameSQL =
+      "UPDATE users SET username = ?, updatedAt = ? where userID = ? and password = ?";
+    this.createConn((connect) => {
+      connect.release();
+      connect.query(
+        $updateUsernameSQL,
+        [newUsername, updateTime, userID, hashedPassword],
+        (err, result) => {
+          if (result.changedRows == 0) {
+            res.status(403).json({ error: "Wrong Password" });
+          } else res.status(200).json({ info: "Success" });
+        }
+      );
+    });
+  }
+  changePassword(req, res) {
+    const { userID, password, newPassword } = req.body;
+    const updateTime = generalUtils.getFullCurrentDate();
+
+    const hashedNewPassword = security.hashPassword(newPassword);
+    const hashedOldPassword = security.hashPassword(password);
+    const $changePasswordSQL =
+      "UPDATE users set password = ?, updatedAt = ? where userID = ? and password = ?";
+    this.createConn((connect) => {
+      connect.query(
+        $changePasswordSQL,
+        [hashedNewPassword, updateTime, userID, hashedOldPassword],
+        (err, result) => {
+          connect.release();
+          if (result.changedRows == 0) {
+            res.status(403).json({ error: "Wrong Password" });
+          } else res.status(200).json({ info: "Success" });
+        }
+      );
+    });
   }
 }
 
