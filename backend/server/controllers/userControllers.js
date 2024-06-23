@@ -54,15 +54,27 @@ class UserController {
           ],
           (err, result) => {
             try {
-              connection.release();
-
               if (err) {
                 res.status(500).json({ error: err.message });
               }
 
-              res
-                .status(200)
-                .json({ info: "Success", userID: result.insertId });
+              const $createCartSQL = "INSERT INTO cart VALUES (null, ?, ?, ?)";
+              const createTime = generalUtils.getFullCurrentDate();
+
+              connection.query(
+                $createCartSQL,
+                [result.insertId, createTime, createTime],
+                (err) => {
+                  connection.release();
+                  if (err) {
+                    res.sendStatus(500);
+                    log(err);
+                  } else
+                    res
+                      .status(200)
+                      .json({ info: "Success", userID: result.insertId });
+                }
+              );
             } catch (err) {
               log(err);
             }

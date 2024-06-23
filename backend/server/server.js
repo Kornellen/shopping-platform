@@ -3,8 +3,10 @@ const cors = require("cors");
 const log = console.log;
 
 const userRoutes = require("./routes/userRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const productRoutes = require("./routes/productRoutes");
 
-const routes = [userRoutes];
+const routes = [userRoutes, cartRoutes, productRoutes];
 
 const $PORT = 5174;
 
