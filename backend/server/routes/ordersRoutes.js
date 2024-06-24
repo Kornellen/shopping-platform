@@ -21,7 +21,7 @@ router.post(
 );
 
 router.get(
-  "/user/:userID/order/orders",
+  "/user/:userID/order/orders/",
   [param("userID").isInt().withMessage("UserID must be Integer")],
   validateRequest,
   (req, res) => orderController.getUserOrders(req, res)
@@ -35,6 +35,16 @@ router.get(
   ],
   validateRequest,
   (req, res) => orderController.getOrderStatus(req, res)
+);
+
+router.get(
+  "/user/:userID/order/orderstatus/:orderID/cancel",
+  [
+    param("userID").isInt().withMessage("UserID must be Integer"),
+    param("orderID").isInt().withMessage("OrderID must be Integer"),
+  ],
+  validateRequest,
+  (req, res) => orderController.cancellOrder(req, res)
 );
 
 module.exports = router;
