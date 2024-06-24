@@ -20,4 +20,8 @@ router.post(
   (req, res) => productController.addProduct(req, res)
 );
 
+router.get("/getproducts", (req, res) =>
+  productController.getProduct(req, res)
+);
+
 module.exports = router;

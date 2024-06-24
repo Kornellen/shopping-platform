@@ -84,7 +84,7 @@ class UserController {
         res.sendStatus(500);
         log(err);
       }
-    }, res);
+    });
   }
   login(req, res) {
     const { username, password } = req.body;
@@ -105,7 +105,7 @@ class UserController {
           } else res.status(403).json({ error: "Incorect Password" });
         } else res.status(404).json({ error: "User Not Found" });
       });
-    }, res);
+    });
   }
 
   addAddresses(req, res) {
