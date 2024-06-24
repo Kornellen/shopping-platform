@@ -95,14 +95,19 @@ class Product {
     }
 
     const update = [];
+
     if (price != "" && price != null)
       update.push({ column: "price", value: price });
+
     if (description != "" && description != null)
       update.push({ column: "description", value: description });
+
     if (stockQuantity != 0 && stockQuantity != null)
       update.push({ column: "stockQuantity", value: stockQuantity });
+
     if (name != "" && name != null)
       update.push({ column: "name", value: name });
+
     if (category != "" && category != null)
       update.push({ column: "categoryID", value: category });
 

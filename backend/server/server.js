@@ -5,8 +5,9 @@ const log = console.log;
 const userRoutes = require("./routes/userRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/ordersRoutes");
 
-const routes = [userRoutes, cartRoutes, productRoutes];
+const routes = [userRoutes, cartRoutes, productRoutes, orderRoutes];
 
 const $PORT = 5174;
 
