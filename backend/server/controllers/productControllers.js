@@ -141,18 +141,36 @@ class Product {
     const { productID } = req.params;
 
     const $getProductByIdSQL = "SELECT * FROM products where productID = ?";
+    const $getProductCommentsSQL = `
+      SELECT Reviews.rating, Reviews.comment, Reviews.createdAt, Users.username
+      FROM Reviews
+      LEFT JOIN Users
+      ON Reviews.userID = Users.userID
+      WHERE Reviews.productID = ?`;
 
     this.getConn((connect) => {
       connect.query($getProductByIdSQL, [productID], (err, result) => {
-        connect.release();
         if (err) {
-          res.sendStatus(500);
           log(err);
+          return res.sendStatus(500);
         }
 
         if (result.length === 0) {
-          res.status(404).json({ error: "Product Not Found" });
-        } else res.status(200).json({ productDatas: result[0] });
+          return res.status(404).json({ error: "Product Not Found" });
+        }
+
+        const productDatas = result[0];
+
+        connect.query($getProductCommentsSQL, [productID], (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            res.sendStatus(500);
+          }
+          res
+            .status(200)
+            .json({ productDatas: productDatas, comments: result });
+        });
       });
     });
   }
