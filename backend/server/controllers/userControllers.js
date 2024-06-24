@@ -55,24 +55,47 @@ class UserController {
           (err, result) => {
             try {
               if (err) {
-                res.status(500).json({ error: err.message });
+                connection.release();
+                log(err);
+                return res.status(500).json({ error: err.message });
               }
 
               const $createCartSQL = "INSERT INTO cart VALUES (null, ?, ?, ?)";
               const createTime = generalUtils.getFullCurrentDate();
+              const userID = result.insertId;
 
               connection.query(
                 $createCartSQL,
                 [result.insertId, createTime, createTime],
                 (err) => {
-                  connection.release();
                   if (err) {
-                    res.sendStatus(500);
+                    connection.release();
                     log(err);
-                  } else
-                    res
-                      .status(200)
-                      .json({ info: "Success", userID: result.insertId });
+                    return res.sendStatus(500);
+                  }
+                  const $createWishlistSQL =
+                    "INSERT INTO wishlists (userID, createdAt) VALUES (?,?)";
+
+                  const cartID = result.insertId;
+
+                  connection.query(
+                    $createWishlistSQL,
+                    [userID, createTime],
+                    (err, result) => {
+                      connection.release();
+                      if (err) {
+                        log(err);
+                        return res.sendStatus(500);
+                      }
+                      const wishlistID = result.insertId;
+                      res.status(200).json({
+                        info: "Success",
+                        userID: userID,
+                        cartID: cartID,
+                        wishlistID: wishlistID,
+                      });
+                    }
+                  );
                 }
               );
             } catch (err) {
@@ -86,6 +109,7 @@ class UserController {
       }
     });
   }
+
   login(req, res) {
     const { username, password } = req.body;
     const hashedPassword = security.hashPassword(password);
@@ -138,6 +162,7 @@ class UserController {
       );
     });
   }
+
   updateUsername(req, res) {
     const { userID, newUsername, password } = req.body;
     const updateTime = generalUtils.getFullCurrentDate();
@@ -158,6 +183,7 @@ class UserController {
       );
     });
   }
+
   changePassword(req, res) {
     const { userID, password, newPassword } = req.body;
     const updateTime = generalUtils.getFullCurrentDate();

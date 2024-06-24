@@ -7,6 +7,7 @@ const cartRoutes = require("./routes/cartRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/ordersRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const wishlistRoutes = require("./routes/wishlistRoutes");
 
 const routes = [
   userRoutes,
@@ -14,6 +15,7 @@ const routes = [
   productRoutes,
   orderRoutes,
   reviewRoutes,
+  wishlistRoutes,
 ];
 
 const $PORT = 5174;

@@ -48,7 +48,7 @@ router.patch(
   "/updateusername",
   [
     body("userID").isInt().withMessage("UserID must be an integer"),
-    body("username").notEmpty().withMessage("New Username is Required"),
+    body("newUsername").notEmpty().withMessage("New Username is Required"),
     body("password").notEmpty().withMessage("Password is required"),
   ],
   validateRequest,
