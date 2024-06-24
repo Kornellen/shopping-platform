@@ -16,10 +16,11 @@ class Wishlist {
   }
 
   addToWishlist(req, res) {
-    const { userID, productID } = req.body;
+    const { userID } = req.params;
+    const { productID } = req.body;
 
     const $findUserWishlistSQL = `
-    SELECT Wishlists.wishlistID FROM Whislists WHERE Wishlists.userID = ?`;
+    SELECT Wishlists.wishlistID FROM Wishlists WHERE Wishlists.userID = ?`;
 
     const $addToWishlistSQL = `INSERT INTO Wishlistitems (wishlistID, productID) VALUES (?,?)`;
 

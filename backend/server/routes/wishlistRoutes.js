@@ -8,9 +8,9 @@ const WishlistController = require("../controllers/wishlistControllers");
 const wishlistController = new WishlistController();
 
 router.post(
-  "/wishlist/addTo",
+  "/wishlist/:userID/items/addTo",
   [
-    body("userID").isInt().withMessage("UserID must be Integer"),
+    param("userID").isInt().withMessage("UserID must be Integer"),
     body("productID").isInt().withMessage("ProductID must be Integer"),
   ],
   validateRequest,
