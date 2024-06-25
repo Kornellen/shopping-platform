@@ -2,34 +2,33 @@ const express = require("express");
 const cors = require("cors");
 const log = console.log;
 
-const userRoutes = require("./routes/userRoutes");
-const cartRoutes = require("./routes/cartRoutes");
-const productRoutes = require("./routes/productRoutes");
-const orderRoutes = require("./routes/ordersRoutes");
-const reviewRoutes = require("./routes/reviewRoutes");
-const wishlistRoutes = require("./routes/wishlistRoutes");
+const routes = require("./routes/index");
 
-const routes = [
-  userRoutes,
-  cartRoutes,
-  productRoutes,
-  orderRoutes,
-  reviewRoutes,
-  wishlistRoutes,
-];
+class App {
+  constructor() {
+    (this.app = express()), (this.port = 5174), (this.routes = routes);
+  }
 
-const $PORT = 5174;
+  setupMiddleware() {
+    this.app.use(express.json());
+    this.app.use(cors());
+  }
 
-const app = express();
+  setupRoutes() {
+    this.routes.forEach((route) => {
+      this.app.use("/api", route);
+    });
+  }
 
-app.use(express.json());
+  start() {
+    this.setupMiddleware();
+    this.setupRoutes();
+    this.app.listen(this.port, () => {
+      log(`App Started on port: ${this.port}`);
+    });
+  }
+}
 
-app.use(cors());
+const server = new App();
 
-routes.forEach((element) => {
-  app.use("/api", element);
-});
-
-app.listen($PORT, async () => {
-  log("APP Started");
-});
+server.start();
