@@ -17,10 +17,14 @@ class Orders {
 
   createOrder(req, res) {
     const { userID } = req.params;
-    const { totalAmount, products } = req.body;
+    const { totalAmount, products, shippingMethod } = req.body;
 
     const currentDate = generalUtils.getOnlyDate();
 
+    const $getCostOfShippingMethod = `
+      SELECT cost
+      FROM ShippingMethods
+      WHERE shippingMethodID = ?`;
     const $getShoppingBillingAddressIDSQL = `
     SELECT addressID
     FROM Addresses
@@ -29,9 +33,10 @@ class Orders {
 
     const $insertOrderSQL = `
     INSERT INTO
-    Orders(userID, orderDate, status, totalamount, shoppingAddressID, billingAddressID)
-    VALUES (?,?,'ordered',?,?,?)`;
+    Orders(userID, orderDate, status, totalamount, shoppingAddressID, billingAddressID, shippingMethod)
+    VALUES (?,?,'ordered',?,?,?,?)`;
 
+    //getting Addresses
     this.getConn((connect) => {
       connect.query(
         $getShoppingBillingAddressIDSQL,
@@ -43,48 +48,82 @@ class Orders {
           }
           const address = result.map((address) => address.addressID);
 
+          //Getting Costs of Shipping
           connect.query(
-            $insertOrderSQL,
-            [userID, currentDate, totalAmount, address, address],
+            $getCostOfShippingMethod,
+            [shippingMethod],
             (err, result) => {
               if (err) {
-                log(err);
-                return res.sendStatus(500);
-              }
-
-              if (products.length == 0) {
-                return res.status(400).json({ error: "Products are required" });
-              }
-
-              const orderID = result.insertId;
-              const orderedItems = products.map((product) => [
-                orderID,
-                product.productID,
-                product.quantity,
-                product.price,
-              ]);
-              const placeholdes = orderedItems
-                .map(() => "(?,?,?,?)")
-                .join(", ");
-
-              const values = orderedItems.reduce(
-                (acc, val) => acc.concat(val),
-                []
-              );
-
-              const $insertOrderProductSQL = `
-            INSERT INTO
-            OrderItems(orderID, productID, quantity, price)
-            VALUES ${placeholdes}`;
-
-              connect.query($insertOrderProductSQL, values, (err, result) => {
                 connect.release();
-                if (err) {
-                  log(err);
-                  res.sendStatus(500);
+                log(err);
+                return req.sendStatus(500);
+              }
+
+              const shippingMethodCost = result[0].cost;
+              const realTotalAmount = totalAmount + shippingMethodCost;
+
+              //Inserting Order to DB
+              connect.query(
+                $insertOrderSQL,
+                [
+                  userID,
+                  currentDate,
+                  realTotalAmount,
+                  address,
+                  address,
+                  shippingMethod,
+                ],
+                (err, result) => {
+                  if (err) {
+                    connect.release();
+                    log(err);
+                    return res.sendStatus(500);
+                  }
+
+                  if (products.length == 0) {
+                    connect.release();
+                    return res
+                      .status(400)
+                      .json({ error: "Products are required" });
+                  }
+
+                  const orderID = result.insertId;
+                  const orderedItems = products.map((product) => [
+                    orderID,
+                    product.productID,
+                    product.quantity,
+                    product.price,
+                  ]);
+                  const placeholdes = orderedItems
+                    .map(() => "(?,?,?,?)")
+                    .join(", ");
+
+                  const values = orderedItems.reduce(
+                    (acc, val) => acc.concat(val),
+                    []
+                  );
+
+                  const $insertOrderProductSQL = `
+                INSERT INTO
+                OrderItems(orderID, productID, quantity, price)
+                VALUES ${placeholdes}`;
+
+                  connect.query(
+                    $insertOrderProductSQL,
+                    values,
+                    (err, result) => {
+                      connect.release();
+                      if (err) {
+                        log(err);
+                        res.sendStatus(500);
+                      }
+                      res
+                        .status(200)
+                        .json({ info: "Ordered", orderID: orderID });
+                    }
+                  );
                 }
-                res.status(200).json({ info: "Ordered", orderID: orderID });
-              });
+              );
             }
           );
         }

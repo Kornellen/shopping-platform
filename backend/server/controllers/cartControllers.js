@@ -19,7 +19,8 @@ class CartController {
   }
 
   addToCart(req, res) {
-    const { userID, productID, quantity } = req.body;
+    const { userID } = req.params;
+    const { productID, quantity } = req.body;
     const $findUserCart = `
       SELECT Cart.cartID, Cart.userID, Users.userID
       FROM Cart
@@ -43,9 +44,64 @@ class CartController {
           $addToCartSQL,
           [cartID, productID, quantity, currentTime],
           (err) => {
+            connect.release();
             if (err) {
+              log(err);
               res.status(500).json({ error: err });
             } else res.status(200).json({ info: "OK" });
+          }
+        );
+      });
+    });
+  }
+
+  loadCart(req, res) {
+    const { userID } = req.params;
+
+    const $loadUserCartSQL = "SELECT * FROM Cart WHERE userID = ?";
+
+    this.createConn((connect) => {
+      connect.query($loadUserCartSQL, [userID], (err, result) => {
+        connect.release();
+        if (err) {
+          log(err);
+          return res.sendStatus(500);
+        }
+
+        res.status(200).json({ productsInCart: result });
+      });
+    });
+  }
+
+  deleteFromCart(req, res) {
+    const { userID } = req.params;
+    const { productID } = req.body;
+
+    const $getUserCartIDSQL = "SELECT cartID FROM Carts WHERE userID = ?";
+
+    const $deleteFromCartSQL =
+      "DELETE FROM Cartitems WHERE cartID = ? AND productID = ?";
+
+    this.createConn((connect) => {
+      connect.query($getUserCartIDSQL, [userID], (err, result) => {
+        if (err) {
+          connect.release();
+          log(err);
+          return res.sendStatus(500);
+        }
+        const cartID = result[0].cartID;
+
+        connect.query(
+          $deleteFromCartSQL,
+          [cartID, productID],
+          (err, result) => {
+            connect.release();
+            if (err) {
+              log(err);
+              return res.sendStatus(500);
+            }
+
+            res.status(203).json({ info: "Successfully Remove" });
           }
         );
       });
