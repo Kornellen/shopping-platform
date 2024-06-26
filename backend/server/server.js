@@ -4,6 +4,8 @@ const path = require("path");
 const log = console.log;
 
 const routes = require("./routes/index");
+const morgan = require("morgan");
+const logger = require("./config/logger");
 
 class App {
   constructor() {
@@ -17,6 +19,15 @@ class App {
         origin: "*",
         methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
+      })
+    );
+    this.app.use(
+      morgan("combined", {
+        stream: {
+          write: (message) => {
+            logger.info(message.trim());
+          },
+        },
       })
     );
   }

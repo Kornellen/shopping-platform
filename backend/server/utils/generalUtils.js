@@ -84,7 +84,6 @@ class GeneralUtils {
           if (err) {
             this.log(err);
           }
-          this.log("Email sent");
         });
       }
     });

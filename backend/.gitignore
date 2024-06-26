@@ -2,3 +2,4 @@ __test__
 *.log
 node_modules
 .env
+logs/

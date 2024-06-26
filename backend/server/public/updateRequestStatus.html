@@ -3,11 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Return Request Status Checker</title>
   </head>
-  <body>
-    <div id="content">
-      <p>Updating Request Status To Cheked</p>
+  <body class="bg-zinc-600 w-100">
+    <div
+      id="content"
+      class="w-100 h-12 border bg-zinc-700 border-slate-800 border-2"
+    >
+      <p class="text-3xl text-slate-100">Updating Request Status To Cheked</p>
     </div>
   </body>
   <script>
@@ -28,9 +32,12 @@
             document.getElementById("content").innerHTML = `
                 <p>Return Request ID: ${result.requestID}</p>
                 <p>Status: ${result.status}</p>
-                <p>Details: ${result.reason}</p>
-                <button id="updateStatusBtn">Change Status to Checked</button>
+                <p class="text-rose-700">Details: ${result.reason}</p>
+                <button id="updateStatusBtn" class="ease-in duration-200 rounded-2xl border-2 p-2 hover:bg-slate-100 hover:text-black m-2">Change Status to Checked</button>
             `;
+
+            document.getElementById("content").className =
+              "w-400 h-22 text-white text-3xl bg-zinc-700 border-slate-800 border-2";
 
             document
               .getElementById("updateStatusBtn")
