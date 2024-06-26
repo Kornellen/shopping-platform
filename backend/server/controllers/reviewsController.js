@@ -1,6 +1,7 @@
 const validateRequest = require("../middleware/validator");
 const DBConnect = require("../utils/dbConnect");
 const GeneralUtils = require("../utils/generalUtils");
+const queries = require("../sql/reviewsQueries");
 
 const db = new DBConnect();
 const generalUtils = new GeneralUtils();
@@ -26,7 +27,7 @@ class Review {
 
     this.getConn((connect) => {
       connect.query(
-        $insertReviewSQL,
+        queries.$insertReviewSQL,
         [productID, userID, rating, comment, createTime],
         (err, result) => {
           connect.release();
@@ -45,11 +46,8 @@ class Review {
   removeReview(req, res) {
     const { reviewID } = req.params;
 
-    const $checkReviewSQL = "SELECT * FROM Reviews WHERE reviewID = ?";
-    const $removeReviewSQL = "DELETE FROM Reviews WHERE reviewID = ?";
-
     this.getConn((connect) => {
-      connect.query($checkReviewSQL, [reviewID], (err, result) => {
+      connect.query(queries.$checkReviewSQL, [reviewID], (err, result) => {
         if (err) {
           connect.release();
           log(err);
@@ -60,7 +58,7 @@ class Review {
           connect.release();
           res.status(404).json({ error: "Review Not Found" });
         } else
-          connect.query($removeReviewSQL, [reviewID], (err, result) => {
+          connect.query(queries.$removeReviewSQL, [reviewID], (err, result) => {
             connect.release();
             if (err) {
               log(err);
@@ -88,16 +86,11 @@ class Review {
     if (updates.length == 0)
       return res.status(400).json({ error: "No fileds to update" });
 
-    const updatedColumns = updates
-      .map((update) => `${update.column} = ?`)
-      .join(", ");
     const updatedValues = updates.map((update) => update.value);
-
-    const $updateReviewSQL = `UPDATE Reviews SET ${updatedColumns} WHERE reviewID = ?`;
 
     this.getConn((connect) => {
       connect.query(
-        $updateReviewSQL,
+        generalUtils.generateDynamicUpdateQuery("Reviews", updates),
         [...updatedValues, reviewID],
         (err, result) => {
           connect.release();

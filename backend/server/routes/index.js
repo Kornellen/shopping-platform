@@ -5,6 +5,7 @@ const orderRoutes = require("./ordersRoutes");
 const reviewRoutes = require("./reviewRoutes");
 const wishlistRoutes = require("./wishlistRoutes");
 const returnRoutes = require("./retrunRequestsRoutes");
+const paymentRoutes = require("./paymentsRoutes");
 
 const routes = [
   userRoutes,
@@ -14,6 +15,7 @@ const routes = [
   reviewRoutes,
   wishlistRoutes,
   returnRoutes,
+  paymentRoutes,
 ];
 
 module.exports = routes;

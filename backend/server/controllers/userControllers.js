@@ -1,6 +1,7 @@
 const DBConnect = require("../utils/dbConnect");
 const SecurityUtils = require("../utils/securityUtils");
 const GeneralUtils = require("../utils/generalUtils");
+const queries = require("../sql/userQueries");
 
 const log = console.log;
 
@@ -33,13 +34,10 @@ class UserController {
     const createdAt = generalUtils.getFullCurrentDate();
     const hashedPassword = security.hashPassword(password);
 
-    const $createUserSQL =
-      "INSERT INTO users values (null, ?,?,?,?,?,?,?,?,?,?)";
-
     this.createConn((connection) => {
       try {
         connection.query(
-          $createUserSQL,
+          queries.$createUserSQL,
           [
             username,
             email,
@@ -60,12 +58,11 @@ class UserController {
                 return res.status(500).json({ error: err.message });
               }
 
-              const $createCartSQL = "INSERT INTO cart VALUES (null, ?, ?, ?)";
               const createTime = generalUtils.getFullCurrentDate();
               const userID = result.insertId;
 
               connection.query(
-                $createCartSQL,
+                queries.$createCartSQL,
                 [result.insertId, createTime, createTime],
                 (err) => {
                   if (err) {
@@ -73,13 +70,11 @@ class UserController {
                     log(err);
                     return res.sendStatus(500);
                   }
-                  const $createWishlistSQL =
-                    "INSERT INTO wishlists (userID, createdAt) VALUES (?,?)";
 
                   const cartID = result.insertId;
 
                   connection.query(
-                    $createWishlistSQL,
+                    queries.$createWishlistSQL,
                     [userID, createTime],
                     (err, result) => {
                       connection.release();
@@ -114,21 +109,27 @@ class UserController {
     const { username, password } = req.body;
     const hashedPassword = security.hashPassword(password);
 
-    const $findUserByIDSQL =
-      "SELECT password, userID FROM users where username = ?";
     this.createConn((connect) => {
-      connect.query($findUserByIDSQL, [username], (err, result) => {
-        connect.release();
-        if (result.length !== 0) {
-          if (hashedPassword === result[0].password) {
-            res.status(202).json({
-              info: "Authenticated",
-              username: result[0].username,
-              userID: result[0].userID,
-            });
-          } else res.status(403).json({ error: "Incorect Password" });
-        } else res.status(404).json({ error: "User Not Found" });
-      });
+      connect.query(
+        queries.$findUserByUsernameSQL,
+        [username],
+        (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            res.sendStatus(500);
+          }
+
+          if (result.length !== 0) {
+            if (hashedPassword === result[0].password) {
+              res.status(202).json({
+                info: "Authenticated",
+                userID: result[0].userID,
+              });
+            } else res.status(403).json({ error: "Incorect Password" });
+          } else res.status(404).json({ error: "User Not Found" });
+        }
+      );
     });
   }
 
@@ -136,11 +137,9 @@ class UserController {
     const { userID, addressLine, city, state, postalCode, country } = req.body;
     const createTime = generalUtils.getFullCurrentDate();
 
-    const $insertAddressSQL =
-      "INSERT INTO addresses VALUES (?,?,?,?,?,?,?,?,?)";
     this.createConn((connect) => {
       connect.query(
-        $insertAddressSQL,
+        queries.$insertAddressSQL,
         [
           userID,
           addressLine,
@@ -168,12 +167,10 @@ class UserController {
     const updateTime = generalUtils.getFullCurrentDate();
     const hashedPassword = security.hashPassword(password);
 
-    const $updateUsernameSQL =
-      "UPDATE users SET username = ?, updatedAt = ? where userID = ? and password = ?";
     this.createConn((connect) => {
       connect.release();
       connect.query(
-        $updateUsernameSQL,
+        queries.$updateUsernameSQL,
         [newUsername, updateTime, userID, hashedPassword],
         (err, result) => {
           if (result.changedRows == 0) {
@@ -190,11 +187,10 @@ class UserController {
 
     const hashedNewPassword = security.hashPassword(newPassword);
     const hashedOldPassword = security.hashPassword(password);
-    const $changePasswordSQL =
-      "UPDATE users set password = ?, updatedAt = ? where userID = ? and password = ?";
+
     this.createConn((connect) => {
       connect.query(
-        $changePasswordSQL,
+        queries.$changePasswordSQL,
         [hashedNewPassword, updateTime, userID, hashedOldPassword],
         (err, result) => {
           connect.release();

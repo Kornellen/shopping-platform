@@ -21,7 +21,7 @@ router.post(
 );
 
 router.get("/getallproducts", (req, res) =>
-  productController.getProduct(req, res)
+  productController.getAllProduct(req, res)
 );
 
 router.get(

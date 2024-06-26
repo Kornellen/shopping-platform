@@ -1,5 +1,6 @@
 const DBConnect = require("../utils/dbConnect");
 const GeneralUtils = require("../utils/generalUtils");
+const queries = require("../sql/wishlistQueries");
 
 const db = new DBConnect();
 const generalUtils = new GeneralUtils();
@@ -19,13 +20,8 @@ class Wishlist {
     const { userID } = req.params;
     const { productID } = req.body;
 
-    const $findUserWishlistSQL = `
-    SELECT Wishlists.wishlistID FROM Wishlists WHERE Wishlists.userID = ?`;
-
-    const $addToWishlistSQL = `INSERT INTO Wishlistitems (wishlistID, productID) VALUES (?,?)`;
-
     this.getConn((connect) => {
-      connect.query($findUserWishlistSQL, [userID], (err, result) => {
+      connect.query(queries.$findUserWishlistSQL, [userID], (err, result) => {
         if (err) {
           connect.release();
           log(err);
@@ -34,7 +30,7 @@ class Wishlist {
         const wishlistID = result[0].wishlistID;
 
         connect.query(
-          $addToWishlistSQL,
+          queries.$addToWishlistSQL,
           [wishlistID, productID],
           (err, result) => {
             connect.release();
@@ -53,18 +49,19 @@ class Wishlist {
   getWishlist(req, res) {
     const { userID } = req.params;
 
-    const $getWishlistItemsByUserID =
-      "SELECT * FROM WishlistItems LEFT JOIN Wishlists ON WishlistItems.wishlistID = Wishlists.wishlistID WHERE Wishlists.userID = ?";
-
     this.getConn((connect) => {
-      connect.query($getWishlistItemsByUserID, [userID], (err, result) => {
-        connect.release();
-        if (err) {
-          log(err);
-          res.sendStatus(500);
+      connect.query(
+        queries.$getWishlistItemsByUserID,
+        [userID],
+        (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            res.sendStatus(500);
+          }
+          res.status(200).json({ wishlistItems: result });
         }
-        res.status(200).json({ wishlistItems: result });
-      });
+      );
     });
   }
 
@@ -72,13 +69,8 @@ class Wishlist {
     const { userID } = req.params;
     const { productID } = req.body;
 
-    const $getWishlistItemsIDSQL =
-      "SELECT Wishlists.wishlistID FROM WishlistItems LEFT JOIN Wishlists ON WishlistItems.wishlistID = Wishlists.wishlistID WHERE Wishlists.userID = ?";
-    const $removeFromWishlistSQL =
-      "DELETE FROM WishlistItems WHERE wishlistID = ? and productID = ?";
-
     this.getConn((connect) => {
-      connect.query($getWishlistItemsIDSQL, [userID], (err, result) => {
+      connect.query(queries.$getWishlistItemsIDSQL, [userID], (err, result) => {
         if (err) {
           connect.release();
           log(err);
@@ -91,7 +83,7 @@ class Wishlist {
 
         const wishlistID = result[0].wishlistID;
         connect.query(
-          $removeFromWishlistSQL,
+          queries.$removeFromWishlistSQL,
           [wishlistID, productID],
           (err, result) => {
             connect.release();

@@ -1,5 +1,6 @@
 const DBConnect = require("../utils/dbConnect");
 const GeneralUtils = require("../utils/generalUtils");
+const queries = require("../sql/ordersQueries");
 
 const db = new DBConnect();
 const generalUtils = new GeneralUtils();
@@ -21,25 +22,10 @@ class Orders {
 
     const currentDate = generalUtils.getOnlyDate();
 
-    const $getCostOfShippingMethod = `
-      SELECT cost
-      FROM ShippingMethods
-      WHERE shippingMethodID = ?`;
-    const $getShoppingBillingAddressIDSQL = `
-    SELECT addressID
-    FROM Addresses
-    WHERE userID = ?
-    `;
-
-    const $insertOrderSQL = `
-    INSERT INTO
-    Orders(userID, orderDate, status, totalamount, shoppingAddressID, billingAddressID, shippingMethod)
-    VALUES (?,?,'ordered',?,?,?,?)`;
-
     //getting Addresses
     this.getConn((connect) => {
       connect.query(
-        $getShoppingBillingAddressIDSQL,
+        queries.$getShoppingBillingAddressIDSQL,
         [userID],
         (err, result) => {
           if (err) {
@@ -50,7 +36,7 @@ class Orders {
 
           //Getting Costs of Shipping
           connect.query(
-            $getCostOfShippingMethod,
+            queries.$getCostOfShippingMethod,
             [shippingMethod],
             (err, result) => {
               if (err) {
@@ -64,7 +50,7 @@ class Orders {
 
               //Inserting Order to DB
               connect.query(
-                $insertOrderSQL,
+                queries.$insertOrderSQL,
                 [
                   userID,
                   currentDate,
@@ -88,29 +74,10 @@ class Orders {
                   }
 
                   const orderID = result.insertId;
-                  const orderedItems = products.map((product) => [
-                    orderID,
-                    product.productID,
-                    product.quantity,
-                    product.price,
-                  ]);
-                  const placeholdes = orderedItems
-                    .map(() => "(?,?,?,?)")
-                    .join(", ");
-
-                  const values = orderedItems.reduce(
-                    (acc, val) => acc.concat(val),
-                    []
-                  );
-
-                  const $insertOrderProductSQL = `
-                INSERT INTO
-                OrderItems(orderID, productID, quantity, price)
-                VALUES ${placeholdes}`;
 
                   connect.query(
-                    $insertOrderProductSQL,
-                    values,
+                    queries.dynamicQuery(products).$insertOrderProductSQL,
+                    queries.dynamicQuery(products).values,
                     (err, result) => {
                       connect.release();
                       if (err) {
@@ -134,10 +101,8 @@ class Orders {
   getUserOrders(req, res) {
     const { userID } = req.params;
 
-    const $getOrdersSQL = `SELECT * FROM Orders WHERE userID = ?`;
-
     this.getConn((connect) => {
-      connect.query($getOrdersSQL, userID, (err, result) => {
+      connect.query(queries.$getOrdersSQL, userID, (err, result) => {
         connect.release();
         if (err) {
           log(err);
@@ -153,11 +118,8 @@ class Orders {
   getOrderStatus(req, res) {
     const { orderID } = req.params;
 
-    const $getOrderStatusSQL =
-      "SELECT status, orderDate FROM Orders WHERE orderID = ?";
-
     this.getConn((connect) => {
-      connect.query($getOrderStatusSQL, orderID, (err, result) => {
+      connect.query(queries.$getOrderStatusSQL, orderID, (err, result) => {
         connect.release();
         if (err) {
           log(err);
@@ -171,10 +133,8 @@ class Orders {
   cancellOrder(req, res) {
     const { orderID } = req.params;
 
-    const $cancellOrderSQL = `UPDATE orders SET status = "cancelled" WHERE orderID = ?`;
-
     this.getConn((connect) => {
-      connect.query($cancellOrderSQL, [orderID], (err, result) => {
+      connect.query(queries.$cancellOrderSQL, [orderID], (err, result) => {
         connect.release();
         if (err) {
           log(err);

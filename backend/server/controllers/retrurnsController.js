@@ -1,5 +1,6 @@
 const DBConnect = require("../utils/dbConnect");
 const GeneralUtils = require("../utils/generalUtils");
+const queries = require("../sql/returnsQueries");
 
 const log = console.log;
 
@@ -21,11 +22,8 @@ class Return {
   getUserRequests(req, res) {
     const { userID } = req.params;
 
-    const $getUserRequestsSQL =
-      "SELECT * FROM returnsrequests WHERE userID = ?";
-
     this.createConn((connect) => {
-      connect.query($getUserRequestsSQL, [userID], (err, result) => {
+      connect.query(queries.$getUserRequestsSQL, [userID], (err, result) => {
         connect.release();
         if (err) {
           log(err);
@@ -45,14 +43,11 @@ class Return {
 
     const status = "To check";
 
-    const $addRequestToDBSQL =
-      "INSERT INTO returnsrequests(orderID, userID, reason, status, createdAt, updatedAt) VALUES (?,?,?,?,?,?)";
-
     const formattedReson = generalUtils.capitalizeFirstLetter(reason);
 
     this.createConn((connect) => {
       connect.query(
-        $addRequestToDBSQL,
+        queries.$addRequestToDBSQL,
         [orderID, userID, formattedReson, status, createDate, createDate],
         (err, result) => {
           connect.release();
@@ -81,16 +76,11 @@ class Return {
     if (reason != null && reason != "" && reason != undefined)
       updates.push({ column: "reason", value: reason });
 
-    const updatedColumn = updates
-      .map((update) => `${update.column} = ?`)
-      .join(", ");
     const value = updates.map((value) => value.value);
-
-    const $updateReturnSQL = `UPDATE returnsrequests SET ${updatedColumn}, updatedAt = ? WHERE requestID = ?`;
 
     this.createConn((connect) => {
       connect.query(
-        $updateReturnSQL,
+        generalUtils.generateDynamicUpdateQuery("returnsrequests", update),
         [value, updatedAt, requestID],
         (err, result) => {
           connect.release();
@@ -109,19 +99,20 @@ class Return {
   deleteReturnRequest(req, res) {
     const { requestID } = req.params;
 
-    const $removeReturnRequest =
-      "DELETE FROM returnsrequests WHERE requestId = ?";
-
     this.createConn((connect) => {
-      connect.query($removeReturnRequest, [requestID], (err, result) => {
-        connect.release();
-        if (err) {
-          log(err);
-          return res.sendStatus(500);
-        }
+      connect.query(
+        queries.$removeReturnRequest,
+        [requestID],
+        (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            return res.sendStatus(500);
+          }
 
-        return res.status(200).json({ info: "Successfully removed" });
-      });
+          return res.status(200).json({ info: "Successfully removed" });
+        }
+      );
     });
   }
 }

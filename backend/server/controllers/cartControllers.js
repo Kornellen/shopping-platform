@@ -1,12 +1,11 @@
 const DBConnect = require("../utils/dbConnect");
 const GeneralUtils = require("../utils/generalUtils");
-const SecurityUtils = require("../utils/securityUtils");
+const queries = require("../sql/cartQueries");
 
 const log = console.log;
 
 const db = new DBConnect();
 const generalUtils = new GeneralUtils();
-const security = new SecurityUtils();
 
 class CartController {
   async createConn(callback, res) {
@@ -21,24 +20,17 @@ class CartController {
   addToCart(req, res) {
     const { userID } = req.params;
     const { productID, quantity } = req.body;
-    const $findUserCart = `
-      SELECT Cart.cartID, Cart.userID, Users.userID
-      FROM Cart
-      LEFT JOIN Users ON Cart.userID = Users.userID
-      WHERE Users.userID = ?`;
 
     const currentTime = generalUtils.getFullCurrentDate();
 
     this.createConn((connect) => {
-      connect.query($findUserCart, [userID], (err, result) => {
+      connect.query(queries.$findUserCart, [userID], (err, result) => {
         if (err) {
           connect.release();
           res.sendStatus(500);
           log(err);
         }
         const cartID = result[0].cartID;
-
-        const $addToCartSQL = "INSERT INTO cartitems VALUES (null, ?, ?, ?, ?)";
 
         connect.query(
           $addToCartSQL,
@@ -58,10 +50,8 @@ class CartController {
   loadCart(req, res) {
     const { userID } = req.params;
 
-    const $loadUserCartSQL = "SELECT * FROM Cart WHERE userID = ?";
-
     this.createConn((connect) => {
-      connect.query($loadUserCartSQL, [userID], (err, result) => {
+      connect.query(queries.$loadUserCartSQL, [userID], (err, result) => {
         connect.release();
         if (err) {
           log(err);
@@ -77,13 +67,8 @@ class CartController {
     const { userID } = req.params;
     const { productID } = req.body;
 
-    const $getUserCartIDSQL = "SELECT cartID FROM Carts WHERE userID = ?";
-
-    const $deleteFromCartSQL =
-      "DELETE FROM Cartitems WHERE cartID = ? AND productID = ?";
-
     this.createConn((connect) => {
-      connect.query($getUserCartIDSQL, [userID], (err, result) => {
+      connect.query(queries.$getUserCartIDSQL, [userID], (err, result) => {
         if (err) {
           connect.release();
           log(err);
@@ -92,7 +77,7 @@ class CartController {
         const cartID = result[0].cartID;
 
         connect.query(
-          $deleteFromCartSQL,
+          queries.$deleteFromCartSQL,
           [cartID, productID],
           (err, result) => {
             connect.release();

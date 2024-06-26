@@ -47,6 +47,16 @@ class GeneralUtils {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(" ");
   }
+
+  generateDynamicUpdateQuery = (table, update) => {
+    const updateColumn = update
+      .map((update) => `${update.column} = ?`)
+      .join(",");
+
+    const $updateProductSQL = `UPDATE ${table} SET ${updateColumn}, updatedAt = ? WHERE productID = ? `;
+
+    return $updateProductSQL;
+  };
 }
 
 module.exports = GeneralUtils;
