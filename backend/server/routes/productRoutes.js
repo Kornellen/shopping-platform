@@ -8,12 +8,13 @@ const ProductControllers = require("../controllers/productControllers");
 const productController = new ProductControllers();
 
 router.post(
-  "/addproduct",
+  "/user/:userID/addproduct",
   [
-    body("categoryID").isInt().withMessage("CategoryID must be integer"),
+    param("userID").isInt().withMessage("UserID must be an Integer"),
+    body("categoryID").isInt().withMessage("CategoryID must be aninteger"),
     body("name").notEmpty().withMessage("Name is required"),
-    body("desc").notEmpty().withMessage("Description is required"),
-    body("price").isDecimal().withMessage("Price must be decimal number"),
+    body("desc").notEmpty().withMessage("Description is an required"),
+    body("price").isDecimal().withMessage("Price must be a decimal number"),
     body("stockQuantity").notEmpty().withMessage("Stock Qunatity is required"),
   ],
   validateRequest,

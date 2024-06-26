@@ -1,4 +1,4 @@
-const dynamicQuery = (products) => {
+const dynamicQuery = (products, orderID) => {
   const orderedItems = products.map((product) => [
     orderID,
     product.productID,
@@ -14,7 +14,7 @@ const dynamicQuery = (products) => {
     INSERT INTO
     OrderItems(orderID, productID, quantity, price)
     VALUES ${placeholdes}`,
-    value: values,
+    values: values,
   };
 };
 

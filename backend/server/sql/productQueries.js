@@ -1,5 +1,6 @@
 module.exports = {
-  $addProductSQL: "INSERT INTO Products VALUES (null, ?,?,?,?,?,?,?)",
+  $addProductSQL:
+    "INSERT INTO Products (categoryID, userID, name, description, price, stockQuantity, addedAt, updatedAt) VALUES (?,?,?,?,?,?,?,?)",
   $getProducts: "SELECT * FROM Products",
   $getProductCat: `
         SELECT Categories.name, Categories.categoryID

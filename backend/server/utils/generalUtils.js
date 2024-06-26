@@ -1,3 +1,8 @@
+const nodemailer = require("nodemailer");
+const email = require("../config/email");
+const fs = require("fs");
+const handleBars = require("handlebars");
+
 class GeneralUtils {
   getFullCurrentDate() {
     const date = new Date();
@@ -48,7 +53,7 @@ class GeneralUtils {
       .join(" ");
   }
 
-  generateDynamicUpdateQuery = (table, update) => {
+  generateDynamicUpdateQuery(table, update) {
     const updateColumn = update
       .map((update) => `${update.column} = ?`)
       .join(",");
@@ -56,7 +61,34 @@ class GeneralUtils {
     const $updateProductSQL = `UPDATE ${table} SET ${updateColumn}, updatedAt = ? WHERE productID = ? `;
 
     return $updateProductSQL;
-  };
+  }
+
+  sendEmails(to, requestID) {
+    fs.readFile("views/retrunrequest.html", "utf8", (err, returnTemplate) => {
+      if (err) {
+        this.log(err);
+      } else {
+        const template = handleBars.compile(returnTemplate);
+        const transporter = nodemailer.createTransport(email);
+
+        const fullTemplate = template({ requestID });
+
+        let mailOptions = {
+          from: `Shopping platform <${email.auth.user}>`,
+          to: to,
+          subject: "Retrun request",
+          html: fullTemplate,
+        };
+
+        transporter.sendMail(mailOptions, (err) => {
+          if (err) {
+            this.log(err);
+          }
+          this.log("Email sent");
+        });
+      }
+    });
+  }
 }
 
 module.exports = GeneralUtils;

@@ -1,6 +1,7 @@
 const DBConnect = require("../utils/dbConnect");
 const GeneralUtils = require("../utils/generalUtils");
 const queries = require("../sql/returnsQueries");
+const { $addToWishlistSQL } = require("../sql/wishlistQueries");
 
 const log = console.log;
 
@@ -50,12 +51,44 @@ class Return {
         queries.$addRequestToDBSQL,
         [orderID, userID, formattedReson, status, createDate, createDate],
         (err, result) => {
+          if (err) {
+            connect.release();
+            log(err);
+            return res.sendStatus(500);
+          }
+
+          const requestID = result.insertId;
+
+          this.createConn((connect) => {
+            connect.query(queries.$searchUserEmail, [userID], (err, result) => {
+              connect.release();
+              if (err) {
+                log(err);
+                return res.sendStatus(500);
+              }
+              generalUtils.sendEmails(result[0].email, requestID);
+              res.status(200).json({ info: "Request Sent Successfully" });
+            });
+          });
+        }
+      );
+    });
+  }
+
+  getRequestDetails(req, res) {
+    const { requestID } = req.params;
+
+    this.createConn((connect) => {
+      connect.query(
+        queries.$getReturnRequestDetails,
+        [requestID],
+        (err, result) => {
           connect.release();
           if (err) {
             log(err);
             return res.sendStatus(500);
           }
-          res.status(200).json({ info: "Request Sent Successfully" });
+          return res.status(200).json({ result: result[0] });
         }
       );
     });
@@ -80,7 +113,7 @@ class Return {
 
     this.createConn((connect) => {
       connect.query(
-        generalUtils.generateDynamicUpdateQuery("returnsrequests", update),
+        queries.$updateRequestStatus,
         [value, updatedAt, requestID],
         (err, result) => {
           connect.release();

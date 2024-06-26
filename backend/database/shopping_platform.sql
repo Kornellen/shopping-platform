@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Cze 26, 2024 at 04:45 PM
--- Server Version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Cze 26, 2024 at 11:37 PM
+-- Wersja serwera: 10.4.32-MariaDB
+-- Wersja PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `addresses`
+-- Struktura tabeli dla tabeli `addresses`
 --
 
 CREATE TABLE `addresses` (
@@ -39,10 +39,17 @@ CREATE TABLE `addresses` (
   `updatedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`addressID`, `userID`, `addressLine`, `city`, `state`, `postalCode`, `country`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'addressline', 'Warsaw', 'Malopolskie', '00-001', 'Poland', '2024-06-26 20:54:34', '2024-06-26 20:54:34');
+
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `cart`
+-- Struktura tabeli dla tabeli `cart`
 --
 
 CREATE TABLE `cart` (
@@ -62,7 +69,7 @@ INSERT INTO `cart` (`cartID`, `userID`, `createdAt`, `updatedAt`) VALUES
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `cartitems`
+-- Struktura tabeli dla tabeli `cartitems`
 --
 
 CREATE TABLE `cartitems` (
@@ -76,7 +83,7 @@ CREATE TABLE `cartitems` (
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `categories`
+-- Struktura tabeli dla tabeli `categories`
 --
 
 CREATE TABLE `categories` (
@@ -101,7 +108,7 @@ INSERT INTO `categories` (`categoryID`, `parentID`, `name`, `description`) VALUE
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `orderitems`
+-- Struktura tabeli dla tabeli `orderitems`
 --
 
 CREATE TABLE `orderitems` (
@@ -115,7 +122,7 @@ CREATE TABLE `orderitems` (
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `orders`
+-- Struktura tabeli dla tabeli `orders`
 --
 
 CREATE TABLE `orders` (
@@ -132,7 +139,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `paymentmethods`
+-- Struktura tabeli dla tabeli `paymentmethods`
 --
 
 CREATE TABLE `paymentmethods` (
@@ -152,7 +159,7 @@ INSERT INTO `paymentmethods` (`paymentMethodID`, `paymentMethod`) VALUES
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `payments`
+-- Struktura tabeli dla tabeli `payments`
 --
 
 CREATE TABLE `payments` (
@@ -168,12 +175,13 @@ CREATE TABLE `payments` (
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `products`
+-- Struktura tabeli dla tabeli `products`
 --
 
 CREATE TABLE `products` (
   `productID` int(11) NOT NULL,
   `categoryID` int(11) DEFAULT NULL,
+  `userID` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
@@ -186,16 +194,16 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`productID`, `categoryID`, `name`, `description`, `price`, `stockQuantity`, `addedAt`, `updatedAt`) VALUES
-(1, 3, 'Laptop', 'Laptop', 150.50, 1, '2024-06-23 15:33:16', '2024-06-24 17:16:54'),
-(2, 3, 'Mobile Phone', 'Mobile Phone', 500.00, 1, '2024-06-24 10:05:34', '2024-06-24 10:05:34'),
-(3, 3, 'Mobile Phone', 'Mobile Phone', 2505.00, 10, '2024-06-24 10:48:41', '2024-06-24 10:48:41'),
-(4, 4, 'T-Shirt', 'T-Shirt', 2500.00, 10000, '2024-06-24 11:17:39', '2024-06-24 11:17:39');
+INSERT INTO `products` (`productID`, `categoryID`, `userID`, `name`, `description`, `price`, `stockQuantity`, `addedAt`, `updatedAt`) VALUES
+(1, 3, 1, 'Laptop', 'Laptop', 150.50, 1, '2024-06-23 15:33:16', '2024-06-24 17:16:54'),
+(2, 3, 1, 'Mobile Phone', 'Mobile Phone', 500.00, 1, '2024-06-24 10:05:34', '2024-06-24 10:05:34'),
+(3, 3, 1, 'Mobile Phone', 'Mobile Phone', 2505.00, 10, '2024-06-24 10:48:41', '2024-06-24 10:48:41'),
+(4, 4, 1, 'T-Shirt', 'T-Shirt', 2500.00, 10000, '2024-06-24 11:17:39', '2024-06-24 11:17:39');
 
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `returnsrequests`
+-- Struktura tabeli dla tabeli `returnsrequests`
 --
 
 CREATE TABLE `returnsrequests` (
@@ -211,7 +219,7 @@ CREATE TABLE `returnsrequests` (
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `reviews`
+-- Struktura tabeli dla tabeli `reviews`
 --
 
 CREATE TABLE `reviews` (
@@ -226,7 +234,7 @@ CREATE TABLE `reviews` (
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `shippingmethods`
+-- Struktura tabeli dla tabeli `shippingmethods`
 --
 
 CREATE TABLE `shippingmethods` (
@@ -249,7 +257,7 @@ INSERT INTO `shippingmethods` (`shippingMethodID`, `name`, `description`, `cost`
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `users`
+-- Struktura tabeli dla tabeli `users`
 --
 
 CREATE TABLE `users` (
@@ -276,7 +284,7 @@ INSERT INTO `users` (`userID`, `username`, `email`, `password`, `firstName`, `la
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `wishlistitems`
+-- Struktura tabeli dla tabeli `wishlistitems`
 --
 
 CREATE TABLE `wishlistitems` (
@@ -288,7 +296,7 @@ CREATE TABLE `wishlistitems` (
 -- --------------------------------------------------------
 
 --
--- Strucutre of table for table `wishlists`
+-- Struktura tabeli dla tabeli `wishlists`
 --
 
 CREATE TABLE `wishlists` (
@@ -304,24 +312,26 @@ CREATE TABLE `wishlists` (
 INSERT INTO `wishlists` (`wishlistID`, `userID`, `createdAt`) VALUES
 (1, 1, '2024-06-26 16:44:13');
 
-
+--
+-- Indeksy dla zrzutów tabel
+--
 
 --
--- Index for table `addresses`
+-- Indeksy dla tabeli `addresses`
 --
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`addressID`),
   ADD KEY `userID` (`userID`);
 
 --
--- Index for table `cart`
+-- Indeksy dla tabeli `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`cartID`),
   ADD KEY `userID` (`userID`);
 
 --
--- Index for table `cartitems`
+-- Indeksy dla tabeli `cartitems`
 --
 ALTER TABLE `cartitems`
   ADD PRIMARY KEY (`CartItemsID`),
@@ -329,14 +339,14 @@ ALTER TABLE `cartitems`
   ADD KEY `productID` (`productID`);
 
 --
--- Index for table `categories`
+-- Indeksy dla tabeli `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`categoryID`),
   ADD KEY `parentID` (`parentID`);
 
 --
--- Index for table `orderitems`
+-- Indeksy dla tabeli `orderitems`
 --
 ALTER TABLE `orderitems`
   ADD PRIMARY KEY (`orderItemID`),
@@ -344,7 +354,7 @@ ALTER TABLE `orderitems`
   ADD KEY `productID` (`productID`);
 
 --
--- Index for table `orders`
+-- Indeksy dla tabeli `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`orderID`),
@@ -354,13 +364,13 @@ ALTER TABLE `orders`
   ADD KEY `shippingMethod` (`shippingMethod`);
 
 --
--- Index for table `paymentmethods`
+-- Indeksy dla tabeli `paymentmethods`
 --
 ALTER TABLE `paymentmethods`
   ADD PRIMARY KEY (`paymentMethodID`);
 
 --
--- Index for table `payments`
+-- Indeksy dla tabeli `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`paymentID`),
@@ -369,14 +379,15 @@ ALTER TABLE `payments`
   ADD KEY `userID` (`userID`);
 
 --
--- Index for table `products`
+-- Indeksy dla tabeli `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`productID`),
-  ADD KEY `categoryID` (`categoryID`);
+  ADD KEY `categoryID` (`categoryID`),
+  ADD KEY `userID` (`userID`);
 
 --
--- Index for table `returnsrequests`
+-- Indeksy dla tabeli `returnsrequests`
 --
 ALTER TABLE `returnsrequests`
   ADD PRIMARY KEY (`requestID`),
@@ -384,7 +395,7 @@ ALTER TABLE `returnsrequests`
   ADD KEY `userID` (`userID`);
 
 --
--- Index for table `reviews`
+-- Indeksy dla tabeli `reviews`
 --
 ALTER TABLE `reviews`
   ADD PRIMARY KEY (`reviewID`),
@@ -392,20 +403,20 @@ ALTER TABLE `reviews`
   ADD KEY `userID` (`userID`);
 
 --
--- Index for table `shippingmethods`
+-- Indeksy dla tabeli `shippingmethods`
 --
 ALTER TABLE `shippingmethods`
   ADD PRIMARY KEY (`shippingMethodID`);
 
 --
--- Index for table `users`
+-- Indeksy dla tabeli `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userID`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Index for table `wishlistitems`
+-- Indeksy dla tabeli `wishlistitems`
 --
 ALTER TABLE `wishlistitems`
   ADD PRIMARY KEY (`wishlistItemID`),
@@ -413,7 +424,7 @@ ALTER TABLE `wishlistitems`
   ADD KEY `productID` (`productID`);
 
 --
--- Index for table `wishlists`
+-- Indeksy dla tabeli `wishlists`
 --
 ALTER TABLE `wishlists`
   ADD PRIMARY KEY (`wishlistID`),
@@ -427,7 +438,7 @@ ALTER TABLE `wishlists`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `addressID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `addressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `cart`
@@ -451,13 +462,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `orderItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `orderItemID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `paymentmethods`
@@ -481,7 +492,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `returnsrequests`
 --
 ALTER TABLE `returnsrequests`
-  MODIFY `requestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `requestID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -570,7 +581,8 @@ ALTER TABLE `payments`
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`categoryID`) REFERENCES `categories` (`categoryID`) ON DELETE SET NULL;
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`categoryID`) REFERENCES `categories` (`categoryID`) ON DELETE SET NULL,
+  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `returnsrequests`

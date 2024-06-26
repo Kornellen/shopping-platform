@@ -19,13 +19,23 @@ class Product {
   }
 
   addProduct(req, res) {
+    const { userID } = req.params;
     const { categoryID, name, desc, price, stockQuantity } = req.body;
     const addedAt = generalUtils.getFullCurrentDate();
 
     this.getConn((connect) => {
       connect.query(
         queries.$addProductSQL,
-        [categoryID, name, desc, price, stockQuantity, addedAt, addedAt],
+        [
+          categoryID,
+          userID,
+          name,
+          desc,
+          price,
+          stockQuantity,
+          addedAt,
+          addedAt,
+        ],
         (err) => {
           connect.release();
           if (err) {

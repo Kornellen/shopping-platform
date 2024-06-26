@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="content">
+      <p>Updating Request Status To Cheked</p>
+    </div>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestID = urlParams.get("requestID");
+
+      fetch(`http://localhost:5174/api/returnrequests/${requestID}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            document.getElementById(
+              "content"
+            ).textContent = `<p>${data.error}</p>`;
+          } else {
+            const result = data.result;
+            console.log(result);
+            document.getElementById("content").innerHTML = `
+                <p>Return Request ID: ${result.requestID}</p>
+                <p>Status: ${result.status}</p>
+                <p>Details: ${result.reason}</p>
+                <button id="updateStatusBtn">Change Status to Checked</button>
+            `;
+
+            document
+              .getElementById("updateStatusBtn")
+              .addEventListener("click", () => {
+                fetch(
+                  `http://localhost:5174/api/returnsrequests/${requestID}/update`,
+                  {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: "checked" }),
+                  }
+                )
+                  .then((response) => response.json())
+                  .then((data) => {
+                    document.getElementById(
+                      "content"
+                    ).innerHTML = `<p>Checked</p>`;
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                    document.getElementById(
+                      "content"
+                    ).innerHTML = `<p>Error - Check console for more </p>`;
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                    document.getElementById("content").innerHTML =
+                      "<p>There was an error loading your return request. Please try again later.</p>";
+                  });
+              });
+          }
+        });
+    });
+  </script>
+</html>

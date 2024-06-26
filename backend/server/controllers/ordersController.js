@@ -76,13 +76,14 @@ class Orders {
                   const orderID = result.insertId;
 
                   connect.query(
-                    queries.dynamicQuery(products).$insertOrderProductSQL,
-                    queries.dynamicQuery(products).values,
+                    queries.dynamicQuery(products, orderID)
+                      .$insertOrderProductSQL,
+                    queries.dynamicQuery(products, orderID).values,
                     (err, result) => {
                       connect.release();
                       if (err) {
                         log(err);
-                        res.sendStatus(500);
+                        return res.sendStatus(500);
                       }
                       res
                         .status(200)
