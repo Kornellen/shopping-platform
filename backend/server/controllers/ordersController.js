@@ -10,6 +10,7 @@ class Orders {
   async getConn(callback, res) {
     db.getConnection((err, connect) => {
       if (err) {
+        log(err);
         return res.status(500).json({ error: err });
       }
       return callback(connect);
@@ -42,7 +43,7 @@ class Orders {
               if (err) {
                 connect.release();
                 log(err);
-                return req.sendStatus(500);
+                return res.sendStatus(500);
               }
 
               const shippingMethodCost = result[0].cost;
