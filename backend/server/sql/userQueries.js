@@ -11,4 +11,5 @@ module.exports = {
     "UPDATE users SET username = ?, updatedAt = ? where userID = ? and password = ?",
   $changePasswordSQL:
     "UPDATE users set password = ?, updatedAt = ? where userID = ? and password = ?",
+  $getUsernameByID: "SELECT * FROM Users WHERE userID = ?",
 };

@@ -5,6 +5,17 @@ export const themesVariant = {
 
 export const liStyles = {
   light:
-    "text-dark-100 border-2 border-dark-200 m-2 p-1 rounded hover:bg-dark-500 hover:text-light-100",
-  dark: "text-light-100 border-2 border-light-200 m-2 p-1 rounded hover:bg-light-500 hover:text-dark-100",
+    "text-dark-100 border-b-2 border-dark-200 text-2xl m-2 p-5 hover:text-dark-700 hover:border-dark-700",
+  dark: "text-light-100 border-b-2 border-light-200 text-2xl m-2 p-5 hover:text-light-700 hover:border-light-700",
+};
+
+export const inputStyles = {
+  light:
+    "bg-light-200 text-dark-100 border-b-2 border-dark-200 outline-none placeholder:text-dark-500",
+  dark: "bg-light-200 text-dark-100 border-b-2 border-light-200 outline-none placeholder:text-dark-500",
+};
+
+export const pagesVariant = {
+  light: "bg-light-200 text-dark-100",
+  dark: "bg-dark-200 text-light-100",
 };

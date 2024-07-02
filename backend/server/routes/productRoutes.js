@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { body, param } = require("express-validator");
+const { body, param, query } = require("express-validator");
 const validateRequest = require("../middleware/validator");
 
 const ProductControllers = require("../controllers/productControllers");
@@ -30,6 +30,13 @@ router.get(
   param("productID").isInt().withMessage("Param ProductID must be Integer"),
   validateRequest,
   (req, res) => productController.getProductByIDParam(req, res)
+);
+
+router.get(
+  "/products",
+  [query("itemName").isString().withMessage("Product Name must be a String")],
+  validateRequest,
+  (req, res) => productController.getProductsByName(req, res)
 );
 
 router.patch(

@@ -2,6 +2,8 @@ const DBConnect = require("../utils/dbConnect");
 const GeneralUtils = require("../utils/generalUtils");
 const queries = require("../sql/productQueries");
 const { getRandomValues } = require("crypto");
+const productQueries = require("../sql/productQueries");
+const userQueries = require("../sql/userQueries");
 
 const log = console.log;
 
@@ -47,49 +49,85 @@ class Product {
       );
     });
   }
+
+  getProductsByName(req, res) {
+    const { itemName } = req.query;
+
+    const formattedName = `%${itemName}%`;
+
+    this.getConn((connect) => {
+      connect.query(
+        productQueries.$getProductsByName,
+        [formattedName, formattedName],
+        (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+          return res.status(200).json({ result: result });
+        }
+      );
+    });
+  }
+
   getAllProduct(req, res) {
     this.getConn((connect) => {
-      connect.query(queries.$getProducts, (err, result) => {
+      connect.query(productQueries.$getProducts, (err, result) => {
+        connect.release();
         if (err) {
-          connect.release();
-          res.sendStatus(500);
+          log(err);
+          return res.sendStatus(500);
         }
 
-        const categories = result.map((element) => element.categoryID);
-
-        connect.query(
-          queries.$getProductCat,
-          [categories],
-          (err, categories) => {
-            connect.release();
-            if (err) {
-              res.sendStatus(500);
-              log(err);
-            }
-
-            const categoryObject = categories.reduce((acc, category) => {
-              acc[category.categoryID] = category.name;
-
-              return acc;
-            }, {});
-
-            const products = result.map((element, index) => ({
-              productID: element.productID,
-              category: categoryObject[element.categoryID] || "Unknown",
-              name: element.name,
-              description: element.description,
-              price: element.price,
-              stockQuantity: element.stockQuantity,
-              addedAt: element.addedAt,
-              updatedAt: element.updatedAt,
-            }));
-
-            res.status(200).json({ products: products });
-          }
-        );
+        return res.status(200).json({ products: result });
       });
     });
   }
+
+  // getAllProduct(req, res) {
+  //   this.getConn((connect) => {
+  //     connect.query(productQueries.$getProducts, (err, result) => {
+  //       if (err) {
+  //         connect.release();
+  //         res.sendStatus(500);
+  //       }
+
+  //       const categories = result.map((element) => element.categoryID);
+
+  //       connect.query(
+  //         queries.$getProductCat,
+  //         [categories],
+  //         (err, categories) => {
+  //           connect.release();
+  //           if (err) {
+  //             res.sendStatus(500);
+  //             log(err);
+  //           }
+
+  //           const categoryObject = categories.reduce((acc, category) => {
+  //             acc[category.categoryID] = category.name;
+
+  //             return acc;
+  //           }, {});
+
+  //           const products = result.map((element, index) => ({
+  //             productID: element.productID,
+  //             category: categoryObject[element.categoryID] || "Unknown",
+  //             name: element.name,
+  //             description: element.description,
+  //             price: element.price,
+  //             stockQuantity: element.stockQuantity,
+  //             addedAt: element.addedAt,
+  //             updatedAt: element.updatedAt,
+  //           }));
+
+  //           res.status(200).json({ products: products });
+  //         }
+  //       );
+  //     });
+  //   });
+  // }
 
   updateProduct(req, res) {
     const { productID } = req.params;
