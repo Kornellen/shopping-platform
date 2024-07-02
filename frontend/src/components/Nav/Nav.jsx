@@ -7,18 +7,17 @@ import {
 import { Link, Outlet } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMagnifyingGlass,
-  faMagnifyingGlassArrowRight,
-  faMagnifyingGlassDollar,
-  faMagnifyingGlassLocation,
-} from "@fortawesome/free-solid-svg-icons";
-import { faMagnifyingGlassChart } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlassChart";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../context";
 
 const Nav = ({ handleSubimt, handleChange }) => {
   const { theme } = useTheme();
 
-  const endpoints = ["Home", "Shop", "Account"];
+  const { auth } = useAuth();
+
+  //const userID = window.localStorage.getItem("userID");
+
+  const endpoints = ["Home", "Shop", auth == "true" ? "Account" : "Login"];
 
   return (
     <>
@@ -33,9 +32,9 @@ const Nav = ({ handleSubimt, handleChange }) => {
             onChange={handleChange}
             name="itemName"
             placeholder="Search"
-            className={`${inputStyles[theme]}`}
+            className={`${inputStyles[theme]} h-8 w-64 rounded-xl`}
           />
-          <button type="submit" className="m-3">
+          <button type="submit" className="m-3 border-2 w-8 h-8 rounded-xl">
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
         </form>

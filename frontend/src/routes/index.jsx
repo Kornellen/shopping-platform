@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../context/themeContext";
 import axios from "axios";
 
-import Home from "../pages/Home/Home";
-import Nav from "../components/Nav/Nav";
-import Footer from "../components/Footer/Footer";
+import { Nav, Footer } from "../components/index";
+import { Home, Login, Registry, SearchItems } from "../pages/index";
 
 import { useNavigate } from "react-router-dom";
-import SearchItems from "../pages/SearchedItems/Search";
 
 const AppRoutes = () => {
   const { theme } = useTheme();
@@ -18,6 +16,7 @@ const AppRoutes = () => {
   });
   const [foundItem, setFoundItem] = useState([]);
 
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -26,8 +25,6 @@ const AppRoutes = () => {
       [name]: value,
     });
   };
-
-  const navigate = useNavigate();
 
   const handleSubimt = async (e) => {
     e.preventDefault();
@@ -46,6 +43,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home theme={theme} />} />
         <Route path="/search" element={<SearchItems items={foundItem} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registry" element={<Registry />} />
       </Routes>
       <Footer />
     </div>
