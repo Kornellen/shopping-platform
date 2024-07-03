@@ -1,7 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 
 const UserController = require("../controllers/userControllers");
 const validateRequest = require("../middleware/validator");
@@ -63,6 +63,19 @@ router.patch(
   ],
   validateRequest,
   (req, res) => user.changePassword(req, res)
+);
+
+router.get("/userData", [
+  query("userID").isString().withMessage("UserID must be an Integer"),
+  validateRequest,
+  (req, res) => user.getUserDatas(req, res),
+]);
+
+router.get(
+  "/addresses",
+  query("userID").isString().isInt().withMessage("UserID isn't valid"),
+  validateRequest,
+  (req, res) => user.getUserAddresses(req, res)
 );
 
 module.exports = router;

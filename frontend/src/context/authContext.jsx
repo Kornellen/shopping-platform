@@ -19,9 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const changeAuth = (newAuth, newUserID = null) => {
     setAuth(newAuth);
-    if (newUserID !== null) {
-      setUserID(newUserID);
-    }
+    setUserID(newUserID);
   };
 
   useEffect(() => {

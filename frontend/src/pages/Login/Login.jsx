@@ -26,8 +26,6 @@ const Login = () => {
 
       const data = await response.data;
 
-      console.log(response);
-
       if (data.info === "Authenticated") {
         changeAuth(true, data.userID);
         navigate("/account");

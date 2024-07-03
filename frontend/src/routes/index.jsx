@@ -1,10 +1,17 @@
 import { Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTheme } from "../context/themeContext";
 import axios from "axios";
 
 import { Nav, Footer } from "../components/index";
-import { Home, Login, Registry, SearchItems } from "../pages/index";
+import {
+  Account,
+  Home,
+  Login,
+  Registry,
+  SearchItems,
+  UserInfos,
+} from "../pages/index";
 
 import { useNavigate } from "react-router-dom";
 
@@ -45,6 +52,8 @@ const AppRoutes = () => {
         <Route path="/search" element={<SearchItems items={foundItem} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registry" element={<Registry />} />
+        <Route path="/account/*" element={<Account />} />
+        <Route path="account/yourdatas" element={<UserInfos />} />
       </Routes>
       <Footer />
     </div>

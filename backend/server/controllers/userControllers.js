@@ -2,6 +2,7 @@ const DBConnect = require("../utils/dbConnect");
 const SecurityUtils = require("../utils/securityUtils");
 const GeneralUtils = require("../utils/generalUtils");
 const queries = require("../sql/userQueries");
+const userQueries = require("../sql/userQueries");
 
 const log = console.log;
 
@@ -199,6 +200,36 @@ class UserController {
           } else res.status(200).json({ info: "Success" });
         }
       );
+    });
+  }
+
+  getUserDatas(req, res) {
+    const { userID } = req.query;
+
+    this.createConn((connect) => {
+      connect.query(userQueries.$getUserDatasByID, [userID], (err, result) => {
+        connect.release();
+        if (err) {
+          return res.sendStatus(500);
+        }
+
+        return res.status(200).json({ result: result });
+      });
+    });
+  }
+
+  getUserAddresses(req, res) {
+    const { userID } = req.query;
+
+    this.createConn((connect) => {
+      connect.query(userQueries.$getUserAddresses, [userID], (err, result) => {
+        connect.release();
+        if (err) {
+          return res.sendStatus(500);
+        }
+
+        return res.status(200).json({ result: result[0] });
+      });
     });
   }
 }
