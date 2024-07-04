@@ -33,7 +33,7 @@ class CartController {
         const cartID = result[0].cartID;
 
         connect.query(
-          $addToCartSQL,
+          queries.$addToCartSQL,
           [cartID, productID, quantity, currentTime],
           (err) => {
             connect.release();
@@ -52,13 +52,54 @@ class CartController {
 
     this.createConn((connect) => {
       connect.query(queries.$loadUserCartSQL, [userID], (err, result) => {
-        connect.release();
         if (err) {
+          connect.release();
           log(err);
           return res.sendStatus(500);
         }
 
-        res.status(200).json({ productsInCart: result });
+        const cartID = result[0].cartID;
+
+        connect.query(queries.$loadCartItemNameSQL, [cartID], (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            return res.sendStatus(500);
+          }
+
+          res.status(200).json({ productsInCart: result });
+        });
+      });
+    });
+  }
+
+  updateProductQuantity(req, res) {
+    const { userID, productID } = req.params;
+    const { quantity } = req.body;
+
+    this.createConn((connect) => {
+      connect.query(queries.$getUserCartIDSQL, [userID], (err, result) => {
+        if (err) {
+          connect.release();
+          log(err);
+          return res.sendStatus(500);
+        }
+
+        const cartID = result[0].cartID;
+
+        connect.query(
+          queries.$updateProductQunatitySQL,
+          [quantity, cartID, productID],
+          (err) => {
+            connect.release();
+            if (err) {
+              log(err);
+              return res.sendStatus(500);
+            }
+
+            res.status(200).json({ info: "success" });
+          }
+        );
       });
     });
   }

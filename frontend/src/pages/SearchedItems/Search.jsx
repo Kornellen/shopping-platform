@@ -1,5 +1,7 @@
 import { useTheme } from "../../context/themeContext";
 import { pagesVariant } from "../../assets/themes/themes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const SearchItems = ({ items }) => {
   const { theme } = useTheme();
@@ -33,6 +35,49 @@ const SearchItems = ({ items }) => {
                 <p>Seller: {item.username}</p>
                 <hr />
                 <p>{item.description}</p>
+              </div>
+              <div className="button">
+                <button
+                  className="border-2 p-2 m-2"
+                  onClick={async () => {
+                    const url = `http://localhost:5174/api/wishlist/${userID}/items/addTo`;
+
+                    if (
+                      userID !== null &&
+                      userID !== "" &&
+                      userID !== undefined
+                    ) {
+                      const response = await axios.post(url, {
+                        productID: product.productID,
+                      });
+                    } else {
+                      return alert("You must be signed to add to wishlist");
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faHeart} /> Add to wishlist
+                </button>
+                <button
+                  className="border-2 p-2 m-2"
+                  onClick={async () => {
+                    const url = `http://localhost:5174/api/cart/${userID}/addtocart`;
+
+                    if (
+                      userID !== null &&
+                      userID !== "" &&
+                      userID !== undefined
+                    ) {
+                      const response = await axios.post(url, {
+                        productID: product.productID,
+                        quantity: 1,
+                      });
+                    } else {
+                      return alert("You must be signed to add to cart");
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
+                </button>
               </div>
             </div>
           ))

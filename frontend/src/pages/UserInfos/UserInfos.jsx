@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { pagesVariant } from "../../assets/themes/themes";
 import { useTheme, useUser } from "../../context";
 import axios from "axios";
+import { formatDate } from "../../utils/date";
 
 const UserInfos = () => {
   const { theme } = useTheme();
@@ -48,8 +49,8 @@ const UserInfos = () => {
         }
       >
         <p className="text-4xl p-2">Account Informations</p>
-        <div className="text-3xl flex" id="account-info">
-          <div className="user-info p-2 mt-3">
+        <div className="text-3xl flex gap-28" id="account-info">
+          <div className="user-info p-2 mt-3 gap-4 w-5/12">
             <div className="name p-2">
               <p className="font-bold">First & Last Name</p>
               <p>
@@ -66,9 +67,14 @@ const UserInfos = () => {
             </div>
           </div>
 
-          <div className="username p-2 mt-3">
+          <div className="login p-2 mt-3 gap-2 w-3/12">
             <p className="font-bold">Login</p>
             <p>{userData.username}</p>
+          </div>
+
+          <div className="account p-2 mt-3">
+            <p className="font-bold">Account</p>
+            <p>With us since {formatDate(userData.createdAt)}</p>
           </div>
         </div>
       </div>

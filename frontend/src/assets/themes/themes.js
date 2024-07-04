@@ -9,6 +9,11 @@ export const liStyles = {
   dark: "text-light-100 border-b-2 border-light-200 text-2xl m-2 p-5 hover:text-light-700 hover:border-light-700",
 };
 
+export const themeChangerBtn = {
+  light: "text-dark-100 border-dark-200 text-2xl m-2 p-5 hover:text-dark-700 ",
+  dark: "text-light-100 border-light-200 text-2xl m-2 p-5 hover:text-light-700 ",
+};
+
 export const errorStyles = {
   error: "border-b-4 border-b-red-700",
 };

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { pagesVariant } from "../../assets/themes/themes";
-import { useTheme } from "../../context/themeContext";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { useAuth, useTheme } from "../../context";
 
 const Home = () => {
   const { theme } = useTheme();
   const [items, setItems] = useState([]);
+  const { userID } = useAuth();
 
   const fetchDatas = async () => {
     const response = await axios.get(
@@ -36,7 +37,7 @@ const Home = () => {
                 className="w-full m-2 border-2 p-3 h-36 text-2xl flex"
                 key={index}
               >
-                <div className="m-2">
+                <div className="m-2 w-52">
                   <p>Name: {product.name}</p>
                   <p>Price: {product.price}$</p>
                 </div>
@@ -51,7 +52,6 @@ const Home = () => {
                   <button
                     className="border-2 p-2 m-2"
                     onClick={async () => {
-                      const userID = window.localStorage.getItem("userID");
                       const url = `http://localhost:5174/api/wishlist/${userID}/items/addTo`;
 
                       if (
@@ -67,13 +67,12 @@ const Home = () => {
                       }
                     }}
                   >
-                    Add to wishlist
+                    <FontAwesomeIcon icon={faHeart} /> Add to wishlist
                   </button>
                   <button
                     className="border-2 p-2 m-2"
                     onClick={async () => {
-                      const userID = window.localStorage.getItem("userID");
-                      const url = `http://localhost:5174/api/wishlist/${userID}/items/addTo`;
+                      const url = `http://localhost:5174/api/cart/${userID}/addtocart`;
 
                       if (
                         userID !== null &&
@@ -82,8 +81,7 @@ const Home = () => {
                       ) {
                         const response = await axios.post(url, {
                           productID: product.productID,
-                          userID: userID,
-                          qunatity: 1,
+                          quantity: 1,
                         });
                       } else {
                         return alert("You must be signed to add to cart");

@@ -6,11 +6,13 @@ import axios from "axios";
 import { Nav, Footer } from "../components/index";
 import {
   Account,
+  Cart,
   Home,
   Login,
   Registry,
   SearchItems,
   UserInfos,
+  Wishlist,
 } from "../pages/index";
 
 import { useNavigate } from "react-router-dom";
@@ -48,12 +50,14 @@ const AppRoutes = () => {
     <div className="App w-full h-full">
       <Nav handleChange={handleChange} handleSubimt={handleSubimt} />
       <Routes>
-        <Route path="/" element={<Home theme={theme} />} />
+        <Route path="/" element={<Home />} />
         <Route path="/search" element={<SearchItems items={foundItem} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registry" element={<Registry />} />
         <Route path="/account/*" element={<Account />} />
         <Route path="account/yourdatas" element={<UserInfos />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="wishlist" element={<Wishlist />} />
       </Routes>
       <Footer />
     </div>

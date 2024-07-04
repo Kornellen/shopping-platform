@@ -25,6 +25,16 @@ router.get(
   (req, res) => cartControllers.loadCart(req, res)
 );
 
+router.patch(
+  "/cart/:userID/product/:productID/updateQuantity",
+  [
+    param("userID").notEmpty().withMessage("UserID is required"),
+    param("productID").notEmpty().withMessage("ProductID is required"),
+  ],
+  validateRequest,
+  (req, res) => cartControllers.updateProductQuantity(req, res)
+);
+
 router.delete(
   "/cart/:userID/deleteFromCart",
   [
