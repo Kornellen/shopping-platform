@@ -7,7 +7,7 @@ import { useAuth, useTheme } from "../../context/index";
 
 const Login = () => {
   const { theme } = useTheme();
-  const { changeAuth } = useAuth();
+  const { login, logout } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -26,12 +26,12 @@ const Login = () => {
 
       const data = await response.data;
 
-      if (data.info === "Authenticated") {
-        changeAuth(true, data.userID);
+      if (response.status === 200 && data.info === "Authenticated") {
+        login(true, data.userID);
         navigate("/account");
       }
       if (response.status == 403) {
-        changeAuth(false);
+        logout();
       }
     } catch (err) {
       setLoginError(err.response.data.error);
