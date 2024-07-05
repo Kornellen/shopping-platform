@@ -10,7 +10,7 @@ const Cart = () => {
   const { userID, auth } = useAuth();
   const [cartData, setCartData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState([]);
 
   const totalAmount = cartData.reduce(
@@ -88,7 +88,7 @@ const Cart = () => {
       setQuantity(() => data.map((quantity) => quantity.quantity));
     } catch (error) {
       console.log(error.response);
-      setError(error.message);
+      setError(error.response);
     } finally {
       setLoading(false);
     }
@@ -98,10 +98,14 @@ const Cart = () => {
     loadCart();
   }, [userID]);
 
-  if (error.length !== 0) {
+  if (error) {
     return (
       <div className={`${pagesVariant[theme]} h-screen text-center`}>
-        <h1 className="text-4xl">{error}</h1>
+        <h1 className="text-4xl">
+          {error.data.errors === "UserID must be Integer"
+            ? setError(null)
+            : error.message}
+        </h1>
         <pre className="text-2xl">We're working on it. Try Again Later</pre>
       </div>
     );
@@ -158,11 +162,11 @@ const Cart = () => {
                 </div>
                 <p>{item.price}$</p>
                 <div
-                  className="w-full ml-28
+                  className="w-full mr-5 flex justify-end
                 "
                 >
                   <button
-                    className=""
+                    className="hover:animate-pulse"
                     onClick={() => {
                       try {
                         const url = `http://localhost:5174/api/cart/${userID}/deleteFromCart`;
@@ -174,7 +178,7 @@ const Cart = () => {
                       }
                     }}
                   >
-                    <FontAwesomeIcon icon={faTrashCan} />
+                    <FontAwesomeIcon icon={faTrashCan} /> Remove From Cart
                   </button>
                 </div>
               </div>

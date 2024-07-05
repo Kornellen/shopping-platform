@@ -7,7 +7,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons/faGithub";
 const Footer = () => {
   const { theme } = useTheme();
 
-  const endpoints = ["Home", "Shop", "Policies", "Sign In", "Sign Up"];
+  const endpoints = ["Home", "Policies", "Sign In", "Sign Up"];
 
   return (
     <div className={`${themesVariant[theme]} w-full h-25 float-left`}>

@@ -8,7 +8,6 @@ module.exports = {
   $loadUserCartSQL: "SELECT * FROM Cart WHERE userID = ?",
   $loadCartItemNameSQL:
     "SELECT Products.name, Products.price, Products.productID, cartitems.quantity FROM cartitems JOIN products ON products.productID = cartitems.productID WHERE cartitems.cartID = ?",
-  // $loadCartItemsSQL: "SELECT * FROM CartItems WHERE cartID = ?",
   $getUserCartIDSQL: "SELECT cartID FROM Cart WHERE userID = ?",
   $deleteFromCartSQL:
     "DELETE FROM Cartitems WHERE cartID = ? AND productID = ?",

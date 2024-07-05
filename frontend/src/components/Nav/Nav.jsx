@@ -30,16 +30,19 @@ const Nav = ({ handleSubimt, handleChange }) => {
   return (
     <>
       <div className={`flex ${themesVariant[theme]} w-full h-20 flex`}>
-        <p
-          onClick={() => navigate("/")}
-          className="hover:cursor-pointer h-full w-80 text-2xl p-4 ring-2 ring-dark-200"
-        >
-          <FontAwesomeIcon icon={faShoppingCart} /> Shopping Platform
-        </p>
+        <header className="flex items-center text-center justify-center">
+          <p
+            onClick={() => navigate("/")}
+            className="hover:cursor-pointer h-full w-80 text-2xl p-4 ring-2 ring-dark-200"
+          >
+            <FontAwesomeIcon icon={faShoppingCart} /> Shopping Platform
+          </p>
+        </header>
+
         <form
           onSubmit={handleSubimt}
           method="post"
-          className="w-1/2 p-5 h-full"
+          className="w-1/2 p-5 h-full flex"
         >
           <input
             type="text"
@@ -50,8 +53,9 @@ const Nav = ({ handleSubimt, handleChange }) => {
           />
           <button
             type="submit"
-            className="m-3 border-2 w-8 h-8 rounded-xl hover:animate-pulse"
+            className="ml-2 mt-1 border-2 size-7 rounded-xl hover:animate-pulse"
           >
+            {" "}
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
         </form>

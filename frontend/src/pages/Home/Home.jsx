@@ -29,7 +29,7 @@ const Home = () => {
       className={`${pagesVariant[theme]} text-3xl w-full h-screen float-left`}
     >
       <div className="Home">
-        <h1 className="text-5xl text-center">Welcome!</h1>
+        <h1 className="text-5xl text-center p-2">Welcome!</h1>
         <div className={`flex ${pagesVariant[theme]} h-full p-0 flex-wrap`}>
           {items.length !== 0 ? (
             items.map((product, index) => (
@@ -37,20 +37,20 @@ const Home = () => {
                 className="w-full m-2 border-2 p-3 h-36 text-2xl flex"
                 key={index}
               >
-                <div className="m-2 w-52">
+                <div className="m-2 w-52 p-2">
                   <p>Name: {product.name}</p>
                   <p>Price: {product.price}$</p>
                 </div>
-                <div className="border-2 w-1 "></div>
-                <div className="m-2">
+                <div className="border-2 w-px "></div>
+                <div className="m-2 w-72 p-2">
                   <pre>Category: {product.categoryName}</pre>
                   <p>Seller: {product.username}</p>
                   <hr />
                   <p>{product.description}</p>
                 </div>
-                <div className="button">
+                <div className="buttons flex items-center">
                   <button
-                    className="border-2 p-2 m-2"
+                    className="border-2 p-2 m-2 hover:animate-pulse"
                     onClick={async () => {
                       const url = `http://localhost:5174/api/wishlist/${userID}/items/addTo`;
 
@@ -70,7 +70,7 @@ const Home = () => {
                     <FontAwesomeIcon icon={faHeart} /> Add to wishlist
                   </button>
                   <button
-                    className="border-2 p-2 m-2"
+                    className="border-2 p-2 m-2 hover:animate-pulse"
                     onClick={async () => {
                       const url = `http://localhost:5174/api/cart/${userID}/addtocart`;
 

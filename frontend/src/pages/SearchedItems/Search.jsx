@@ -25,7 +25,7 @@ const SearchItems = ({ items }) => {
               className="w-full m-2 border-2 p-3 h-36 text-2xl flex"
               key={index}
             >
-              <div className="m-2">
+              <div className="m-2 w-52">
                 <p>Name: {item.name}</p>
                 <p>Price: {item.price}$</p>
               </div>
@@ -36,9 +36,9 @@ const SearchItems = ({ items }) => {
                 <hr />
                 <p>{item.description}</p>
               </div>
-              <div className="button">
+              <div className="buttons flex items-center">
                 <button
-                  className="border-2 p-2 m-2"
+                  className="border-2 p-2 m-2 hover:animate-pulse"
                   onClick={async () => {
                     const url = `http://localhost:5174/api/wishlist/${userID}/items/addTo`;
 
@@ -58,7 +58,7 @@ const SearchItems = ({ items }) => {
                   <FontAwesomeIcon icon={faHeart} /> Add to wishlist
                 </button>
                 <button
-                  className="border-2 p-2 m-2"
+                  className="border-2 p-2 m-2 hover:animate-pulse"
                   onClick={async () => {
                     const url = `http://localhost:5174/api/cart/${userID}/addtocart`;
 
