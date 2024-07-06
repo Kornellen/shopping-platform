@@ -4,38 +4,45 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { useAuth, useTheme } from "../../context/index";
+import { useMutation } from "@tanstack/react-query";
 
 const Login = () => {
   const { theme } = useTheme();
-  const { login, logout } = useAuth();
+
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
   const [loginError, setLoginError] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:5174/api/login",
-        formData
-      );
+  const loginMutation = useMutation({
+    mutationFn: async (formData) => {
+      const { data, status } = await axios.post("/api/login", formData);
 
-      const data = await response.data;
+      return { data, status };
+    },
+    onSuccess: (response) => {
+      const { data, status } = response;
 
-      if (response.status === 200 && data.info === "Authenticated") {
+      if (status === 202) {
         login(true, data.userID);
         navigate("/account");
       }
-      if (response.status == 403) {
-        logout();
-      }
-    } catch (err) {
-      setLoginError(err.response.data.error);
-    }
+    },
+    onError: (error) => {
+      setLoginError(error.response.data.error);
+    },
+    mutationKey: ["user", formData.username],
+  });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    loginMutation.mutate(formData);
   };
 
   const handleChange = (e) => {

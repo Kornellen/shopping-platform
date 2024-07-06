@@ -25,7 +25,23 @@ const Nav = ({ handleSubimt, handleChange }) => {
 
   const navigate = useNavigate();
 
-  const endpoints = ["Wishlist", "Cart", auth === "true" ? "Account" : "Login"];
+  const endpoints = [
+    {
+      name: "Wishlist",
+      icon: <FontAwesomeIcon icon={faHeart} />,
+      link: "/wishlist",
+    },
+    {
+      name: "Cart",
+      icon: <FontAwesomeIcon icon={faShoppingCart} />,
+      link: "/cart",
+    },
+    {
+      name: auth === "true" ? "Account" : "Login",
+      icon: auth === "true" ? <FontAwesomeIcon icon={faCircleUser} /> : "Login",
+      link: auth === "true" ? "/account" : "/login",
+    },
+  ];
 
   return (
     <>
@@ -39,17 +55,13 @@ const Nav = ({ handleSubimt, handleChange }) => {
           </p>
         </header>
 
-        <form
-          onSubmit={handleSubimt}
-          method="post"
-          className="w-1/2 p-5 h-full flex"
-        >
+        <form onSubmit={handleSubimt} className="w-1/2 p-5 h-full flex">
           <input
             type="text"
             onChange={handleChange}
             name="itemName"
             placeholder="Search"
-            className={`${inputStyles[theme]} h-8 w-64 rounded-xl p-2`}
+            className={`${inputStyles[theme]} h-8 w-64 p-2`}
           />
           <button
             type="submit"
@@ -63,26 +75,16 @@ const Nav = ({ handleSubimt, handleChange }) => {
         <ul className={"flex justify-end w-1/2 mr-4"}>
           <li className={`${themeChangerBtn[theme]}`}>
             <button type="button" className="" onClick={() => changeTheme()}>
-              {theme == "light" ? (
+              {theme === "light" ? (
                 <FontAwesomeIcon icon={faMoon} />
               ) : (
                 <FontAwesomeIcon icon={faSun} />
               )}
             </button>
           </li>
-          {endpoints.map((element, index) => (
+          {endpoints.map((endpoint, index) => (
             <li key={index} className={`${liStyles[theme]}`}>
-              <Link to={"/" + element.trim().replace(/\s+/g, "")}>
-                {element === "Cart" ? (
-                  <FontAwesomeIcon icon={faShoppingCart} />
-                ) : element === "Wishlist" ? (
-                  <FontAwesomeIcon icon={faHeart} />
-                ) : element === "Account" ? (
-                  <FontAwesomeIcon icon={faCircleUser} />
-                ) : (
-                  element
-                )}
-              </Link>
+              <Link to={endpoint.link}>{endpoint.icon}</Link>
             </li>
           ))}
         </ul>

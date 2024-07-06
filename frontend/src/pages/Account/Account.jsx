@@ -1,12 +1,12 @@
 import { useAuth, useTheme, useUser } from "../../context";
 import { pagesVariant } from "../../assets/themes/themes";
-import { Link, useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import ChangeDatas from "../ChangeDatas/ChangeDatas";
 
 const Account = () => {
   const { theme } = useTheme();
-  const { changeAuth } = useAuth();
+  const { logout } = useAuth();
   const { loading, userData, error, loadUserDatas } = useUser();
   const navigate = useNavigate();
 
@@ -107,13 +107,14 @@ const Account = () => {
           <button
             type="button"
             onClick={() => {
-              changeAuth(false);
+              logout();
               navigate("/login");
             }}
           >
             Log Out
           </button>
         </div>
+        <Outlet />
       </div>
     );
   }

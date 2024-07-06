@@ -6,7 +6,7 @@ import axios from "axios";
 
 const Registry = () => {
   const { theme } = useTheme();
-  const { changeAuth } = useAuth();
+  const { login, logout } = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -26,16 +26,15 @@ const Registry = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:5174/api/createuser",
-        formData
-      );
+      const response = await axios.post("/api/createuser", formData);
+
+      console.log(response);
 
       if (response.status === 200) {
-        changeAuth(true, response.data.userID);
-        navigate("/profile");
+        login(true, response.data.userID);
+        navigate("/account");
       } else {
-        changeAuth(false);
+        logout(false);
       }
     } catch (error) {
       setLoginError(error.response.data.errors);

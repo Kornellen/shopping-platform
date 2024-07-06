@@ -7,7 +7,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons/faGithub";
 const Footer = () => {
   const { theme } = useTheme();
 
-  const endpoints = ["Home", "Policies", "Sign In", "Sign Up"];
+  const endpoints = ["Home", "Policies", "Login", "Registry"];
 
   return (
     <div className={`${themesVariant[theme]} w-full h-25 float-left`}>
@@ -18,19 +18,13 @@ const Footer = () => {
               key={index}
               className={`${liStyles[theme]} m-4 list-disc text-2xl`}
             >
-              <Link
-                to={
-                  "/" + element === "Home"
-                    ? ""
-                    : element.trim().replace(/\s+/g, "")
-                }
-              >
+              <Link to={"/" + (element == "Home" ? "" : element)}>
                 {element.trim()}
               </Link>
             </li>
           ))}
           <li className={`${liStyles[theme]} m-4 list-disc text-2xl`}>
-            <Link to={"https://github.com/Kornellen"}>
+            <Link to={"https://github.com/Kornellen/shopping-platform"}>
               <FontAwesomeIcon icon={faGithub} /> Github{" "}
             </Link>
           </li>

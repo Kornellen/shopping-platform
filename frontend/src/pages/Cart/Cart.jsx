@@ -42,8 +42,8 @@ const Cart = () => {
         newQuantieties[index] += 1;
 
         try {
-          const url = `http://localhost:5174/api/cart/${userID}/product/${productID}/updateQuantity`;
-          const response = axios.patch(url, {
+          const url = `/api/cart/${userID}/product/${productID}/updateQuantity`;
+          axios.patch(url, {
             quantity: newQuantieties[index],
           });
         } catch (err) {
@@ -53,8 +53,8 @@ const Cart = () => {
         if (newQuantieties[index] > 0) {
           newQuantieties[index] -= 1;
           try {
-            const url = `http://localhost:5174/api/cart/${userID}/product/${productID}/updateQuantity`;
-            const response = axios.patch(url, {
+            const url = `/api/cart/${userID}/product/${productID}/updateQuantity`;
+            axios.patch(url, {
               quantity: newQuantieties[index],
             });
           } catch (err) {
@@ -62,7 +62,7 @@ const Cart = () => {
           }
         } else if (newQuantieties[index] == 0) {
           try {
-            const url = `http://localhost:5174/api/cart/${userID}/deleteFromCart`;
+            const url = `/api/cart/${userID}/deleteFromCart`;
             const body = { productID: productID };
 
             axios.delete(url, { data: body });
@@ -78,14 +78,18 @@ const Cart = () => {
 
   const loadCart = useCallback(async () => {
     try {
-      const url = `http://localhost:5174/api/cart/${userID}/`;
-      const response = await axios.get(url);
+      if (userID !== null) {
+        const url = `/api/cart/${userID}/`;
+        const response = await axios.get(url);
 
-      const data = await response.data.productsInCart;
+        const data = await response.data.productsInCart;
 
-      setCartData(data);
+        setCartData(data);
 
-      setQuantity(() => data.map((quantity) => quantity.quantity));
+        setQuantity(() => data.map((quantity) => quantity.quantity));
+      } else {
+        setCartData([]);
+      }
     } catch (error) {
       console.log(error.response);
       setError(error.response);
@@ -123,7 +127,7 @@ const Cart = () => {
     return (
       <div className={`${pagesVariant[theme]} text-3xl h-screen text-center`}>
         <p>Your Cart seems empty!</p>
-        {auth ? (
+        {auth === "true" ? (
           <pre>Add something to see things here</pre>
         ) : (
           <pre>Login to add things here</pre>
@@ -133,56 +137,54 @@ const Cart = () => {
   }
 
   return (
-    <div className={`Cart ${pagesVariant[theme]} text-4xl h-screen`}>
-      <p>Your Cart</p>
+    <div className={`Cart ${pagesVariant[theme]} text-4xl h-screen p-2`}>
+      <p className="text-center pt-2">Your Cart</p>
       <div className="cart-items m-10">
         <div className="border-2">
           {cartData.map((item, index) => (
-            <>
-              <div className="w-full p-4 m-4 flex gap-2" key={index}>
-                <p className="w-32">{item.name}</p>
-                <div className="flex gap-2 border-2 text-wrap ml-10 justify-center items-center">
-                  <button
-                    className="border-r-2 h-full w-16 text-4xl hover:animate-pulse"
-                    onClick={() => handleClick("minus", index, item.productID)}
-                  >
-                    <span>&minus;</span>
-                  </button>
-                  <input
-                    className="m-2 ml-4 mr-4 h-full w-10 text-center bg-transparent"
-                    value={quantity[index]}
-                    onChange={(e) => handleChange(e, index, item.productID)}
-                  />
-                  <button
-                    className="border-l-2 h-full w-16 text-4xl hover:animate-pulse"
-                    onClick={() => handleClick("plus", index, item.productID)}
-                  >
-                    &#43;
-                  </button>
-                </div>
-                <p>{item.price}$</p>
-                <div
-                  className="w-full mr-5 flex justify-end
-                "
+            <div className="w-full p-4 m-4 flex gap-2" key={index}>
+              <p className="w-32">{item.name}</p>
+              <div className="flex gap-2 border-2 text-wrap ml-10 justify-center items-center">
+                <button
+                  className="border-r-2 h-full w-16 text-4xl hover:animate-pulse"
+                  onClick={() => handleClick("minus", index, item.productID)}
                 >
-                  <button
-                    className="hover:animate-pulse"
-                    onClick={() => {
-                      try {
-                        const url = `http://localhost:5174/api/cart/${userID}/deleteFromCart`;
-                        const body = { productID: item.productID };
-
-                        axios.delete(url, { data: body });
-                      } catch (error) {
-                        console.log(error);
-                      }
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faTrashCan} /> Remove From Cart
-                  </button>
-                </div>
+                  <span>&minus;</span>
+                </button>
+                <input
+                  className="m-2 ml-4 mr-4 h-full w-10 text-center bg-transparent"
+                  value={quantity[index]}
+                  onChange={(e) => handleChange(e, index, item.productID)}
+                />
+                <button
+                  className="border-l-2 h-full w-16 text-4xl hover:animate-pulse"
+                  onClick={() => handleClick("plus", index, item.productID)}
+                >
+                  &#43;
+                </button>
               </div>
-            </>
+              <p className="flex justify-center items-center">{item.price}$</p>
+              <div
+                className="w-full mr-5 flex justify-end
+                "
+              >
+                <button
+                  className="hover:animate-pulse"
+                  onClick={() => {
+                    try {
+                      const url = `http://localhost:5174/api/cart/${userID}/deleteFromCart`;
+                      const body = { productID: item.productID };
+
+                      axios.delete(url, { data: body });
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} /> Remove From Cart
+                </button>
+              </div>
+            </div>
           ))}
         </div>
 

@@ -6,6 +6,7 @@ import Account from "./Account/Account";
 import UserInfos from "./UserInfos/UserInfos";
 import Wishlist from "./Wishlist/Wishlist";
 import Cart from "./Cart/Cart";
+import ChangeDatas from "./ChangeDatas/ChangeDatas";
 
 export {
   Home,
@@ -16,4 +17,5 @@ export {
   UserInfos,
   Wishlist,
   Cart,
+  ChangeDatas,
 };

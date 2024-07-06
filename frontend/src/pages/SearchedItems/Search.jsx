@@ -40,14 +40,14 @@ const SearchItems = ({ items }) => {
                 <button
                   className="border-2 p-2 m-2 hover:animate-pulse"
                   onClick={async () => {
-                    const url = `http://localhost:5174/api/wishlist/${userID}/items/addTo`;
+                    const url = `/api/wishlist/${userID}/items/addTo`;
 
                     if (
                       userID !== null &&
                       userID !== "" &&
                       userID !== undefined
                     ) {
-                      const response = await axios.post(url, {
+                      await axios.post(url, {
                         productID: product.productID,
                       });
                     } else {
@@ -60,14 +60,14 @@ const SearchItems = ({ items }) => {
                 <button
                   className="border-2 p-2 m-2 hover:animate-pulse"
                   onClick={async () => {
-                    const url = `http://localhost:5174/api/cart/${userID}/addtocart`;
+                    const url = `/api/cart/${userID}/addtocart`;
 
                     if (
                       userID !== null &&
                       userID !== "" &&
                       userID !== undefined
                     ) {
-                      const response = await axios.post(url, {
+                      await axios.post(url, {
                         productID: product.productID,
                         quantity: 1,
                       });

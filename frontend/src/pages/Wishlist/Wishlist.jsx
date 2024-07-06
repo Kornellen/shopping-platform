@@ -17,7 +17,10 @@ const Wishlist = () => {
 
   async function getWishlistItems() {
     try {
-      const url = `http://localhost:5174/api/wishlist/${userID}/items/`;
+      if (userID === null) {
+        return;
+      }
+      const url = `/api/wishlist/${userID}/items/`;
 
       const response = await axios.get(url);
 

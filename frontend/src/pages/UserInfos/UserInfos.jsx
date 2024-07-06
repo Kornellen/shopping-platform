@@ -1,38 +1,31 @@
 import { useEffect, useState } from "react";
 import { pagesVariant } from "../../assets/themes/themes";
-import { useTheme, useUser } from "../../context";
-import axios from "axios";
+import { useTheme, useUser, useAuth } from "../../context";
 import { formatDate } from "../../utils/date";
+import { useNavigate } from "react-router-dom";
 
 const UserInfos = () => {
   const { theme } = useTheme();
-  const { userData, loadUserDatas } = useUser();
-  const [userAddresses, setAddresses] = useState({});
-  const userID = window.localStorage.getItem("userID");
+  const { userData, userAddresses, loadUserDatas, loadUserAddresses } =
+    useUser();
+  const { userID } = useAuth();
 
-  const loadUserAddresses = async () => {
-    const url = `http://localhost:5174/api/addresses?userID=${userID}`;
-    const response = await axios.get(url);
+  const navigate = useNavigate();
 
-    const data = (await response).data;
-
-    setAddresses(data.result);
-  };
+  useEffect(() => {
+    loadUserDatas();
+  }, [userID]);
 
   useEffect(() => {
     loadUserAddresses();
   }, [userID]);
-
-  useEffect(() => {
-    loadUserDatas();
-  }, []);
 
   if (userAddresses == undefined) {
     return (
       <div
         className={`${pagesVariant[theme]} text-red-600 w-full h-screen text-3xl`}
       >
-        You don't have added addresses
+        You don't have added addresses {userAddresses}
       </div>
     );
   }
@@ -60,16 +53,37 @@ const UserInfos = () => {
             <div className="email p-2">
               <p className="font-bold">Email</p>
               <p>{userData.email}</p>
+              <button
+                onClick={() =>
+                  navigate("/account/changeDatas?datatochange=email")
+                }
+              >
+                Change
+              </button>
             </div>
             <div className="phone p-2">
               <p className="font-bold">Phone</p>
               <p>{userData.phoneNumber}</p>
+              <button
+                onClick={() =>
+                  navigate("/account/changeDatas?datatochange=phone")
+                }
+              >
+                Change
+              </button>
             </div>
           </div>
 
           <div className="login p-2 mt-3 gap-2 w-3/12">
             <p className="font-bold">Login</p>
             <p>{userData.username}</p>
+            <button
+              onClick={() =>
+                navigate("/account/changeDatas?datatochange=username")
+              }
+            >
+              Change
+            </button>
           </div>
 
           <div className="account p-2 mt-3">

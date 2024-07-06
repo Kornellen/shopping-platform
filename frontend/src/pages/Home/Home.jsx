@@ -1,28 +1,48 @@
-import { useEffect, useState } from "react";
 import { pagesVariant } from "../../assets/themes/themes";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useAuth, useTheme } from "../../context";
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
   const { theme } = useTheme();
-  const [items, setItems] = useState([]);
   const { userID } = useAuth();
 
   const fetchDatas = async () => {
-    const response = await axios.get(
-      "http://localhost:5174/api/getallproducts"
-    );
-
-    const data = await response.data;
+    const { data } = await axios.get("/api/getallproducts");
 
     return data.products;
   };
 
-  useEffect(() => {
-    fetchDatas().then((data) => setItems(data));
-  }, []);
+  const { data, isError, error, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchDatas,
+  });
+
+  if (isLoading) {
+    return (
+      <div
+        className={`${pagesVariant[theme]} text-3xl w-full h-screen float-left`}
+      >
+        <p className="text-center animate-pulse">Loading...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div
+        className={`${pagesVariant[theme]} text-3xl w-full h-screen float-left`}
+      >
+        <div>
+          <p>{error.message}</p>
+          <p>Try Again Later</p>
+          <pre>Press f5 for reload</pre>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -31,8 +51,8 @@ const Home = () => {
       <div className="Home">
         <h1 className="text-5xl text-center p-2">Welcome!</h1>
         <div className={`flex ${pagesVariant[theme]} h-full p-0 flex-wrap`}>
-          {items.length !== 0 ? (
-            items.map((product, index) => (
+          {data &&
+            data.map((product, index) => (
               <div
                 className="w-full m-2 border-2 p-3 h-36 text-2xl flex"
                 key={index}
@@ -52,14 +72,14 @@ const Home = () => {
                   <button
                     className="border-2 p-2 m-2 hover:animate-pulse"
                     onClick={async () => {
-                      const url = `http://localhost:5174/api/wishlist/${userID}/items/addTo`;
+                      const url = `/api/wishlist/${userID}/items/addTo`;
 
                       if (
                         userID !== null &&
                         userID !== "" &&
                         userID !== undefined
                       ) {
-                        const response = await axios.post(url, {
+                        await axios.post(url, {
                           productID: product.productID,
                         });
                       } else {
@@ -72,14 +92,14 @@ const Home = () => {
                   <button
                     className="border-2 p-2 m-2 hover:animate-pulse"
                     onClick={async () => {
-                      const url = `http://localhost:5174/api/cart/${userID}/addtocart`;
+                      const url = `/api/cart/${userID}/addtocart`;
 
                       if (
                         userID !== null &&
                         userID !== "" &&
                         userID !== undefined
                       ) {
-                        const response = await axios.post(url, {
+                        await axios.post(url, {
                           productID: product.productID,
                           quantity: 1,
                         });
@@ -92,14 +112,7 @@ const Home = () => {
                   </button>
                 </div>
               </div>
-            ))
-          ) : (
-            <div>
-              <h1>Internal Server Error</h1>
-              <p>Try Again Later</p>
-              <pre>Press f5 for reload</pre>
-            </div>
-          )}
+            ))}
         </div>
       </div>
     </div>

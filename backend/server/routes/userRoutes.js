@@ -44,6 +44,31 @@ router.post(
   validateRequest,
   (req, res) => user.addAddresses(req, res)
 );
+
+router.patch(
+  "/updateuserdatas",
+  [
+    body("userID").isInt().withMessage("UserID must be an integer"),
+    body("email").isEmail().optional(),
+    body("phone").optional(),
+  ],
+  validateRequest,
+  (req, res) => user.updateUserDatas(req, res)
+);
+router.patch(
+  "/updateaddresses",
+  [
+    body("userID").isInt().withMessage("UserID must be an integer"),
+    body("addressLine").optional(),
+    body("city").optional(),
+    body("state").optional(),
+    body("postalCode").optional(),
+    body("country").optional(),
+  ],
+  validateRequest,
+  (req, res) => user.updateUserAddress(req, res)
+);
+
 router.patch(
   "/updateusername",
   [

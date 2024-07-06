@@ -163,6 +163,46 @@ class UserController {
     });
   }
 
+  updateUserDatas(req, res) {
+    const { userID, email, phone, password } = req.body;
+
+    const updatedAt = generalUtils.getFullCurrentDate();
+
+    const hashedPassword = security.hashPassword(password);
+
+    const updates = [];
+
+    if (email != null && email != undefined && email != "") {
+      updates.push({ column: "email", value: email });
+    }
+
+    if (phone != null && phone != undefined && phone != "") {
+      updates.push({ column: "phone", value: phone });
+    }
+
+    const column = updates.map((column) => `${column.column} = ?`).join(", ");
+    const value = updates.map((value) => value.value);
+
+    const sql = `UPDATE users SET ${column}, updatedAt = ? WHERE userID = ? AND password = ?`;
+
+    this.createConn((connect) => {
+      connect.query(
+        sql,
+        [value, updatedAt, userID, hashedPassword],
+        (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            return res.sendStatus(500);
+          }
+          return res.status(200).json({ info: "Success" });
+        }
+      );
+    });
+  }
+
+  updateUserAddress(req, res) {}
+
   updateUsername(req, res) {
     const { userID, newUsername, password } = req.body;
     const updateTime = generalUtils.getFullCurrentDate();
