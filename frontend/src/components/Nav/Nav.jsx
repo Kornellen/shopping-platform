@@ -5,7 +5,7 @@ import {
   liStyles,
   themeChangerBtn,
 } from "../../assets/themes/themes";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -39,12 +39,7 @@ const Nav = ({ handleSubimt, handleChange }) => {
     },
     {
       name: auth === "true" ? "Account" : "Login",
-      icon:
-        auth === "true" ? (
-          <FontAwesomeIcon icon={faCircleUser} />
-        ) : (
-          <FontAwesomeIcon icon={faRightToBracket} />
-        ),
+      icon: <FontAwesomeIcon icon={faCircleUser} />,
       link: auth === "true" ? "/account" : "/login",
     },
   ];

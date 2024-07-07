@@ -62,7 +62,7 @@ class Wishlist {
 
           if (result.length === 0) {
             connect.release();
-            return res.status(404).json({ error: "Wishlist not found" });
+            return res.status(204).json({ info: "Your Wishlist seems empty" });
           }
 
           const wishlistID = result[0].wishlistID;

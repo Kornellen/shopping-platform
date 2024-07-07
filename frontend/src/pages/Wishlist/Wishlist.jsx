@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Wishlist = () => {
-  const { userID } = useAuth();
+  const { userID, auth } = useAuth();
   const { theme } = useTheme();
 
   const [wishlistData, setWishlistData] = useState([]);
@@ -20,6 +20,7 @@ const Wishlist = () => {
       if (userID === null) {
         return;
       }
+
       const url = `/api/wishlist/${userID}/items/`;
 
       const response = await axios.get(url);
@@ -52,7 +53,7 @@ const Wishlist = () => {
     return (
       <div className={`${pagesVariant[theme]} text-3xl text-center space-y-2`}>
         <h2>Your Wishlist seems empty</h2>
-        {userID == null ? (
+        {auth === "false" ? (
           <pre>You need to login to put items here!</pre>
         ) : (
           <pre>Add something here!</pre>

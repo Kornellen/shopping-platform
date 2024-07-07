@@ -10,6 +10,9 @@ import {
   faMobileScreenButton,
   faUser,
   faCalendarDays,
+  faLocationDot,
+  faCircleInfo,
+  faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
 const UserInfos = () => {
@@ -39,7 +42,9 @@ const UserInfos = () => {
             : "bg-dark-500 w-full p-2 m-2"
         }
       >
-        <p className="text-4xl p-2">Account Informations</p>
+        <p className="text-4xl p-2">
+          <FontAwesomeIcon icon={faCircleInfo} /> Account Informations
+        </p>
         <div className="text-3xl flex gap-28" id="account-info">
           <div className="user-info p-2 mt-3 gap-4 w-5/12">
             <div className="name p-2">
@@ -81,7 +86,9 @@ const UserInfos = () => {
           </div>
 
           <div className="login p-2 mt-3 gap-2 w-3/12">
-            <p className="font-bold">Login</p>
+            <p className="font-bold">
+              <FontAwesomeIcon icon={faRightToBracket} /> Login
+            </p>
             <p>{userData.username}</p>
             <button
               onClick={() =>
@@ -112,7 +119,7 @@ const UserInfos = () => {
         {userAddresses !== undefined ? (
           <div className="address m-2 mt-3 p-2">
             <p className="font-bold">
-              <FontAwesomeIcon icon={faAddressCard} /> Your Address
+              <FontAwesomeIcon icon={faLocationDot} /> Your Address
             </p>
             <p>{userAddresses?.addressLine}</p>
             <p>

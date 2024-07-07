@@ -9,6 +9,7 @@ const AddProduct = () => {
   const { userID } = useAuth();
   const [form, setForm] = useState({
     userID: userID,
+    categoryID: 1,
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);

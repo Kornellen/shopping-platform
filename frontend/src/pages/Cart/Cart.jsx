@@ -12,6 +12,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState([]);
+  const [holdDown, setHoldDown] = useState(false);
 
   const totalAmount = cartData.reduce(
     (acc, item, index) => acc + item.price * quantity[index],
@@ -35,23 +36,13 @@ const Cart = () => {
   };
 
   const handleClick = (method, index, productID) => {
-    setQuantity((quantities) => {
-      const newQuantieties = [...quantities];
+    if (!holdDown) {
+      setQuantity((quantities) => {
+        const newQuantieties = [...quantities];
 
-      if (method === "plus") {
-        newQuantieties[index] += 1;
+        if (method === "plus") {
+          newQuantieties[index] += 1;
 
-        try {
-          const url = `/api/cart/${userID}/product/${productID}/updateQuantity`;
-          axios.patch(url, {
-            quantity: newQuantieties[index],
-          });
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        if (newQuantieties[index] > 0) {
-          newQuantieties[index] -= 1;
           try {
             const url = `/api/cart/${userID}/product/${productID}/updateQuantity`;
             axios.patch(url, {
@@ -60,20 +51,62 @@ const Cart = () => {
           } catch (err) {
             console.error(err);
           }
-        } else if (newQuantieties[index] == 0) {
-          try {
-            const url = `/api/cart/${userID}/deleteFromCart`;
-            const body = { productID: productID };
+        } else {
+          if (newQuantieties[index] > 0) {
+            newQuantieties[index] -= 1;
+            try {
+              const url = `/api/cart/${userID}/product/${productID}/updateQuantity`;
+              axios.patch(url, {
+                quantity: newQuantieties[index],
+              });
+            } catch (err) {
+              console.error(err);
+            }
+          } else if (newQuantieties[index] == 0) {
+            try {
+              const url = `/api/cart/${userID}/deleteFromCart`;
+              const body = { productID: productID };
 
-            axios.delete(url, { data: body });
-          } catch (error) {
-            console.log(error);
+              axios.delete(url, { data: body });
+            } catch (error) {
+              console.log(error);
+            }
           }
         }
-      }
 
-      return newQuantieties;
-    });
+        return newQuantieties;
+      });
+    }
+  };
+
+  const handleMouseDown = (action, index, productID) => {
+    setHoldDown(true);
+    let interval;
+
+    if (action === "plus") {
+      handleClick("plus", index, productID);
+      interval = setInterval(() => {
+        handleClick("plus", index, productID);
+      }, 100);
+    }
+
+    if (action === "minus") {
+      handleClick("minus", index, productID);
+      interval = setInterval(() => {
+        handleClick("minus", index, productID);
+      }, 100);
+    }
+
+    const handleMouseUp = () => {
+      clearInterval(interval);
+      setHoldDown(false);
+    };
+
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
   };
 
   const loadCart = useCallback(async () => {
@@ -147,7 +180,9 @@ const Cart = () => {
               <div className="flex gap-2 border-2 text-wrap ml-10 justify-center items-center">
                 <button
                   className="border-r-2 h-full w-16 text-4xl hover:animate-pulse"
-                  onClick={() => handleClick("minus", index, item.productID)}
+                  onMouseDown={() =>
+                    handleMouseDown("minus", index, item.productID)
+                  }
                 >
                   <span>&minus;</span>
                 </button>
@@ -158,7 +193,10 @@ const Cart = () => {
                 />
                 <button
                   className="border-l-2 h-full w-16 text-4xl hover:animate-pulse"
-                  onClick={() => handleClick("plus", index, item.productID)}
+                  onMouseDown={() =>
+                    handleMouseDown("plus", index, item.productID)
+                  }
+                  onMouseUp={handleMouseDown}
                 >
                   &#43;
                 </button>

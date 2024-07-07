@@ -20,8 +20,6 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const AppRoutes = () => {
-  const { theme } = useTheme();
-
   const [searchData, setSearchData] = useState({
     itemName: "",
   });
@@ -39,13 +37,21 @@ const AppRoutes = () => {
 
   const handleSubimt = async (e) => {
     e.preventDefault();
-    const url = `http://localhost:5174/api/products?itemName=${searchData.itemName}`;
-    const response = await axios.get(url);
+    const { itemName } = searchData;
 
-    const data = await response.data;
+    try {
+      if (itemName !== "") {
+        const url = `/api/products?itemName=${itemName}`;
+        const response = await axios.get(url);
 
-    setFoundItem(data.result);
-    navigate("/search");
+        const data = await response.data;
+
+        setFoundItem(data.result);
+        navigate("/search");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {}
   };
 
   return (
