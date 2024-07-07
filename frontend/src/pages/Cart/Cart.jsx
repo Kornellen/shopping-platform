@@ -117,7 +117,7 @@ const Cart = () => {
 
   if (loading) {
     return (
-      <div className="loading">
+      <div className="loading h-full w-full">
         <p>Loading...</p>
       </div>
     );
@@ -125,7 +125,7 @@ const Cart = () => {
 
   if (cartData.length === 0) {
     return (
-      <div className={`${pagesVariant[theme]} text-3xl h-screen text-center`}>
+      <div className={`${pagesVariant[theme]} text-3xl text-center`}>
         <p>Your Cart seems empty!</p>
         {auth === "true" ? (
           <pre>Add something to see things here</pre>
@@ -137,7 +137,7 @@ const Cart = () => {
   }
 
   return (
-    <div className={`Cart ${pagesVariant[theme]} text-4xl h-screen p-2`}>
+    <div className={`Cart ${pagesVariant[theme]} text-4xl p-2`}>
       <p className="text-center pt-2">Your Cart</p>
       <div className="cart-items m-10">
         <div className="border-2">

@@ -13,7 +13,7 @@ export default function ChangeDatas() {
   if (dataToChange === "username") {
     return (
       <div
-        className={`${pagesVariant[theme]} h-screen p-2 flex justify-center items-center`}
+        className={`${pagesVariant[theme]} p-2 flex justify-center items-center`}
       >
         <UsernameForm />
       </div>
@@ -22,7 +22,7 @@ export default function ChangeDatas() {
   if (dataToChange === "email") {
     return (
       <div
-        className={`${pagesVariant[theme]} h-screen p-2 flex justify-center items-center`}
+        className={`${pagesVariant[theme]} p-2 flex justify-center items-center`}
       >
         <EmailForm />
       </div>
@@ -31,7 +31,7 @@ export default function ChangeDatas() {
   if (dataToChange === "phone") {
     return (
       <div
-        className={`${pagesVariant[theme]} h-screen p-2 flex justify-center items-center`}
+        className={`${pagesVariant[theme]} p-2 flex justify-center items-center`}
       >
         <PhoneForm />
       </div>
@@ -41,7 +41,7 @@ export default function ChangeDatas() {
   if (dataToChange === "address") {
     return (
       <div
-        className={`${pagesVariant[theme]} h-screen p-2 flex justify-center items-center`}
+        className={`${pagesVariant[theme]} p-2 flex justify-center items-center`}
       >
         <AddressForm />
       </div>
@@ -49,7 +49,7 @@ export default function ChangeDatas() {
   } else {
     return (
       <div
-        className={`${pagesVariant[theme]} h-screen p-2 flex justify-center items-center text-3xl`}
+        className={`${pagesVariant[theme]} p-2 flex justify-center items-center text-3xl`}
       >
         <h1>Bad Querry</h1>
       </div>

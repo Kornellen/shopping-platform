@@ -3,7 +3,11 @@ import { pagesVariant } from "../../assets/themes/themes";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGears } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGears,
+  faCoins,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Account = () => {
   const { theme } = useTheme();
@@ -48,7 +52,7 @@ const Account = () => {
     );
   } else {
     return (
-      <div className={`${pagesVariant[theme]} text-2xl flex h-screen p-2`}>
+      <div className={`${pagesVariant[theme]} text-2xl h-full flex w-full p-2`}>
         <div className="w-10/12 text-2xl">
           <div className="greetings text-5xl p-2">
             <div className="username font-bold">
@@ -105,7 +109,11 @@ const Account = () => {
             ))}
           </div>
         </div>
-
+        <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2">
+          <button type="button" onClick={() => navigate("/account/addproduct")}>
+            <FontAwesomeIcon icon={faCoins} /> Add Product
+          </button>
+        </div>
         <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2">
           <button
             type="button"
@@ -114,7 +122,7 @@ const Account = () => {
               navigate("/");
             }}
           >
-            Log Out
+            <FontAwesomeIcon icon={faRightFromBracket} /> Log Out
           </button>
         </div>
       </div>

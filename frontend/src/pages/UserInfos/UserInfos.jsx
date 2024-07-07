@@ -30,7 +30,7 @@ const UserInfos = () => {
 
   return (
     <div
-      className={`${pagesVariant[theme]} p-4 w-full text-2xl flex flex-wrap justify-center h-screen`}
+      className={`${pagesVariant[theme]} p-4 text-2xl flex flex-wrap justify-center`}
     >
       <div
         className={

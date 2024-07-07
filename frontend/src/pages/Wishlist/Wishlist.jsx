@@ -50,9 +50,7 @@ const Wishlist = () => {
     );
   } else if (wishlistData.length == 0 || wishlistData == undefined) {
     return (
-      <div
-        className={`${pagesVariant[theme]} h-screen text-3xl text-center space-y-2`}
-      >
+      <div className={`${pagesVariant[theme]} text-3xl text-center space-y-2`}>
         <h2>Your Wishlist seems empty</h2>
         {userID == null ? (
           <pre>You need to login to put items here!</pre>
@@ -63,7 +61,7 @@ const Wishlist = () => {
     );
   } else {
     return (
-      <div className={`${pagesVariant[theme]} h-screen text-3xl p-2`}>
+      <div className={`${pagesVariant[theme]} text-3xl p-2 w-full`}>
         <div className="space-y-5 m-24">
           {wishlistData.map((item, index) => (
             <div

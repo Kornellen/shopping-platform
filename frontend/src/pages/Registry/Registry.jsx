@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { pagesVariant } from "../../assets/themes/themes";
+import { inputStyles, pagesVariant } from "../../assets/themes/themes";
 import { useAuth, useTheme } from "../../context";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -51,10 +51,10 @@ const Registry = () => {
   };
 
   return (
-    <div className={`${pagesVariant[theme]} h-svh w-full`}>
+    <div className={`${pagesVariant[theme]} `}>
       <form
         onSubmit={handleSubmit}
-        className="flex justify-center items-center w-full h-full"
+        className="flex justify-center items-center w-full h-full space-y-4"
         method="post"
       >
         <div className="form-content border-2 p-10">
@@ -62,8 +62,8 @@ const Registry = () => {
             <div>
               <input
                 type="text"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
-                placeholder="username"
+                className={`${inputStyles[theme]} text-2xl m-2`}
+                placeholder="Enter an username"
                 onChange={handleChange}
                 name="username"
               />
@@ -71,8 +71,8 @@ const Registry = () => {
             <div>
               <input
                 type="email"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
-                placeholder="email"
+                className={`${inputStyles[theme]} text-2xl m-2`}
+                placeholder="Enter an email"
                 onChange={handleChange}
                 name="email"
               />
@@ -80,8 +80,8 @@ const Registry = () => {
             <div>
               <input
                 type="password"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
-                placeholder="password"
+                className={`${inputStyles[theme]} text-2xl m-2`}
+                placeholder="Enter a password"
                 onChange={handleChange}
                 name="password"
               />
@@ -89,8 +89,8 @@ const Registry = () => {
             <div>
               <input
                 type="password"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
-                placeholder="repeat password"
+                className={`${inputStyles[theme]} text-2xl m-2`}
+                placeholder="Repeat a password"
                 onChange={handleChange}
                 name="rpassword"
               />
@@ -98,8 +98,8 @@ const Registry = () => {
             <div>
               <input
                 type="text"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
-                placeholder="first Name"
+                className={`${inputStyles[theme]} text-2xl m-2`}
+                placeholder="Enter your first name"
                 onChange={handleChange}
                 name="firstName"
               />
@@ -107,8 +107,8 @@ const Registry = () => {
             <div>
               <input
                 type="text"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
-                placeholder="last Name"
+                className={`${inputStyles[theme]} text-2xl m-2`}
+                placeholder="Enter your last Name"
                 onChange={handleChange}
                 name="lastName"
               />
@@ -116,43 +116,51 @@ const Registry = () => {
             <div>
               <input
                 type="tel"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
-                placeholder="phone number"
+                className={`${inputStyles[theme]} text-2xl m-2`}
+                placeholder="Enter a phone number"
                 onChange={handleChange}
                 name="phoneNumber"
               />
             </div>
-            <div>
+            <div className="text-center">
+              <label htmlFor="dob" className="text-2xl">
+                Date of birthday
+              </label>
+              <br />
               <input
                 type="date"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
+                className={`${inputStyles[theme]} text-2xl m-2`}
                 onChange={handleChange}
                 name="dob"
               />
             </div>
-            <div>
+            <div className="text-center">
               <select
                 name="geneder"
-                className="h-9 m-2 text-2xl outline-none p-2 text-dark-200 border-b-2"
+                className={`${inputStyles[theme]} text-2xl m-2`}
                 onChange={handleChange}
               >
-                <option value="m">Male</option>
-                <option value="f">Female</option>
+                <option value="m" className={`bg-dark-200 text-2xl m-2`}>
+                  Male
+                </option>
+                <option value="f" className={`bg-dark-200 text-2xl m-2`}>
+                  Female
+                </option>
               </select>
-              <span className="m-2 text-2xl">*Optional</span>
+              <span className="m-2 text-xl">*Optional</span>
             </div>
           </div>
           <div className="errors text-red-600 text-2xl">{loginError}</div>
           <div className="form-buttons flex">
             <button
               type="submit"
-              className="m-2 border-2 p-1 h-12 rounded-xl w-1/2 text-xl"
+              className="m-2 border-2 p-1 h-12 rounded-xl w-1/2 text-xl hover:border-blue-400"
             >
               Registry
             </button>
             <button
               type="button"
-              className="m-2 ml-24 border-2 p-1 h-12 w-1/2 rounded-xl text-xl"
+              className="m-2 ml-24 border-2 p-1 h-12 w-1/2 rounded-xl text-xl hover:border-blue-400"
               onClick={() => navigate("/login")}
             >
               Login

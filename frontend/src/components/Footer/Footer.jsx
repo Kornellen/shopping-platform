@@ -10,7 +10,9 @@ const Footer = () => {
   const endpoints = ["Home", "Policies", "Login", "Registry"];
 
   return (
-    <div className={`${themesVariant[theme]} w-full h-25 float-left`}>
+    <div
+      className={`${themesVariant[theme]} w-full h-25 float-left clear-both`}
+    >
       <nav className="w-full">
         <ul className="flex justify-center">
           {endpoints.map((element, index) => (

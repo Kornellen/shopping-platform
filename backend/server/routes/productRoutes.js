@@ -8,10 +8,10 @@ const ProductControllers = require("../controllers/productControllers");
 const productController = new ProductControllers();
 
 router.post(
-  "/user/:userID/addproduct",
+  "/product/addproduct",
   [
-    param("userID").isInt().withMessage("UserID must be an Integer"),
-    body("categoryID").isInt().withMessage("CategoryID must be aninteger"),
+    body("userID").isInt().withMessage("UserID must be an Integer"),
+    body("categoryID").isInt().withMessage("CategoryID is required"),
     body("name").notEmpty().withMessage("Name is required"),
     body("desc").notEmpty().withMessage("Description is an required"),
     body("price").isDecimal().withMessage("Price must be a decimal number"),
@@ -63,6 +63,13 @@ router.patch(
   ],
   validateRequest,
   (req, res) => productController.updateProduct(req, res)
+);
+
+router.delete(
+  "/product/remove",
+  [body("productID").notEmpty().withMessage("ProductID is required")],
+  validateRequest,
+  (req, res) => productController.removeProduct(req, res)
 );
 
 module.exports = router;

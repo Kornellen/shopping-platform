@@ -21,8 +21,7 @@ class Product {
   }
 
   addProduct(req, res) {
-    const { userID } = req.params;
-    const { categoryID, name, desc, price, stockQuantity } = req.body;
+    const { userID, categoryID, name, desc, price, stockQuantity } = req.body;
     const addedAt = generalUtils.getFullCurrentDate();
 
     this.getConn((connect) => {
@@ -66,6 +65,29 @@ class Product {
             return res.status(500).json({ error: "Internal Server Error" });
           }
           return res.status(200).json({ result: result });
+        }
+      );
+    });
+  }
+
+  removeProduct(req, res) {
+    const { productID } = req.body;
+
+    this.getConn((connect) => {
+      connect.query(
+        productQueries.$removeProduct,
+        [productID],
+        (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+
+          if (result.affectedRows != 0) {
+            return res.status(200).json({ error: "Success" });
+          }
+          return res.status(404).json({ error: "Product not found" });
         }
       );
     });

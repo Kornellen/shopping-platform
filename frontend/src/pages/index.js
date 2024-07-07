@@ -7,8 +7,10 @@ import UserInfos from "./UserInfos/UserInfos";
 import Wishlist from "./Wishlist/Wishlist";
 import Cart from "./Cart/Cart";
 import ChangeDatas from "./ChangeDatas/ChangeDatas";
+import AddProduct from "./AddProduct/AddProduct";
 
 export {
+  AddProduct,
   Home,
   SearchItems,
   Login,
