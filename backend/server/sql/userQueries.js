@@ -6,7 +6,8 @@ module.exports = {
   $createWishlistSQL: "INSERT INTO wishlists(userID, createdAt) VALUES (?,?)",
   $findUserByUsernameSQL:
     "SELECT password, userID FROM users where username = ?",
-  $insertAddressSQL: "INSERT INTO addresses VALUES (?,?,?,?,?,?,?,?,?)",
+  $insertAddressSQL:
+    "INSERT INTO addresses (userID, addressLine, city, state, postalCode, country, createdAt, updatedAt) VALUES (?,?,?,?,?,?,?,?)",
   $updateUsernameSQL:
     "UPDATE users SET username = ?, updatedAt = ? where userID = ? and password = ?",
   $changePasswordSQL:

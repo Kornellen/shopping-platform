@@ -154,10 +154,11 @@ class UserController {
         (err) => {
           connect.release();
           if (err) {
-            res.sendStatus(500);
+            log(err);
+            return res.sendStatus(500);
           }
 
-          res.status(200).json({ info: "Success" });
+          return res.status(200).json({ info: "Success" });
         }
       );
     });
@@ -177,7 +178,7 @@ class UserController {
     }
 
     if (phone != null && phone != undefined && phone != "") {
-      updates.push({ column: "phone", value: phone });
+      updates.push({ column: "phoneNumber", value: phone });
     }
 
     const column = updates.map((column) => `${column.column} = ?`).join(", ");
@@ -195,13 +196,69 @@ class UserController {
             log(err);
             return res.sendStatus(500);
           }
-          return res.status(200).json({ info: "Success" });
+
+          if (result.changedRows !== 0) {
+            return res.status(200).json({ info: "Success" });
+          }
+          return res.status(401).json({ error: "Bad Datas" });
         }
       );
     });
   }
 
-  updateUserAddress(req, res) {}
+  updateUserAddress(req, res) {
+    const { userID, password, addressLine, city, state, postalCode, country } =
+      req.body;
+
+    const updates = [];
+
+    const updateAt = generalUtils.getFullCurrentDate();
+    const hashedPassword = security.hashPassword(password);
+
+    if (addressLine != null && addressLine != undefined && addressLine != "") {
+      updates.push({ column: "addressLine", value: addressLine });
+    }
+
+    if (city != null && city != undefined && city != "") {
+      updates.push({ column: "city", value: city });
+    }
+    if (state != null && state != undefined && state != "") {
+      updates.push({ column: "state", value: state });
+    }
+
+    if (postalCode != null && postalCode != undefined && postalCode != "") {
+      updates.push({ column: "postalCode", value: postalCode });
+    }
+    if (country != null && country != undefined && country != "") {
+      updates.push({ column: "country", value: country });
+    }
+
+    const column = updates
+      .map((update) => `addresses.${update.column} = ?`)
+      .join(",");
+    const value = updates.map((value) => value.value);
+    const sql = `UPDATE addresses JOIN users ON addresses.userID = users.userID SET ${column}, addresses.updatedAt = ? WHERE addresses.userID = ? AND users.password = ?`;
+
+    this.createConn((connect) => {
+      connect.query(
+        sql,
+        [...value, updateAt, userID, hashedPassword],
+        (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            return res.sendStatus(500);
+          }
+
+          if (result.changedRows === 0) {
+            return res.status(401).json({ error: "Bad Datas" });
+          }
+
+          return res.status(200).json({ info: "Success" });
+        }
+      );
+    });
+  }
 
   updateUsername(req, res) {
     const { userID, newUsername, password } = req.body;
@@ -209,14 +266,19 @@ class UserController {
     const hashedPassword = security.hashPassword(password);
 
     this.createConn((connect) => {
-      connect.release();
       connect.query(
         queries.$updateUsernameSQL,
         [newUsername, updateTime, userID, hashedPassword],
         (err, result) => {
+          connect.release();
+          if (err) {
+            log(err);
+            return res.sendStatus(500);
+          }
+
           if (result.changedRows == 0) {
-            res.status(403).json({ error: "Wrong Password" });
-          } else res.status(200).json({ info: "Success" });
+            return res.status(403).json({ error: "Wrong Password" });
+          } else return res.status(200).json({ info: "Success" });
         }
       );
     });
@@ -235,6 +297,10 @@ class UserController {
         [hashedNewPassword, updateTime, userID, hashedOldPassword],
         (err, result) => {
           connect.release();
+          if (err) {
+            log(err);
+            return res.sendStatus(500);
+          }
           if (result.changedRows == 0) {
             res.status(403).json({ error: "Wrong Password" });
           } else res.status(200).json({ info: "Success" });

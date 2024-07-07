@@ -3,3 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.form {
+  @apply border-2 p-10 rounded text-2xl;
+}

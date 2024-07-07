@@ -20,7 +20,7 @@ export const errorStyles = {
 
 export const inputStyles = {
   light:
-    "bg-light-200 text-dark-100 border-b-2 border-dark-200 outline-none placeholder:text-dark-500",
+    "bg-transparent text-dark-100 border-b-2 border-dark-200 outline-none placeholder:text-dark-500",
   dark: "bg-transparent text-light-100 border-b-2 border-light-200 outline-none placeholder:text-light-500",
 };
 

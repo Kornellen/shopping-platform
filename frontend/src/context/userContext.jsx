@@ -21,8 +21,6 @@ export const UserProvider = ({ children }) => {
 
       const data = await response.data;
 
-      console.log(data);
-
       setUserData(data.result[0]);
     } catch (err) {
       setError(err.response);

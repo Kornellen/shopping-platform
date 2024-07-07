@@ -85,50 +85,6 @@ class Product {
     });
   }
 
-  // getAllProduct(req, res) {
-  //   this.getConn((connect) => {
-  //     connect.query(productQueries.$getProducts, (err, result) => {
-  //       if (err) {
-  //         connect.release();
-  //         res.sendStatus(500);
-  //       }
-
-  //       const categories = result.map((element) => element.categoryID);
-
-  //       connect.query(
-  //         queries.$getProductCat,
-  //         [categories],
-  //         (err, categories) => {
-  //           connect.release();
-  //           if (err) {
-  //             res.sendStatus(500);
-  //             log(err);
-  //           }
-
-  //           const categoryObject = categories.reduce((acc, category) => {
-  //             acc[category.categoryID] = category.name;
-
-  //             return acc;
-  //           }, {});
-
-  //           const products = result.map((element, index) => ({
-  //             productID: element.productID,
-  //             category: categoryObject[element.categoryID] || "Unknown",
-  //             name: element.name,
-  //             description: element.description,
-  //             price: element.price,
-  //             stockQuantity: element.stockQuantity,
-  //             addedAt: element.addedAt,
-  //             updatedAt: element.updatedAt,
-  //           }));
-
-  //           res.status(200).json({ products: products });
-  //         }
-  //       );
-  //     });
-  //   });
-  // }
-
   updateProduct(req, res) {
     const { productID } = req.params;
     const { price, description, stockQuantity, name, category } = req.body;

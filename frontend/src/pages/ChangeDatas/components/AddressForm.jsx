@@ -1,12 +1,14 @@
-import axios from "axios";
-import { useTheme, useAuth } from "../../../context";
-import { useState } from "react";
 import Form from "./components/Form";
+import { useAuth, useUser } from "../../../context";
+import { useState } from "react";
 
-export default function UsernameForm() {
+import axios from "axios";
+
+export default function AddressForm() {
   const { userID } = useAuth();
+  const { userAddresses } = useUser();
   const [form, setForm] = useState({
-    userID: userID,
+    userID: +userID,
   });
   const [error, setError] = useState(null);
   const [info, setInfo] = useState(null);
@@ -23,11 +25,22 @@ export default function UsernameForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data, status } = await axios.patch("/api/updateusername", form);
+      if (userAddresses !== undefined) {
+        const { data, status } = await axios.patch(
+          "/api/updateaddresses",
+          form
+        );
 
-      if (status == 200) {
-        setInfo(data.info);
-        setError(null);
+        if (status == 200) {
+          setInfo(data.info);
+          setError(null);
+        }
+      } else {
+        const { data, status } = await axios.post("/api/addaddress", form);
+        if (status == 200) {
+          setInfo(data.info);
+          setError(null);
+        }
       }
     } catch (err) {
       setInfo(null);
@@ -35,9 +48,9 @@ export default function UsernameForm() {
       console.log(err);
 
       if (err.response) {
-        setError(err.response?.data.error);
+        setError(err.response.data.error);
       } else {
-        setError(err?.message);
+        setError(err.message);
       }
     }
   };
@@ -47,7 +60,7 @@ export default function UsernameForm() {
       <Form
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        type={"username"}
+        type={"address"}
       />
       <div className="text-3xl m-2">
         {error ? (

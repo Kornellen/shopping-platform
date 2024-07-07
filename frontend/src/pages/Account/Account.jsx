@@ -1,8 +1,9 @@
 import { useAuth, useTheme, useUser } from "../../context";
 import { pagesVariant } from "../../assets/themes/themes";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import ChangeDatas from "../ChangeDatas/ChangeDatas";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGears } from "@fortawesome/free-solid-svg-icons";
 
 const Account = () => {
   const { theme } = useTheme();
@@ -47,7 +48,7 @@ const Account = () => {
     );
   } else {
     return (
-      <div className={`${pagesVariant[theme]} text-2xl flex h-screen`}>
+      <div className={`${pagesVariant[theme]} text-2xl flex h-screen p-2`}>
         <div className="w-10/12 text-2xl">
           <div className="greetings text-5xl p-2">
             <div className="username font-bold">
@@ -71,7 +72,9 @@ const Account = () => {
                 : "bg-dark-500 w-1/2 mt-40 m-2 p-2"
             }
           >
-            <h2 className="p-2">Account Settings</h2>
+            <h2 className="p-2">
+              <FontAwesomeIcon icon={faGears} /> Account Settings
+            </h2>
             {endpoints.map((element, index) => (
               <div
                 key={index}
@@ -108,13 +111,12 @@ const Account = () => {
             type="button"
             onClick={() => {
               logout();
-              navigate("/login");
+              navigate("/");
             }}
           >
             Log Out
           </button>
         </div>
-        <Outlet />
       </div>
     );
   }

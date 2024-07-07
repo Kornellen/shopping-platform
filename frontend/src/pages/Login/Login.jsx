@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { pagesVariant, errorStyles } from "../../assets/themes/themes";
+import {
+  pagesVariant,
+  errorStyles,
+  inputStyles,
+} from "../../assets/themes/themes";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -66,7 +70,7 @@ const Login = () => {
                 className={
                   loginError === "User Not Found"
                     ? `${errorStyles.error} outline-none h-9 text-2xl p-2 text-dark-200`
-                    : "h-9 text-2xl outline-none p-2 text-dark-200 border-b-2"
+                    : `${inputStyles[theme]} h-9 text-2xl outline-none bg-transparent p-2 text-dark-200 border-b-2`
                 }
                 type="text"
                 name="username"
@@ -79,7 +83,7 @@ const Login = () => {
                 className={
                   loginError === "Incorect Password"
                     ? `${errorStyles.error} h-9 text-2xl outline-none p-2 border-b-2 text-dark-200`
-                    : "h-9 text-2xl p-2 border-b-2 outline-none text-dark-200"
+                    : `${inputStyles[theme]} h-9 text-2xl p-2 border-b-2 bg-transparent outline-none text-dark-200`
                 }
                 type="password"
                 name="password"

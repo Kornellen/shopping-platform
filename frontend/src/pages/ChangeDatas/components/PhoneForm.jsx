@@ -3,10 +3,10 @@ import { useTheme, useAuth } from "../../../context";
 import { useState } from "react";
 import Form from "./components/Form";
 
-export default function UsernameForm() {
+export default function PhoneForm() {
   const { userID } = useAuth();
   const [form, setForm] = useState({
-    userID: userID,
+    userID: +userID,
   });
   const [error, setError] = useState(null);
   const [info, setInfo] = useState(null);
@@ -23,7 +23,7 @@ export default function UsernameForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data, status } = await axios.patch("/api/updateusername", form);
+      const { data, status } = await axios.patch("/api/updateuserdatas", form);
 
       if (status == 200) {
         setInfo(data.info);
@@ -47,7 +47,7 @@ export default function UsernameForm() {
       <Form
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        type={"username"}
+        type={"phone"}
       />
       <div className="text-3xl m-2">
         {error ? (
