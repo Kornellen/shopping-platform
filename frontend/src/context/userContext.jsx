@@ -8,7 +8,7 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }) => {
-  const userID = window.localStorage.getItem("userID");
+  const userID = +window.localStorage.getItem("userID");
   const [userData, setUserData] = useState({});
   const [userAddresses, setAddresses] = useState({});
   const [loading, setLoading] = useState(true);

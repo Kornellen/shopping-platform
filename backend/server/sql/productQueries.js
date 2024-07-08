@@ -8,10 +8,11 @@ module.exports = {
         FROM Categories
         LEFT JOIN Products ON Categories.categoryID = Products.categoryID
         WHERE Products.categoryID in (?)`,
-  $getProductByIdSQL: "SELECT * FROM products where productID = ?",
+  $getProductByIdSQL:
+    "SELECT products.*, Users.username FROM products JOIN Users ON products.userID = users.userID where productID = ?",
   $removeProduct: "DELETE FROM products where productID = ?",
   $getProductCommentsSQL: `
-      SELECT Reviews.rating, Reviews.comment, Reviews.createdAt, Users.username
+      SELECT Reviews.reviewID, Reviews.rating, Reviews.userID, Reviews.comment, Reviews.createdAt, Users.username
       FROM Reviews
       LEFT JOIN Users
       ON Reviews.userID = Users.userID

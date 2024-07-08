@@ -38,9 +38,14 @@ const Nav = ({ handleSubimt, handleChange }) => {
       link: "/cart",
     },
     {
-      name: auth === "true" ? "Account" : "Login",
-      icon: <FontAwesomeIcon icon={faCircleUser} />,
-      link: auth === "true" ? "/account" : "/login",
+      name: auth ? "Account" : "Login",
+      icon: auth ? (
+        <FontAwesomeIcon icon={faCircleUser} />
+      ) : (
+        <FontAwesomeIcon icon={faRightToBracket} />
+      ),
+
+      link: auth ? "/account" : "/login",
     },
   ];
 

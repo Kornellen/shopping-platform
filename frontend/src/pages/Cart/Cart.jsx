@@ -160,7 +160,7 @@ const Cart = () => {
     return (
       <div className={`${pagesVariant[theme]} text-3xl text-center`}>
         <p>Your Cart seems empty!</p>
-        {auth === "true" ? (
+        {auth ? (
           <pre>Add something to see things here</pre>
         ) : (
           <pre>Login to add things here</pre>

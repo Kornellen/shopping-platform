@@ -17,17 +17,15 @@ const Wishlist = () => {
 
   async function getWishlistItems() {
     try {
-      if (userID === null) {
-        return;
+      if (auth) {
+        const url = `/api/wishlist/${userID}/items/`;
+
+        const response = await axios.get(url);
+
+        const data = await response.data;
+
+        return data.wishlistItems;
       }
-
-      const url = `/api/wishlist/${userID}/items/`;
-
-      const response = await axios.get(url);
-
-      const data = await response.data;
-
-      return data.wishlistItems;
     } catch (error) {
       console.error(error);
     } finally {
@@ -53,7 +51,7 @@ const Wishlist = () => {
     return (
       <div className={`${pagesVariant[theme]} text-3xl text-center space-y-2`}>
         <h2>Your Wishlist seems empty</h2>
-        {auth === "false" ? (
+        {!auth ? (
           <pre>You need to login to put items here!</pre>
         ) : (
           <pre>Add something here!</pre>
@@ -79,10 +77,9 @@ const Wishlist = () => {
                 <button
                   className="border-2 p-2 m-2 hover:animate-pulse"
                   onClick={async () => {
-                    const url = `http://localhost:5174/api/cart/${userID}/addtocart`;
-
                     if (userID !== null) {
-                      const response = await axios.post(url, {
+                      const url = `/api/cart/${userID}/addtocart`;
+                      await axios.post(url, {
                         productID: item.productID,
                         quantity: 1,
                       });
@@ -98,9 +95,9 @@ const Wishlist = () => {
                   onClick={() => {
                     try {
                       if (userID !== null) {
-                        const url = `http://localhost:5174/api/wishlist/${userID}/items/delete`;
+                        const url = `/api/wishlist/${userID}/items/delete`;
 
-                        const response = axios.delete(url, {
+                        axios.delete(url, {
                           data: { productID: item.productID },
                         });
                       }

@@ -4,7 +4,6 @@ import { useTheme, useUser, useAuth } from "../../context";
 import { formatDate } from "../../utils/date";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faAt,
   faMobileScreenButton,

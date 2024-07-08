@@ -8,6 +8,7 @@ import Wishlist from "./Wishlist/Wishlist";
 import Cart from "./Cart/Cart";
 import ChangeDatas from "./ChangeDatas/ChangeDatas";
 import AddProduct from "./AddProduct/AddProduct";
+import Product from "./ProductPage/Product";
 
 export {
   AddProduct,
@@ -20,4 +21,5 @@ export {
   Wishlist,
   Cart,
   ChangeDatas,
+  Product,
 };

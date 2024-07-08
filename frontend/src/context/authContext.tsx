@@ -7,9 +7,9 @@ import {
 } from "react";
 
 interface AuthContextInterface {
-  auth: string;
+  auth: boolean;
   userID: string | null;
-  login: (newAuth: string, newUserID: string | null) => void;
+  login: (newAuth: boolean, newUserID: string | null) => void;
   logout: () => void;
 }
 
@@ -18,7 +18,7 @@ interface AuthContextProps {
 }
 
 const AuthContext = createContext<AuthContextInterface>({
-  auth: "false",
+  auth: false,
   userID: null,
   login: () => {},
   logout: () => {},
@@ -30,25 +30,25 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
   const [auth, setAuth] = useState(
-    () => window.localStorage.getItem("auth") ?? "false"
+    () => !!window.localStorage.getItem("auth") ?? false
   );
 
   const [userID, setUserID] = useState(() => {
     return window.localStorage.getItem("userID");
   });
 
-  const login = (newAuth: string, newUserID: string | null) => {
+  const login = (newAuth: boolean, newUserID: string | null) => {
     setAuth(newAuth);
     setUserID(newUserID);
   };
 
   const logout = () => {
-    setAuth("false");
+    setAuth(false);
     setUserID(null);
   };
 
   useEffect(() => {
-    window.localStorage.setItem("auth", auth);
+    window.localStorage.setItem("auth", String(auth));
     if (userID !== null) {
       window.localStorage.setItem("userID", userID);
     } else {

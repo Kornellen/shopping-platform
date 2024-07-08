@@ -11,6 +11,7 @@ import {
   ChangeDatas,
   Home,
   Login,
+  Product,
   Registry,
   SearchItems,
   UserInfos,
@@ -69,6 +70,7 @@ const AppRoutes = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/account/addproduct" element={<AddProduct />} />
+          <Route path="/product/" element={<Product />} />
         </Routes>
       </div>
 

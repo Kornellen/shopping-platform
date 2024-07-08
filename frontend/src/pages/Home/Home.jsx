@@ -9,11 +9,14 @@ import {
 import { useAuth, useTheme } from "../../context";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { theme } = useTheme();
   const { userID } = useAuth();
   const [info, setInfo] = useState("");
+
+  const navigate = useNavigate();
 
   const fetchDatas = async () => {
     const { data } = await axios.get("/api/getallproducts");
@@ -60,8 +63,11 @@ const Home = () => {
           {data &&
             data.map((product, index) => (
               <div
-                className="w-full m-2 border-2 p-3 h-36 text-2xl flex"
+                className="w-full m-2 border-2 p-3 h-36 text-2xl flex hover:cursor-pointer"
                 key={index}
+                onClick={() =>
+                  navigate(`/product?productID=${product.productID}`)
+                }
               >
                 <div className="m-2 w-52 p-2">
                   <p>Name: {product.name}</p>
