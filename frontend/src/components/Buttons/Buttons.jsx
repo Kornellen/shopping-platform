@@ -1,0 +1,83 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import {
+  faCartShopping,
+  faHeart,
+  faBan,
+} from "@fortawesome/free-solid-svg-icons";
+
+import { useState } from "react";
+
+const Buttons = ({ action, productID, userID }) => {
+  const [info, setInfo] = useState("");
+
+  const buttonStyles = {
+    default: "border-2 p-2 m-2 hover:border-green-500 hover:text-green-500",
+    remove: "border-2 p-2 m-2 hover:border-red-500 hover:text-red-500",
+  };
+  if (action === "addToWishlist") {
+    return (
+      <button
+        className={`group ${buttonStyles.default}`}
+        onClick={async () => {
+          const url = `/api/wishlist/${userID}/items/addTo`;
+
+          if (userID !== null && userID !== "" && userID !== undefined) {
+            await axios.post(url, {
+              productID: productID,
+            });
+          } else {
+            return alert("You must be signed to add to wishlist");
+          }
+        }}
+      >
+        <FontAwesomeIcon
+          icon={faHeart}
+          className="group-hover:animate-bounce"
+        />{" "}
+        Add to wishlist
+      </button>
+    );
+  } else if (action === "addToCart") {
+    return (
+      <button
+        className={`group ${buttonStyles.default}`}
+        onClick={async () => {
+          const url = `/api/cart/${userID}/addtocart`;
+
+          if (userID !== null && userID !== "" && userID !== undefined) {
+            await axios.post(url, {
+              productID: productID,
+              quantity: 1,
+            });
+          } else {
+            return alert("You must be signed to add to cart");
+          }
+        }}
+      >
+        <FontAwesomeIcon
+          icon={faCartShopping}
+          className="group-hover:animate-bounce"
+        />{" "}
+        Add to Cart
+      </button>
+    );
+  } else if (action === "remove") {
+    return (
+      <button
+        className={`group ${buttonStyles.remove}`}
+        onClick={async () => {
+          await axios.delete(`/api/product/remove`, {
+            data: { productID: productID },
+          });
+          setInfo("Success");
+        }}
+      >
+        <FontAwesomeIcon icon={faBan} className="group-hover:animate-bounce" />{" "}
+        {...info ? info : "Remove Product"}
+      </button>
+    );
+  }
+};
+
+export default Buttons;

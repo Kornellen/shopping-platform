@@ -104,7 +104,7 @@ class Product {
 
         return res.status(200).json({ products: result });
       });
-    });
+    }, res);
   }
 
   updateProduct(req, res) {

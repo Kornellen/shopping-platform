@@ -1,17 +1,12 @@
 import { pagesVariant } from "../../assets/themes/themes";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartShopping,
-  faHeart,
-  faBan,
-} from "@fortawesome/free-solid-svg-icons";
+
 import { useAuth, useTheme } from "../../context";
-import { useState } from "react";
+
+import { Buttons } from "../../components";
 
 const SearchItems = ({ items }) => {
   const { theme } = useTheme();
   const { userID } = useAuth();
-  const [info, setInfo] = useState("");
 
   return (
     <div className={`${pagesVariant[theme]} text-3xl float-left`}>
@@ -43,7 +38,7 @@ const SearchItems = ({ items }) => {
                 <p>{item.description}</p>
               </div>
               <div className="buttons flex items-center">
-                {+userID === item.userID ? (
+                {/* {+userID === item.userID ? (
                   <button
                     className="border-2 p-2 m-2 hover:animate-pulse"
                     onClick={() => {
@@ -99,6 +94,22 @@ const SearchItems = ({ items }) => {
                     >
                       <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
                     </button>
+                  </>
+                )} */}
+                {+userID === item.userID ? (
+                  <Buttons action={"remove"} productID={item.productID} />
+                ) : (
+                  <>
+                    <Buttons
+                      action={"addToWishlist"}
+                      productID={item.productID}
+                      userID={userID}
+                    />
+                    <Buttons
+                      action={"addToCart"}
+                      productID={item.productID}
+                      userID={userID}
+                    />
                   </>
                 )}
               </div>

@@ -109,12 +109,12 @@ const Account = () => {
             ))}
           </div>
         </div>
-        <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2">
+        <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2 hover:border-blue-400 hover:text-blue-400">
           <button type="button" onClick={() => navigate("/account/addproduct")}>
             <FontAwesomeIcon icon={faCoins} /> Add Product
           </button>
         </div>
-        <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2">
+        <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2 hover:border-red-700 hover:text-red-700">
           <button
             type="button"
             onClick={() => {

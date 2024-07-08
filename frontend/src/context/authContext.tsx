@@ -29,8 +29,8 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
-  const [auth, setAuth] = useState(
-    () => !!window.localStorage.getItem("auth") ?? false
+  const [auth, setAuth] = useState<boolean>(() =>
+    Boolean(window.localStorage.getItem("auth"))
   );
 
   const [userID, setUserID] = useState(() => {
