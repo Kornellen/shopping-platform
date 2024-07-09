@@ -9,12 +9,13 @@ import {
 import { useState } from "react";
 
 const Buttons = ({ action, productID, userID }) => {
-  const [info, setInfo] = useState("");
+  const [info, setInfo] = useState(null);
 
   const buttonStyles = {
     default: "border-2 p-2 m-2 hover:border-green-500 hover:text-green-500",
     remove: "border-2 p-2 m-2 hover:border-red-500 hover:text-red-500",
   };
+
   if (action === "addToWishlist") {
     return (
       <button
@@ -23,11 +24,15 @@ const Buttons = ({ action, productID, userID }) => {
           const url = `/api/wishlist/${userID}/items/addTo`;
 
           if (userID !== null && userID !== "" && userID !== undefined) {
-            await axios.post(url, {
-              productID: productID,
-            });
+            try {
+              await axios.post(url, {
+                productID: productID,
+              });
+
+              return setInfo("Added to Wishlist");
+            } catch (error) {}
           } else {
-            return alert("You must be signed to add to wishlist");
+            return setInfo("You must be signed to add to wishlist");
           }
         }}
       >
@@ -35,7 +40,7 @@ const Buttons = ({ action, productID, userID }) => {
           icon={faHeart}
           className="group-hover:animate-bounce"
         />{" "}
-        Add to wishlist
+        {...info ? info : "Add to Wishlist"}
       </button>
     );
   } else if (action === "addToCart") {
@@ -46,12 +51,18 @@ const Buttons = ({ action, productID, userID }) => {
           const url = `/api/cart/${userID}/addtocart`;
 
           if (userID !== null && userID !== "" && userID !== undefined) {
-            await axios.post(url, {
-              productID: productID,
-              quantity: 1,
-            });
+            try {
+              await axios.post(url, {
+                productID: productID,
+                quantity: 1,
+              });
+
+              setInfo("Added to Cart");
+            } catch (error) {
+              return setInfo(error);
+            }
           } else {
-            return alert("You must be signed to add to cart");
+            return setInfo("You must be signed to add to cart!");
           }
         }}
       >
@@ -59,7 +70,7 @@ const Buttons = ({ action, productID, userID }) => {
           icon={faCartShopping}
           className="group-hover:animate-bounce"
         />{" "}
-        Add to Cart
+        {...info ? info : "Add to Cart"}
       </button>
     );
   } else if (action === "remove") {
@@ -70,7 +81,7 @@ const Buttons = ({ action, productID, userID }) => {
           await axios.delete(`/api/product/remove`, {
             data: { productID: productID },
           });
-          setInfo("Success");
+          return setInfo("Removed successfuly");
         }}
       >
         <FontAwesomeIcon icon={faBan} className="group-hover:animate-bounce" />{" "}

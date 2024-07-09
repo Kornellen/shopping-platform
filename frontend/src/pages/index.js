@@ -9,17 +9,20 @@ import Cart from "./Cart/Cart";
 import ChangeDatas from "./ChangeDatas/ChangeDatas";
 import AddProduct from "./AddProduct/AddProduct";
 import Product from "./ProductPage/Product";
+import { AdminPanel, AdminUserPanel } from "./AdminPanel/";
 
 export {
-  AddProduct,
-  Home,
-  SearchItems,
-  Login,
-  Registry,
   Account,
-  UserInfos,
-  Wishlist,
+  AddProduct,
+  AdminPanel,
+  AdminUserPanel,
   Cart,
   ChangeDatas,
+  Home,
+  Login,
   Product,
+  Registry,
+  SearchItems,
+  UserInfos,
+  Wishlist,
 };

@@ -7,6 +7,8 @@ import { Nav, Footer } from "../components/index";
 import {
   Account,
   AddProduct,
+  AdminPanel,
+  AdminUserPanel,
   Cart,
   ChangeDatas,
   Home,
@@ -66,11 +68,13 @@ const AppRoutes = () => {
           <Route path="/registry" element={<Registry />} />
           <Route path="/account" element={<Account />} />
           <Route path="/account/yourdatas" element={<UserInfos />} />
-          <Route path="account/changeDatas" element={<ChangeDatas />} />
+          <Route path="/account/changeDatas" element={<ChangeDatas />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/account/addproduct" element={<AddProduct />} />
           <Route path="/product/" element={<Product />} />
+          <Route path="/admin/" element={<AdminPanel />} />
+          <Route path="/admin/users" element={<AdminUserPanel />} />
         </Routes>
       </div>
 

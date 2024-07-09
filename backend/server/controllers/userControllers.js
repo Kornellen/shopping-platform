@@ -338,6 +338,19 @@ class UserController {
       });
     });
   }
+
+  getAllUsers(req, res) {
+    this.createConn((connect) => {
+      connect.query(userQueries.$getAllUsers, (err, result) => {
+        connect.release();
+        if (err) {
+          log(err);
+          return res.sendStatus(500);
+        }
+        return res.status(200).json({ result: result });
+      });
+    });
+  }
 }
 
 module.exports = UserController;

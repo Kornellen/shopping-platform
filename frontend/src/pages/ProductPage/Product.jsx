@@ -2,19 +2,18 @@ import { useSearchParams } from "react-router-dom";
 import { useAuth, useTheme } from "../../context";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { formatDate } from "../../utils/date";
 import { pagesVariant } from "../../assets/themes/themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
   faStarHalfStroke,
-  faCartShopping,
-  faHeart,
   faBan,
   faCommentSlash,
   faComment,
 } from "@fortawesome/free-solid-svg-icons";
 import Form from "./components/Form";
+
+import { Buttons } from "../../components/index";
 
 const Product = () => {
   const [searchParams] = useSearchParams();
@@ -93,61 +92,19 @@ const Product = () => {
             </div>
             <div className="p-2 w-1/2 text-end">
               {+userID === productData?.userID ? (
-                <button
-                  className="border-2 p-2 m-2 hover:animate-pulse"
-                  onClick={() => {
-                    axios.delete(`/api/product/remove`, {
-                      data: { productID: productData?.productID },
-                    });
-                    setInfo("Success");
-                  }}
-                >
-                  <FontAwesomeIcon icon={faBan} />{" "}
-                  {...info ? info : "Remove Product"}
-                </button>
+                <Buttons action={"remove"} />
               ) : (
                 <>
-                  <button
-                    className="border-2 p-2 m-2 hover:animate-pulse"
-                    onClick={async () => {
-                      const url = `/api/wishlist/${userID}/items/addTo`;
-
-                      if (
-                        userID !== null &&
-                        userID !== "" &&
-                        userID !== undefined
-                      ) {
-                        await axios.post(url, {
-                          productID: productData?.productID,
-                        });
-                      } else {
-                        return alert("You must be signed to add to wishlist");
-                      }
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faHeart} /> Add to wishlist
-                  </button>
-                  <button
-                    className="border-2 p-2 m-2 hover:animate-pulse"
-                    onClick={async () => {
-                      const url = `/api/cart/${userID}/addtocart`;
-
-                      if (
-                        userID !== null &&
-                        userID !== "" &&
-                        userID !== undefined
-                      ) {
-                        await axios.post(url, {
-                          productID: productData?.productID,
-                          quantity: 1,
-                        });
-                      } else {
-                        return alert("You must be signed to add to cart");
-                      }
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
-                  </button>
+                  <Buttons
+                    action={"addToWishlist"}
+                    userID={userID}
+                    productID={productData?.productID}
+                  />
+                  <Buttons
+                    action={"addToCart"}
+                    userID={userID}
+                    productID={productData?.productID}
+                  />
                 </>
               )}
             </div>
@@ -173,7 +130,7 @@ const Product = () => {
                     )}
                   </>
                 ) : (
-                  <FontAwesomeIcon icon={faCommentSlash} />
+                  "No reviews"
                 )}
               </p>
             </div>

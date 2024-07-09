@@ -38,64 +38,6 @@ const SearchItems = ({ items }) => {
                 <p>{item.description}</p>
               </div>
               <div className="buttons flex items-center">
-                {/* {+userID === item.userID ? (
-                  <button
-                    className="border-2 p-2 m-2 hover:animate-pulse"
-                    onClick={() => {
-                      axios.delete(`/api/product/remove`, {
-                        data: { productID: product.productID },
-                      });
-                      setInfo("Success");
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faBan} />{" "}
-                    {...info ? info : "Remove Product"}
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      className="border-2 p-2 m-2 hover:animate-pulse"
-                      onClick={async () => {
-                        const url = `/api/wishlist/${userID}/items/addTo`;
-
-                        if (
-                          userID !== null &&
-                          userID !== "" &&
-                          userID !== undefined
-                        ) {
-                          await axios.post(url, {
-                            productID: product.productID,
-                          });
-                        } else {
-                          return alert("You must be signed to add to wishlist");
-                        }
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faHeart} /> Add to wishlist
-                    </button>
-                    <button
-                      className="border-2 p-2 m-2 hover:animate-pulse"
-                      onClick={async () => {
-                        const url = `/api/cart/${userID}/addtocart`;
-
-                        if (
-                          userID !== null &&
-                          userID !== "" &&
-                          userID !== undefined
-                        ) {
-                          await axios.post(url, {
-                            productID: product.productID,
-                            quantity: 1,
-                          });
-                        } else {
-                          return alert("You must be signed to add to cart");
-                        }
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
-                    </button>
-                  </>
-                )} */}
                 {+userID === item.userID ? (
                   <Buttons action={"remove"} productID={item.productID} />
                 ) : (

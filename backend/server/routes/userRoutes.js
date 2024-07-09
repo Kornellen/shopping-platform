@@ -103,4 +103,6 @@ router.get(
   (req, res) => user.getUserAddresses(req, res)
 );
 
+router.get("/users", (req, res) => user.getAllUsers(req, res));
+
 module.exports = router;

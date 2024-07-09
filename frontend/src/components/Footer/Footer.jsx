@@ -26,7 +26,11 @@ const Footer = () => {
             </li>
           ))}
           <li className={`${liStyles[theme]} m-4 list-disc text-2xl`}>
-            <Link to={"https://github.com/Kornellen/shopping-platform"}>
+            <Link
+              to={"https://github.com/Kornellen/shopping-platform"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FontAwesomeIcon icon={faGithub} /> Github{" "}
             </Link>
           </li>

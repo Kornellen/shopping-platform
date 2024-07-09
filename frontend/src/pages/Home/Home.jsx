@@ -28,7 +28,7 @@ const Home = () => {
   if (isLoading) {
     return (
       <div
-        className={`${pagesVariant[theme]} text-3xl w-full h-screen float-left`}
+        className={`${pagesVariant[theme]} text-3xl w-full h-screen float-left text-center`}
       >
         <p className="text-center animate-pulse">Loading...</p>
       </div>
@@ -38,7 +38,7 @@ const Home = () => {
   if (isError) {
     return (
       <div
-        className={`${pagesVariant[theme]} text-3xl w-full h-screen float-left`}
+        className={`${pagesVariant[theme]} text-3xl w-full h-screen float-left text-center`}
       >
         <div>
           <p>

@@ -7,6 +7,7 @@ import {
   faGears,
   faCoins,
   faRightFromBracket,
+  faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Account = () => {
@@ -67,6 +68,7 @@ const Account = () => {
             >
               <p>{userData.email}</p>
             </div>
+            <p className="text-2xl">{userData.role}</p>
           </div>
 
           <div
@@ -108,6 +110,41 @@ const Account = () => {
               </div>
             ))}
           </div>
+          {userData.role === "Head Admin" ||
+          userData.role === "Admin" ||
+          userData.role === "Moderator" ? (
+            <div
+              className={
+                theme === "light"
+                  ? "bg-light-500 w-1/2 mt-5 m-2 p-2"
+                  : "bg-dark-500 w-1/2 mt-5 m-2 p-2"
+              }
+            >
+              <div className="flex flex-wrap">
+                <p className="w-full">
+                  <FontAwesomeIcon icon={faUserSecret} /> {userData.role}{" "}
+                  Functions
+                </p>
+                <div className="w-9/12">
+                  <p>Admin Panel</p>
+                  <p
+                    className={
+                      theme === "light"
+                        ? "text-dark-700 text-1xl italic"
+                        : "text-light-700 text-1xl italic"
+                    }
+                  >
+                    Your admin panel
+                  </p>{" "}
+                </div>
+                <div className="w-3/12">
+                  <Link to={"/admin/"} className="hover:text-light-500">
+                    Admin Panel
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </div>
         <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2 hover:border-blue-400 hover:text-blue-400">
           <button type="button" onClick={() => navigate("/account/addproduct")}>

@@ -29,14 +29,13 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
-  const [auth, setAuth] = useState<boolean>(() =>
-    Boolean(window.localStorage.getItem("auth"))
-  );
-
   const [userID, setUserID] = useState(() => {
     return window.localStorage.getItem("userID");
   });
 
+  const [auth, setAuth] = useState<boolean>(() =>
+    userID !== null ? Boolean(window.localStorage.getItem("auth")) : false
+  );
   const login = (newAuth: boolean, newUserID: string | null) => {
     setAuth(newAuth);
     setUserID(newUserID);
