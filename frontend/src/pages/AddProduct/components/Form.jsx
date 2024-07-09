@@ -51,16 +51,12 @@ const Form = ({ handleChange, handleSubmit }) => {
           </label>
           <select
             name="categoryID"
-            className="bg-transparent border-b-2 ml-10 appearance-none text-center"
+            className={`bg-dark-500 p-2 rounded-xl m-2 text-center ml-10`}
             id=""
             onChange={handleChange}
           >
             {categories?.map((category, index) => (
-              <option
-                key={index}
-                className={`${inputStyles[theme]} bg-dark-700`}
-                value={category.categoryID}
-              >
+              <option key={index} value={category.categoryID}>
                 {category.categoryID} - {category.categoryName}
               </option>
             ))}

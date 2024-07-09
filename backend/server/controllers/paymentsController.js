@@ -23,7 +23,7 @@ class Payments {
 
     const paymentDate = generalUtils.getFullCurrentDate();
 
-    const status = "Paid";
+    const status = "paid";
 
     this.getConn((connect) => {
       connect.query(

@@ -8,7 +8,7 @@ import {
 
 import { useState } from "react";
 
-const Buttons = ({ action, productID, userID }) => {
+const Buttons = ({ action, productID, userID, totalAmount, products }) => {
   const [info, setInfo] = useState(null);
 
   const buttonStyles = {
@@ -86,6 +86,20 @@ const Buttons = ({ action, productID, userID }) => {
       >
         <FontAwesomeIcon icon={faBan} className="group-hover:animate-bounce" />{" "}
         {...info ? info : "Remove Product"}
+      </button>
+    );
+  } else if (action === "order") {
+    return (
+      <button
+        className={`group ${buttonStyles.remove}`}
+        onClick={async () => {
+          await axios.post(`/api/user/${userID}}/order/create`, {
+            totalAmount: totalAmount,
+            products: products,
+          });
+        }}
+      >
+        Order
       </button>
     );
   }

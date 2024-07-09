@@ -4,6 +4,7 @@ import { useAuth, useTheme } from "../../context";
 import { pagesVariant } from "../../assets/themes/themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { theme } = useTheme();
@@ -13,6 +14,8 @@ const Cart = () => {
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState([]);
   const [holdDown, setHoldDown] = useState(false);
+
+  const navigate = useNavigate();
 
   const totalAmount = cartData.reduce(
     (acc, item, index) => acc + item.price * quantity[index],
@@ -228,6 +231,15 @@ const Cart = () => {
 
         <div className="p-2">
           <p>Total Amount: {totalAmount}$</p>
+        </div>
+        <div className="text-4xl text-center">
+          <Link
+            to={"/cart/order"}
+            className="buttons border-2 p-2 w-64 text-center h-14 m-2 hover:border-blue-400 hover:text-blue-400 rounded-md"
+            state={{ totalAmount, cartData }}
+          >
+            Order
+          </Link>
         </div>
       </div>
     </div>

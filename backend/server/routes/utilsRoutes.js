@@ -8,4 +8,12 @@ router.get("/categories", (req, res) =>
   utilsControllers.getCategories(req, res)
 );
 
+router.get("/shipping-methods", (req, res) =>
+  utilsControllers.getShippingMethods(req, res)
+);
+
+router.get("/payment-methods", (req, res) =>
+  utilsControllers.getPaymentMethods(req, res)
+);
+
 module.exports = router;

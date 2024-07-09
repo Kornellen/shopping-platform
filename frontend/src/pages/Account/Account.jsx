@@ -125,7 +125,7 @@ const Account = () => {
                   <FontAwesomeIcon icon={faUserSecret} /> {userData.role}{" "}
                   Functions
                 </p>
-                <div className="w-9/12">
+                <div className="w-7/12">
                   <p>Admin Panel</p>
                   <p
                     className={
@@ -137,30 +137,41 @@ const Account = () => {
                     Your admin panel
                   </p>{" "}
                 </div>
-                <div className="w-3/12">
-                  <Link to={"/admin/"} className="hover:text-light-500">
-                    Admin Panel
+                <div className="w-3/12 text-end ml-20">
+                  <Link
+                    to={"/admin/"}
+                    className="hover:text-light-500 text-end"
+                  >
+                    Check
                   </Link>
                 </div>
               </div>
             </div>
           ) : null}
         </div>
-        <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2 hover:border-blue-400 hover:text-blue-400">
-          <button type="button" onClick={() => navigate("/account/addproduct")}>
-            <FontAwesomeIcon icon={faCoins} /> Add Product
-          </button>
-        </div>
-        <div className="buttons border-2 p-2 w-2/12 text-center h-14 m-2 hover:border-red-700 hover:text-red-700">
-          <button
-            type="button"
-            onClick={() => {
-              logout();
-              navigate("/");
-            }}
-          >
-            <FontAwesomeIcon icon={faRightFromBracket} /> Log Out
-          </button>
+        <div className="w-5/12 p-2 divide-y-2">
+          <div className="w-full p-2 flex justify-end">
+            <div className="buttons border-2 p-2 w-64 text-center h-14 m-2 hover:border-blue-400 hover:text-blue-400">
+              <button
+                type="button"
+                onClick={() => navigate("/account/addproduct")}
+              >
+                <FontAwesomeIcon icon={faCoins} /> Add Product
+              </button>
+            </div>
+            <div className="buttons border-2 p-2 w-64 text-center h-14 m-2 hover:border-red-700 hover:text-red-700">
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  navigate("/");
+                }}
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} /> Log Out
+              </button>
+            </div>
+          </div>
+          <div className=""></div>
         </div>
       </div>
     );

@@ -23,6 +23,8 @@ class Orders {
 
     const currentDate = generalUtils.getOnlyDate();
 
+    log(req.body);
+
     //getting Addresses
     this.getConn((connect) => {
       connect.query(
@@ -45,6 +47,8 @@ class Orders {
                 log(err);
                 return res.sendStatus(500);
               }
+
+              log(result);
 
               const shippingMethodCost = result[0].cost;
               const realTotalAmount = totalAmount + shippingMethodCost;
@@ -86,9 +90,11 @@ class Orders {
                         log(err);
                         return res.sendStatus(500);
                       }
-                      res
-                        .status(200)
-                        .json({ info: "Ordered", orderID: orderID });
+                      res.status(200).json({
+                        info: "Ordered",
+                        orderID: orderID,
+                        totalCoast: realTotalAmount,
+                      });
                     }
                   );
                 }

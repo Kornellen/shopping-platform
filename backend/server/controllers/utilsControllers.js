@@ -32,6 +32,34 @@ class UtilsController {
       });
     });
   }
+
+  getShippingMethods(req, res) {
+    this.createConn((connect) => {
+      connect.query(utilsQueries.$getAllShippingMethods, (err, result) => {
+        connect.release();
+        if (err) {
+          log(err);
+          return res.sendStatus(500);
+        }
+
+        return res.status(200).json({ methods: result });
+      });
+    });
+  }
+
+  getPaymentMethods(req, res) {
+    this.createConn((connect) => {
+      connect.query(utilsQueries.$getAllPaymentMethods, (err, result) => {
+        connect.release();
+        if (err) {
+          log(err);
+          return res.sendStatus(500);
+        }
+
+        return res.status(200).json({ methods: result });
+      });
+    });
+  }
 }
 
 module.exports = UtilsController;

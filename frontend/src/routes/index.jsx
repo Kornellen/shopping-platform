@@ -13,6 +13,8 @@ import {
   ChangeDatas,
   Home,
   Login,
+  Order,
+  Payment,
   Product,
   Registry,
   SearchItems,
@@ -70,6 +72,8 @@ const AppRoutes = () => {
           <Route path="/account/yourdatas" element={<UserInfos />} />
           <Route path="/account/changeDatas" element={<ChangeDatas />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/cart/order" element={<Order />} />
+          <Route path="/cart/order/payment" element={<Payment />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/account/addproduct" element={<AddProduct />} />
           <Route path="/product/" element={<Product />} />

@@ -10,6 +10,8 @@ import ChangeDatas from "./ChangeDatas/ChangeDatas";
 import AddProduct from "./AddProduct/AddProduct";
 import Product from "./ProductPage/Product";
 import { AdminPanel, AdminUserPanel } from "./AdminPanel/";
+import Order from "./Order/Order";
+import Payment from "./Payment/Payment";
 
 export {
   Account,
@@ -20,6 +22,8 @@ export {
   ChangeDatas,
   Home,
   Login,
+  Order,
+  Payment,
   Product,
   Registry,
   SearchItems,
