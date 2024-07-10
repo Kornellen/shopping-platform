@@ -12,7 +12,7 @@ router.post(
   [
     param("userID").isInt().withMessage("UserID must be an Integer"),
     param("orderID").isInt().withMessage("OrderID must be an Integer"),
-    body("amount").isInt().withMessage("Amount must be an Integer"),
+    body("amount").isDecimal().withMessage("Amount must be an Integer"),
     body("paymentMethodID")
       .isInt()
       .withMessage("PaymentMethodID must be an Integer"),

@@ -1,20 +1,23 @@
 import { useAuth, useTheme, useUser } from "../../context";
-import { pagesVariant } from "../../assets/themes/themes";
+import { pagesVariant, themesVariant } from "../../assets/themes/themes";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGears,
   faCoins,
   faRightFromBracket,
   faUserSecret,
+  faWallet,
 } from "@fortawesome/free-solid-svg-icons";
+import { Payments } from "./components";
 
 const Account = () => {
   const { theme } = useTheme();
   const { logout } = useAuth();
   const { loading, userData, error, loadUserDatas } = useUser();
   const navigate = useNavigate();
+  const [showPayments, setShowPayments] = useState(false);
 
   const endpoints = [
     {
@@ -149,8 +152,8 @@ const Account = () => {
             </div>
           ) : null}
         </div>
-        <div className="w-5/12 p-2 divide-y-2">
-          <div className="w-full p-2 flex justify-end">
+        <div className="w-5/12 h-full">
+          <div className="w-full p-2 flex justify-end h-2/6">
             <div className="buttons border-2 p-2 w-64 text-center h-14 m-2 hover:border-blue-400 hover:text-blue-400">
               <button
                 type="button"
@@ -171,7 +174,19 @@ const Account = () => {
               </button>
             </div>
           </div>
-          <div className=""></div>
+          <div className="flex w-full h-4/6 flex-col overflow-scroll border-2">
+            <div
+              className={`${themesVariant[theme]} border-b-2 h-1/6 flex justify-center items-center w-full text-4xl sticky top-0 `}
+            >
+              <h1
+                className="p-3"
+                onClick={() => setShowPayments((current) => !current)}
+              >
+                <FontAwesomeIcon icon={faWallet} /> Payments
+              </h1>
+            </div>
+            <div className="h-4/6">{showPayments && <Payments />}</div>
+          </div>
         </div>
       </div>
     );

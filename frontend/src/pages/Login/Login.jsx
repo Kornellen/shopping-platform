@@ -64,29 +64,32 @@ const Login = () => {
         <div className="form-content p-2 border-2">
           <div className="form-inputs">
             <div className="username m-10">
-              <input
-                className={
-                  loginError === "User Not Found"
-                    ? `${errorStyles[theme]} outline-none h-9 text-2xl p-2 text-dark-200`
-                    : `${inputStyles[theme]} h-9 text-2xl outline-none bg-transparent p-2 text-dark-200 border-b-2`
-                }
-                type="text"
-                name="username"
-                onChange={handleChange}
-                placeholder="Login"
-              />
+              <div className="text-2xl relative">
+                <input
+                  id="username"
+                  className={`${
+                    loginError === "User Not Found"
+                      ? errorStyles[theme]
+                      : inputStyles[theme]
+                  } h-9 z-10 text-2xl outline-none bg-transparent p-2 text-dark-200 border-b-2`}
+                  type="text"
+                  name="username"
+                  onChange={handleChange}
+                  placeholder="Enter Username"
+                />
+              </div>
             </div>
             <div className="password m-10">
               <input
-                className={
-                  loginError === "Incorect Password"
-                    ? `${errorStyles[theme]} h-9 text-2xl outline-none p-2 border-b-2 text-dark-200`
-                    : `${inputStyles[theme]} h-9 text-2xl p-2 border-b-2 bg-transparent outline-none text-dark-200`
-                }
+                className={`${
+                  loginError === "Incorretct Password "
+                    ? errorStyles[theme]
+                    : inputStyles[theme]
+                } h-9 z-10 text-2xl outline-none bg-transparent p-2 text-dark-200 border-b-2`}
                 type="password"
                 name="password"
                 onChange={handleChange}
-                placeholder="Password"
+                placeholder="Enter password"
               />{" "}
             </div>
 

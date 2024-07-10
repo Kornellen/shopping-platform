@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useTheme } from "../../context";
 import { pagesVariant, inputStyles } from "../../assets/themes/themes";
 
@@ -11,6 +11,7 @@ const Payment = () => {
   const { orderID, totalCoast } = location.state || {};
   const [paymentMethod, setPayment] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState("1");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPaymentMethod = async () => {
@@ -28,10 +29,15 @@ const Payment = () => {
       const { data } = await axios.post(
         `/api/user/${userID}/order/${orderID}/pay`,
         {
-          amount: totalCoast,
-          paymentMethod: selectedPayment,
+          amount: +totalCoast,
+          paymentMethodID: +selectedPayment,
         }
       );
+
+      if (data.info === "Success") {
+        navigate("/cart");
+      }
+      console.log(data);
     } catch (error) {}
   };
 
