@@ -28,8 +28,6 @@ const Payments = () => {
     fetchPayments();
   }, []);
 
-  console.log(payments);
-
   if (loading) {
     return <div className={`${pagesVariant[theme]}`}>Loading...</div>;
   }
@@ -38,9 +36,9 @@ const Payments = () => {
     return <div className={`${pagesVariant[theme]}`}>Error: {error}</div>;
   }
 
-  payments.map((payment) =>
-    payment.quantity.split(", ").map((quantity) => console.log(quantity))
-  );
+  if (payments.length === 0) {
+    return <div className="text-center p-2">You don't have payments</div>;
+  }
 
   return (
     <div className={"h-4/6"}>

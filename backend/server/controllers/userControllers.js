@@ -316,6 +316,7 @@ class UserController {
       connect.query(userQueries.$getUserDatasByID, [userID], (err, result) => {
         connect.release();
         if (err) {
+          log(err);
           return res.sendStatus(500);
         }
 
@@ -331,6 +332,7 @@ class UserController {
       connect.query(userQueries.$getUserAddresses, [userID], (err, result) => {
         connect.release();
         if (err) {
+          log(err);
           return res.sendStatus(500);
         }
 

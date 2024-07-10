@@ -49,7 +49,11 @@ const Payment = () => {
           <select
             name="payment-method"
             id="payment-method"
-            className={`bg-dark-500 p-2 rounded-xl`}
+            className={`${
+              theme == "light"
+                ? "bg-light-500 text-dark-100"
+                : "bg-dark-500 text-light-100"
+            } p-2 rounded-xl text-xl`}
             onChange={(e) =>
               setSelectedPayment((prev) => (prev = e.target.value))
             }

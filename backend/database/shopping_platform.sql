@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Cze 26, 2024 at 11:37 PM
+-- Generation Time: Lip 10, 2024 at 09:46 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -44,7 +44,7 @@ CREATE TABLE `addresses` (
 --
 
 INSERT INTO `addresses` (`addressID`, `userID`, `addressLine`, `city`, `state`, `postalCode`, `country`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 'addressline', 'Warsaw', 'Malopolskie', '00-001', 'Poland', '2024-06-26 20:54:34', '2024-06-26 20:54:34');
+(1, 1, 'addressline', 'Warsaw', 'Mazowieckie', '00-001', 'Poland', '2024-06-26 20:54:34', '2024-06-26 20:54:34');
 
 -- --------------------------------------------------------
 
@@ -64,7 +64,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cartID`, `userID`, `createdAt`, `updatedAt`) VALUES
-(1, 1, '2024-06-26 16:44:13', '2024-06-26 16:44:13');
+(1, 1, '2024-06-26 16:44:13', '2024-06-26 16:44:13'),
+(2, 4, '2024-07-10 21:42:55', '2024-07-10 21:42:55');
 
 -- --------------------------------------------------------
 
@@ -89,7 +90,7 @@ CREATE TABLE `cartitems` (
 CREATE TABLE `categories` (
   `categoryID` int(11) NOT NULL,
   `parentID` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `categoryName` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -97,7 +98,7 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`categoryID`, `parentID`, `name`, `description`) VALUES
+INSERT INTO `categories` (`categoryID`, `parentID`, `categoryName`, `description`) VALUES
 (1, NULL, 'Electronics', 'Electronics'),
 (2, NULL, 'Clothing', 'Clothing'),
 (3, 1, 'Laptops', 'Various Laptops'),
@@ -234,6 +235,27 @@ CREATE TABLE `reviews` (
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `roles`
+--
+
+CREATE TABLE `roles` (
+  `roleID` int(11) NOT NULL,
+  `role` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`roleID`, `role`) VALUES
+(1, 'Head Admin'),
+(2, 'Admin'),
+(3, 'Moderator'),
+(4, 'Standard User');
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `shippingmethods`
 --
 
@@ -269,6 +291,7 @@ CREATE TABLE `users` (
   `lastName` varchar(255) DEFAULT NULL,
   `phoneNumber` varchar(20) DEFAULT NULL,
   `birthdate` date DEFAULT NULL,
+  `role` int(11) NOT NULL DEFAULT 4,
   `gender` varchar(20) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL
@@ -278,8 +301,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userID`, `username`, `email`, `password`, `firstName`, `lastName`, `phoneNumber`, `birthdate`, `gender`, `createdAt`, `updatedAt`) VALUES
-(1, 'admin', 'admin@gmail.com', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'Admin', 'User', '601 758 352', '1999-01-15', 'm', '2024-06-26 16:44:13', '2024-06-26 16:44:13');
+INSERT INTO `users` (`userID`, `username`, `email`, `password`, `firstName`, `lastName`, `phoneNumber`, `birthdate`, `role`, `gender`, `createdAt`, `updatedAt`) VALUES
+(1, 'admin', 'admin@gmail.com', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'Admin', 'User', '601 758 352', '1999-01-15', 1, 'm', '2024-06-26 16:44:13', '2024-06-26 16:44:13'),
+(4, 'test', 'test@user.com', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', 'testFName', 'testLName', '444 555 666', '2099-05-14', 4, '', '2024-07-10 21:42:55', '2024-07-10 21:42:55');
 
 -- --------------------------------------------------------
 
@@ -310,7 +334,8 @@ CREATE TABLE `wishlists` (
 --
 
 INSERT INTO `wishlists` (`wishlistID`, `userID`, `createdAt`) VALUES
-(1, 1, '2024-06-26 16:44:13');
+(1, 1, '2024-06-26 16:44:13'),
+(2, 4, '2024-07-10 21:42:55');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -403,6 +428,12 @@ ALTER TABLE `reviews`
   ADD KEY `userID` (`userID`);
 
 --
+-- Indeksy dla tabeli `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`roleID`);
+
+--
 -- Indeksy dla tabeli `shippingmethods`
 --
 ALTER TABLE `shippingmethods`
@@ -413,7 +444,8 @@ ALTER TABLE `shippingmethods`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userID`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `role` (`role`);
 
 --
 -- Indeksy dla tabeli `wishlistitems`
@@ -444,7 +476,7 @@ ALTER TABLE `addresses`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cartID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cartID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `cartitems`
@@ -501,6 +533,12 @@ ALTER TABLE `reviews`
   MODIFY `reviewID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `roleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `shippingmethods`
 --
 ALTER TABLE `shippingmethods`
@@ -510,7 +548,7 @@ ALTER TABLE `shippingmethods`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `wishlistitems`
@@ -522,7 +560,7 @@ ALTER TABLE `wishlistitems`
 -- AUTO_INCREMENT for table `wishlists`
 --
 ALTER TABLE `wishlists`
-  MODIFY `wishlistID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `wishlistID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -597,6 +635,12 @@ ALTER TABLE `returnsrequests`
 ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `products` (`productID`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role`) REFERENCES `roles` (`roleID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `wishlistitems`

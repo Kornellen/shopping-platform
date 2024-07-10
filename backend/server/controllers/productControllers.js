@@ -1,9 +1,7 @@
 const DBConnect = require("../utils/dbConnect");
 const GeneralUtils = require("../utils/generalUtils");
 const queries = require("../sql/productQueries");
-const { getRandomValues } = require("crypto");
 const productQueries = require("../sql/productQueries");
-const userQueries = require("../sql/userQueries");
 
 const log = console.log;
 

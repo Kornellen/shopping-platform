@@ -15,8 +15,12 @@ const Form = ({ productID }) => {
 
     try {
       setError(false);
-      const url = `/api/product/${productID}/addcomment`;
-      await axios.post(url, form);
+      if (userID !== null) {
+        const url = `/api/product/${productID}/addcomment`;
+        await axios.post(url, form);
+      } else {
+        setError(true);
+      }
     } catch (error) {
       setError(true);
     }

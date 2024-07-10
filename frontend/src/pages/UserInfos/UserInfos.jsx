@@ -136,14 +136,14 @@ const UserInfos = () => {
           </div>
         ) : (
           <div className={`text-center text-red-600 w-full text-3xl`}>
-            <pre>You don't have added addresses</pre>
+            <pre>You don't have added address</pre>
             <button
               onClick={() =>
                 navigate("/account/changeDatas?datatochange=address")
               }
               className="hover:border-b-2 hover:border-red-600 hover:animate-pulse"
             >
-              Add Addresses
+              Add Address
             </button>
           </div>
         )}

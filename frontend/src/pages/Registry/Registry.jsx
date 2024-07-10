@@ -137,15 +137,15 @@ const Registry = () => {
             <div className="text-center">
               <select
                 name="geneder"
-                className={`${inputStyles[theme]} text-2xl m-2`}
+                className={`${
+                  theme == "light"
+                    ? "bg-light-500 text-dark-100"
+                    : "bg-dark-500 text-light-100"
+                } p-2 rounded-xl text-xl`}
                 onChange={handleChange}
               >
-                <option value="m" className={`bg-dark-200 text-2xl m-2`}>
-                  Male
-                </option>
-                <option value="f" className={`bg-dark-200 text-2xl m-2`}>
-                  Female
-                </option>
+                <option value="m">Male</option>
+                <option value="f">Female</option>
               </select>
               <span className="m-2 text-xl">*Optional</span>
             </div>
