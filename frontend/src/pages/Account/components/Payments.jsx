@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth, useTheme } from "../../../context";
 import axios from "axios";
 import { pagesVariant } from "../../../assets/themes/themes";
@@ -29,7 +29,9 @@ const Payments = () => {
   }, []);
 
   if (loading) {
-    return <div className={`${pagesVariant[theme]}`}>Loading...</div>;
+    return (
+      <div className={`${pagesVariant[theme]} text-center`}>Loading...</div>
+    );
   }
 
   if (error) {
@@ -81,11 +83,16 @@ const Payments = () => {
                     </div>
                     <div className="w-1/2 text-center flex justify-center items-center">
                       <button
-                        className="border-2 p-2 w-full m-2 hover:border-red-500 hover:text-red-500"
+                        className="border-2 p-2 w-full m-2 hover:border-red-500 hover:text-red-500 disabled:border-gray-500 disabled:text-gray-500"
+                        disabled={payment.status === "cancelled" ? true : false}
                         onClick={async () => {
                           await axios.patch(
-                            `/user/${payment.userID}/order/${payment.orderID}/payment/${payment.paymentID}/statusupdate`,
+                            `/api/user/${payment.userID}/order/${payment.orderID}/payment/${payment.paymentID}/statusupdate`,
                             { status: "Cancelled" }
+                          );
+
+                          console.log(
+                            `/api/user/${payment.userID}/order/${payment.orderID}/payment/${payment.paymentID}/statusupdate`
                           );
                         }}
                       >

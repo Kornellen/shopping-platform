@@ -1,11 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const morgan = require("morgan");
+const colors = require("colors");
+
+colors.enabled;
+
 const log = console.log;
 
-const routes = require("./routes/index");
-const morgan = require("morgan");
-const logger = require("./config/logger");
+const routes = require("./src/routes/index");
+const logger = require("./src/config/logger");
 
 class App {
   constructor() {
@@ -47,7 +51,7 @@ class App {
     this.setupRoutes();
     this.setUpPublic();
     this.app.listen(this.port, () => {
-      log(`App Started on port: ${this.port}`);
+      log(`[server]: Started on: http://localhost:${this.port}/api`.cyan);
     });
   }
 }

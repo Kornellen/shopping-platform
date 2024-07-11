@@ -2,7 +2,7 @@ module.exports = {
   $insertPaymentSQL:
     "INSERT INTO payments(orderID, userID, paymentDate, amount, paymentMethodID, status) VALUES (?,?,?,?,?,?)",
   $getPaymentDetailsSQL: "SELECT * FROM payments WHERE orderID = ?",
-  $getUserPaymentsSQL: `SELECT payments.paymentID, payments.userID, MAX(payments.paymentDate) AS paymentDate, payments.status, MAX(payments.amount) AS amount, paymentmethods.paymentMethod, orders.status, GROUP_CONCAT(products.name ORDER BY products.name SEPARATOR ', ') AS products, GROUP_CONCAT(products.productID ORDER BY products.name SEPARATOR ', ') AS productIDs, GROUP_CONCAT(products.price ORDER BY products.name SEPARATOR ', ') as productsPrice, GROUP_CONCAT(orderitems.quantity ORDER BY products.name SEPARATOR ', ') as quantity, orders.orderID
+  $getUserPaymentsSQL: `SELECT payments.paymentID, payments.userID, MAX(payments.paymentDate) AS paymentDate, payments.status, MAX(payments.amount) AS amount, paymentmethods.paymentMethod, payments.status, GROUP_CONCAT(products.name ORDER BY products.name SEPARATOR ', ') AS products, GROUP_CONCAT(products.productID ORDER BY products.name SEPARATOR ', ') AS productIDs, GROUP_CONCAT(products.price ORDER BY products.name SEPARATOR ', ') as productsPrice, GROUP_CONCAT(orderitems.quantity ORDER BY products.name SEPARATOR ', ') as quantity, orders.orderID
   FROM payments
   JOIN paymentmethods
   ON payments.paymentMethodID = paymentmethods.paymentMethodID
