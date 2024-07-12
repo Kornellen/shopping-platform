@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
+import { useAuth } from "./authContext";
 
 const UserContext = createContext();
 
@@ -8,7 +9,7 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }) => {
-  const userID = +window.localStorage.getItem("userID");
+  const { userID } = useAuth();
   const [userData, setUserData] = useState({});
   const [userAddresses, setAddresses] = useState({});
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,6 @@ export const UserProvider = ({ children }) => {
 
       const data = await response.data;
 
-      console.log(data.result);
       setUserData(data.result[0]);
     } catch (err) {
       setError(err.response);

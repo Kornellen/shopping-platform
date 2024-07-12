@@ -8,6 +8,7 @@ import {
   Account,
   AddProduct,
   AdminPanel,
+  AdminProductsPanel,
   AdminUserPanel,
   Cart,
   ChangeDatas,
@@ -79,6 +80,7 @@ const AppRoutes = () => {
           <Route path="/product/" element={<Product />} />
           <Route path="/admin/" element={<AdminPanel />} />
           <Route path="/admin/users" element={<AdminUserPanel />} />
+          <Route path="/admin/products" element={<AdminProductsPanel />} />
         </Routes>
       </div>
 

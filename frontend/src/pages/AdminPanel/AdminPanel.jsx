@@ -13,6 +13,9 @@ const AdminPanel = () => {
           <div className="p-2 border-2 rounded m-2 hover:border-blue-400 hover:text-blue-400">
             <Link to={"users"}>Users</Link>
           </div>
+          <div className="p-2 border-2 rounded m-2 hover:border-blue-400 hover:text-blue-400">
+            <Link to={"products"}>Products</Link>
+          </div>
         </div>
       </div>
     </div>

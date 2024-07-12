@@ -9,7 +9,7 @@ import Cart from "./Cart/Cart";
 import ChangeDatas from "./ChangeDatas/ChangeDatas";
 import AddProduct from "./AddProduct/AddProduct";
 import Product from "./ProductPage/Product";
-import { AdminPanel, AdminUserPanel } from "./AdminPanel/";
+import { AdminPanel, AdminUserPanel, AdminProductsPanel } from "./AdminPanel/";
 import Order from "./Order/Order";
 import Payment from "./Payment/Payment";
 
@@ -17,6 +17,7 @@ export {
   Account,
   AddProduct,
   AdminPanel,
+  AdminProductsPanel,
   AdminUserPanel,
   Cart,
   ChangeDatas,
