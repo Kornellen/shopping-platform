@@ -44,7 +44,7 @@ class Product {
           res.status(200).json({ info: "Success" });
         }
       );
-    });
+    }, res);
   }
 
   getProductsByName(req, res) {
@@ -65,7 +65,7 @@ class Product {
           return res.status(200).json({ result: result });
         }
       );
-    });
+    }, res);
   }
 
   removeProduct(req, res) {
@@ -88,7 +88,7 @@ class Product {
           return res.status(404).json({ error: "Product not found" });
         }
       );
-    });
+    }, res);
   }
 
   getAllProduct(req, res) {
@@ -150,7 +150,7 @@ class Product {
           res.status(200).json({ info: "Product Updated Successfully" });
         }
       );
-    });
+    }, res);
   }
 
   getProductByIDParam(req, res) {
@@ -184,7 +184,7 @@ class Product {
           }
         );
       });
-    });
+    }, res);
   }
 }
 

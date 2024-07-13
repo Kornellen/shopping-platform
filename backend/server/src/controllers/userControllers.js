@@ -103,7 +103,7 @@ class UserController {
         res.sendStatus(500);
         log(err);
       }
-    });
+    }, res);
   }
 
   login(req, res) {
@@ -131,7 +131,7 @@ class UserController {
           } else res.status(404).json({ error: "User Not Found" });
         }
       );
-    });
+    }, res);
   }
 
   addAddresses(req, res) {
@@ -161,7 +161,7 @@ class UserController {
           return res.status(200).json({ info: "Success" });
         }
       );
-    });
+    }, res);
   }
 
   updateUserDatas(req, res) {
@@ -203,7 +203,7 @@ class UserController {
           return res.status(401).json({ error: "Bad Datas" });
         }
       );
-    });
+    }, res);
   }
 
   updateUserAddress(req, res) {
@@ -257,7 +257,7 @@ class UserController {
           return res.status(200).json({ info: "Success" });
         }
       );
-    });
+    }, res);
   }
 
   updateUsername(req, res) {
@@ -281,7 +281,7 @@ class UserController {
           } else return res.status(200).json({ info: "Success" });
         }
       );
-    });
+    }, res);
   }
 
   changePassword(req, res) {
@@ -306,7 +306,7 @@ class UserController {
           } else res.status(200).json({ info: "Success" });
         }
       );
-    });
+    }, res);
   }
 
   getUserDatas(req, res) {
@@ -322,7 +322,7 @@ class UserController {
 
         return res.status(200).json({ result: result });
       });
-    });
+    }, res);
   }
 
   getUserAddresses(req, res) {
@@ -338,7 +338,7 @@ class UserController {
 
         return res.status(200).json({ result: result[0] });
       });
-    });
+    }, res);
   }
 
   getAllUsers(req, res) {
@@ -351,7 +351,7 @@ class UserController {
         }
         return res.status(200).json({ result: result });
       });
-    });
+    }, res);
   }
 }
 

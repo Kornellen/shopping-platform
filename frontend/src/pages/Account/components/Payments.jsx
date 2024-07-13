@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth, useTheme } from "../../../context";
 import axios from "axios";
 import { pagesVariant } from "../../../assets/themes/themes";
@@ -10,13 +10,15 @@ const Payments = () => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [cancelButtonText, setCancelButtonText] = useState("");
 
   const fetchPayments = async () => {
     try {
       setLoading(true);
       setError(null);
-      const { data } = await axios.get(`/api/user/${userID}/payments`);
-      setPayments(data.info);
+      const { data } = await axios.get(`/api/user/${userID}/order/orders/`);
+
+      setPayments(data.orders);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -38,18 +40,18 @@ const Payments = () => {
     return <div className={`${pagesVariant[theme]}`}>Error: {error}</div>;
   }
 
-  if (payments.length === 0) {
-    return <div className="text-center p-2">You don't have payments</div>;
+  if (payments === "You don't have orders") {
+    return <div className="text-center p-2">You don't have orders</div>;
   }
-
   return (
     <div className={"h-4/6"}>
-      {payments.map((payment, index) => (
+      {console.log(payments)}
+      {payments?.map((payment, index) => (
         <div key={index} className="payment space-y-3 divide-y-2 m-2">
-          <div className="p-2 overflow-scroll border-2">
-            <div className="text-center">Payment #{index + 1}</div>
+          <div className="p-2 overflow-auto border-2">
+            <div className="text-center">Order #{index + 1}</div>
             {payment.products.split(", ").map((product, subindex) => (
-              <div className="p-2 m-2">
+              <div className="p-2 m-2" key={subindex}>
                 <p className="border-2 p-2">
                   <span className="w-full flex text-2xl">
                     <Link
@@ -61,7 +63,10 @@ const Payments = () => {
                       {product}
                     </Link>
                     <span className="border-2 p-2 m-2 w-1/2 text-center">
-                      Quantity: {payment.quantity.split(", ")[subindex]}
+                      Quantity:{" "}
+                      {payment.quantity.split(", ")[subindex] === undefined
+                        ? 1
+                        : payment.quantity.split(", ")[subindex]}
                     </span>
                   </span>{" "}
                   <div className="flex space-x-2">
@@ -69,40 +74,54 @@ const Payments = () => {
                       <div className="">
                         <span>
                           Price:{" "}
-                          {payment.productsPrice.split(", ")[subindex] + "$"}
+                          {+payment.productPrices.split(", ")[subindex] + "$"}
                         </span>{" "}
                       </div>
                       <div className="">
                         <span>
                           Price in order:{" "}
-                          {payment.productsPrice.split(", ")[subindex] *
-                            payment.quantity.split(", ")[subindex] +
-                            "$"}
+                          {isNaN(
+                            +payment.productPrices.split(", ")[subindex] *
+                              +payment.quantity.split(", ")[subindex]
+                          )
+                            ? +payment.productPrices.split(", ")[subindex] + "$"
+                            : +payment.productPrices.split(", ")[subindex] *
+                                +payment.quantity.split(", ")[subindex] +
+                              "$"}
+                          {console.log(
+                            +payment.productPrices.split(", ")[subindex] +
+                              "    " +
+                              payment.quantity.split(", ")[subindex] ===
+                              undefined
+                              ? 1
+                              : payment.quantity.split(", ")[subindex]
+                          )}
                         </span>
                       </div>
-                    </div>
-                    <div className="w-1/2 text-center flex justify-center items-center">
-                      <button
-                        className="border-2 p-2 w-full m-2 hover:border-red-500 hover:text-red-500 disabled:border-gray-500 disabled:text-gray-500"
-                        disabled={payment.status === "cancelled" ? true : false}
-                        onClick={async () => {
-                          await axios.patch(
-                            `/api/user/${payment.userID}/order/${payment.orderID}/payment/${payment.paymentID}/statusupdate`,
-                            { status: "Cancelled" }
-                          );
-
-                          console.log(
-                            `/api/user/${payment.userID}/order/${payment.orderID}/payment/${payment.paymentID}/statusupdate`
-                          );
-                        }}
-                      >
-                        Cancel
-                      </button>
                     </div>
                   </div>
                 </p>
               </div>
             ))}
+            <div className="w-1/2 text-center flex justify-center items-center ">
+              <button
+                className="border-2 p-2 w-full m-2 hover:border-red-500 hover:text-red-500 disabled:border-gray-500 disabled:text-gray-500"
+                disabled={payment.status === "cancelled" ? true : false}
+                onClick={async () => {
+                  try {
+                    const { data } = await axios.get(
+                      `api/user/${userID}/order/orderstatus/${payment.orderID}/cancel`
+                    );
+
+                    setCancelButtonText((current) => data.info);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+              >
+                {...cancelButtonText ? cancelButtonText : "Cancel"}
+              </button>
+            </div>
             <div className="p-2">
               <p>
                 <span>Paid At: {payment.paymentDate}</span>
@@ -120,6 +139,12 @@ const Payments = () => {
                   Status:{" "}
                   {payment.status.charAt(0).toUpperCase() +
                     payment.status.slice(1)}
+                </span>
+              </p>
+              <p>
+                <span>
+                  Shipping Method: {payment.shippingMethodName} (
+                  {payment.shippingMethodCost}$)
                 </span>
               </p>
             </div>

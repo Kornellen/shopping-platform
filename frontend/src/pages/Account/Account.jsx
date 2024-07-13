@@ -174,7 +174,7 @@ const Account = () => {
               </button>
             </div>
           </div>
-          <div className="flex w-full h-4/6 flex-col overflow-scroll border-2">
+          <div className="flex w-full h-4/6 flex-col overflow-auto border-2">
             <div
               className={`${themesVariant[theme]} border-b-2 h-1/6 flex justify-center items-center w-full text-4xl sticky top-0 `}
             >
@@ -182,7 +182,7 @@ const Account = () => {
                 className="p-3"
                 onClick={() => setShowPayments((current) => !current)}
               >
-                <FontAwesomeIcon icon={faWallet} /> Payments
+                <FontAwesomeIcon icon={faWallet} /> Orders
               </h1>
             </div>
             <div className="h-4/6">{showPayments && <Payments />}</div>

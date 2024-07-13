@@ -70,7 +70,7 @@ const Nav = ({ handleSubimt, handleChange }) => {
         />
         <button
           type="submit"
-          className="ml-2 mt-1 border-2 size-7 rounded-xl hover:animate-pulse"
+          className="ml-2 mt-1 size-7 rounded-xl hover:animate-pulse"
         >
           {" "}
           <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -79,13 +79,19 @@ const Nav = ({ handleSubimt, handleChange }) => {
 
       <ul className={"flex justify-end w-1/2 mr-4"}>
         <li className={`${themeChangerBtn[theme]}`}>
-          <button type="button" className="" onClick={() => changeTheme()}>
-            {theme === "light" ? (
-              <FontAwesomeIcon icon={faMoon} />
-            ) : (
-              <FontAwesomeIcon icon={faSun} />
-            )}
-          </button>
+          <div
+            className={`border-2 h-12 w-40 flex items-center p-3 rounded-3xl text-center`}
+          >
+            <button
+              type="button"
+              className={`p-3 rounded-full size-9 text-center flex items-center justify-center ${
+                theme === "light" ? "-translate-x-1" : " translate-x-24"
+              } duration-100 text-4xl`}
+              onClick={() => changeTheme()}
+            >
+              <FontAwesomeIcon icon={theme === "light" ? faMoon : faSun} />
+            </button>
+          </div>
         </li>
         {endpoints.map((endpoint, index) => (
           <li key={index} className={`${liStyles[theme]}`}>

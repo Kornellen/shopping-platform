@@ -15,5 +15,6 @@ module.exports = {
   $getUserDatasByID:
     "SELECT users.username, users.email, users.firstName, users.lastName, users.phoneNumber, users.createdAt, roles.role FROM Users JOIN roles ON users.role = roles.roleID WHERE userID = ?",
   $getUserAddresses: "SELECT * FROM Addresses WHERE userID = ?",
-  $getAllUsers: "SELECT * FROM Users",
+  $getAllUsers:
+    "SELECT users.*, roles.role FROM Users JOIN roles ON users.role = roles.roleID",
 };

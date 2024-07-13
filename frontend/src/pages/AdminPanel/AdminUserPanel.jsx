@@ -115,11 +115,6 @@ const AdminUserPanel = () => {
           <FontAwesomeIcon icon={faCaretRight} />
         </button>
       </div>
-      <div className="">
-        <pre className="text-xs">
-          Role: 1 - Head Admin, 2 - Admin, 3 - Moderator, 4 - User
-        </pre>
-      </div>
     </div>
   );
 };

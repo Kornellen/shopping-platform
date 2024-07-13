@@ -5,6 +5,7 @@ import { pagesVariant } from "../../assets/themes/themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faCaretRight, faCaretLeft } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const AdminProductsPanel = () => {
   const { theme } = useTheme();
@@ -12,6 +13,8 @@ const AdminProductsPanel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
+
+  const navigate = useNavigate();
 
   const pageSize = 10;
   const allPage = Math.ceil(products.length / pageSize);
@@ -66,7 +69,14 @@ const AdminProductsPanel = () => {
                 className="border-2 divide-x-4 text-center"
               >
                 <td className="p-2">{product.productID}</td>
-                <td className="p-2">{product.name}</td>
+                <td
+                  className="p-2 hover:text-blue-400 hover:cursor-pointer"
+                  onClick={() =>
+                    navigate(`/product?productID=${product.productID}`)
+                  }
+                >
+                  {product.name}
+                </td>
                 <td className="p-2">{product.description}</td>
                 <td className="p-2">{product.username}</td>
                 <td className="p-2">{product.stockQuantity}</td>

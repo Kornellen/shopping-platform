@@ -23,9 +23,13 @@ const Order = () => {
 
     try {
       const { data } = await axios.post(
-        `http://localhost:5174/api/user/${userID}/order/create`,
+        `/api/user/${userID}/order/create`,
         form
       );
+
+      console.log(form);
+
+      console.log(data);
       await navigate("/cart/order/payment", {
         state: { orderID: data.orderID, totalCoast: data.totalCoast },
       });
@@ -59,7 +63,7 @@ const Order = () => {
             <label htmlFor="shipppingMethod">Select shipping method:</label>
             <select
               className={`bg-dark-500 p-2 rounded-xl`}
-              name="shippingMethod"
+              name={"shippingMethod"}
               onChange={handleChange}
             >
               {shippingMethods?.map((shippingMethod, index) => (

@@ -57,8 +57,8 @@ const Form = ({ productID }) => {
               onChange={handleChange}
               className={
                 error
-                  ? `${errorStyles[theme]} h-9 text-2xl p-2 `
-                  : `${inputStyles[theme]} h-9 text-2xl p-2 `
+                  ? `${errorStyles[theme]} h-9 w-40 text-2xl p-2 `
+                  : `${inputStyles[theme]} h-9 w-40 text-2xl p-2 `
               }
             />
             *Required

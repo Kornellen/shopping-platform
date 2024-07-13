@@ -30,12 +30,12 @@ class Orders {
         [userID],
         (err, result) => {
           if (err) {
+            connect.release();
             log(err);
             return res.sendStatus(500);
           }
           const address = result.map((address) => address.addressID);
 
-          //Getting Costs of Shipping
           connect.query(
             queries.$getCostOfShippingMethod,
             [shippingMethod],
@@ -46,16 +46,16 @@ class Orders {
                 return res.sendStatus(500);
               }
 
-              const shippingMethodCost = result[0].cost;
-              const realTotalAmount = totalAmount + shippingMethodCost;
+              const cost = result[0].cost;
 
-              //Inserting Order to DB
+              const fullAmount = totalAmount + cost;
+
               connect.query(
                 queries.$insertOrderSQL,
                 [
                   userID,
                   currentDate,
-                  realTotalAmount,
+                  fullAmount,
                   address,
                   address,
                   shippingMethod,
@@ -89,7 +89,7 @@ class Orders {
                       res.status(200).json({
                         info: "Ordered",
                         orderID: orderID,
-                        totalCoast: realTotalAmount,
+                        totalCoast: fullAmount,
                       });
                     }
                   );

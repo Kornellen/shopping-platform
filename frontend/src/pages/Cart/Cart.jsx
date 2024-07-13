@@ -31,7 +31,7 @@ const Cart = () => {
     });
 
     try {
-      const url = `http://localhost:5174/api/cart/${userID}/product/${productID}/updateQuantity`;
+      const url = `/api/cart/${userID}/product/${productID}/updateQuantity`;
       const response = axios.patch(url, { quantity: +value });
     } catch (err) {
       console.error(err);
@@ -190,7 +190,7 @@ const Cart = () => {
                   <span>&minus;</span>
                 </button>
                 <input
-                  className="m-2 ml-4 mr-4 h-full w-10 text-center bg-transparent"
+                  className="m-2 ml-4 mr-4 h-full w-10 text-center bg-transparent outline-none"
                   value={quantity[index]}
                   onChange={(e) => handleChange(e, index, item.productID)}
                 />
