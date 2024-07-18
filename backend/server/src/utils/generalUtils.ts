@@ -1,18 +1,19 @@
-const nodemailer = require("nodemailer");
 const email = require("../config/email");
-const fs = require("fs");
-const handleBars = require("handlebars");
+import { compile } from "handlebars";
+import { createTransport } from "nodemailer";
+import fs from "fs";
+import { log } from "console";
 
 class GeneralUtils {
   getFullCurrentDate() {
     const date = new Date();
 
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const secunds = date.getSeconds();
+    let day: number | string = date.getDate();
+    let month: number | string = date.getMonth() + 1;
+    const year: number = date.getFullYear();
+    const hours: number = date.getHours();
+    const minutes: number = date.getMinutes();
+    const secunds: number = date.getSeconds();
 
     if (month < 10) {
       month = `0${month}`;
@@ -27,9 +28,9 @@ class GeneralUtils {
   getOnlyDate() {
     const date = new Date();
 
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
+    let day: number | string = date.getDate();
+    let month: number | string = date.getMonth() + 1;
+    let year: number = date.getFullYear();
 
     if (month < 10) {
       month = `0${month}`;
@@ -42,18 +43,14 @@ class GeneralUtils {
     return `${year}-${month}-${day}`;
   }
 
-  log(msg) {
-    return console.log(msg);
-  }
-
-  capitalizeFirstLetter(str) {
+  capitalizeFirstLetter(str: string) {
     return str
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(" ");
   }
 
-  generateDynamicUpdateQuery(table, update) {
+  generateDynamicUpdateQuery(table: string, update: any[]) {
     const updateColumn = update
       .map((update) => `${update.column} = ?`)
       .join(",");
@@ -63,16 +60,16 @@ class GeneralUtils {
     return $updateProductSQL;
   }
 
-  sendEmails(to, requestID) {
+  sendEmails(to: string, requestID: number) {
     fs.readFile(
       "src/views/retrunrequest.html",
       "utf8",
       (err, returnTemplate) => {
         if (err) {
-          this.log(err);
+          log(err);
         } else {
-          const template = handleBars.compile(returnTemplate);
-          const transporter = nodemailer.createTransport(email);
+          const template = compile(returnTemplate);
+          const transporter = createTransport(email);
 
           const fullTemplate = template({ requestID });
 
@@ -85,7 +82,7 @@ class GeneralUtils {
 
           transporter.sendMail(mailOptions, (err) => {
             if (err) {
-              this.log(err);
+              log(err);
             }
           });
         }

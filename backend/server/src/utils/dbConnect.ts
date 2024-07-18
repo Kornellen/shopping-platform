@@ -1,12 +1,14 @@
-const mysql = require("mysql");
 const dbconf = require("../config/database");
 
+import mysql, { Pool } from "mysql";
+
 class DBConnect {
+  private pool: Pool;
   constructor() {
     this.pool = mysql.createPool(dbconf);
   }
 
-  getConnection(callback) {
+  getConnection(callback: (err: Error, con: mysql.Connection | null) => void) {
     this.pool.getConnection((err, con) => {
       if (err) {
         return callback(err, null);
@@ -15,7 +17,7 @@ class DBConnect {
     });
   }
 
-  endConnection(callback) {
+  endConnection(callback: (err: Error | null) => void) {
     this.pool.end((err) => {
       if (err) {
         return callback(err);
@@ -25,4 +27,4 @@ class DBConnect {
   }
 }
 
-module.exports = DBConnect;
+export default DBConnect;

@@ -1,26 +1,27 @@
 const path = require("path");
-const winston = require("winston");
-const morgan = require("morgan");
-const { combine, timestamp, json } = winston.format;
 
-const errorFilter = winston.format((info, opts) => {
+import { createLogger, format, transports } from "winston";
+
+const { combine, timestamp, json } = format;
+
+const errorFilter = format((info, opts) => {
   return info.level === "error" ? info : false;
 });
 
-const infoFilter = winston.format((info, opts) => {
+const infoFilter = format((info, opts) => {
   return info.level === "info" ? info : false;
 });
 
-const logger = winston.createLogger({
+const logger = createLogger({
   level: "info",
   format: combine(timestamp(), json()),
   transports: [
-    new winston.transports.File({
+    new transports.File({
       filename: path.join(__dirname, "../logs/server-error.log"),
       level: "error",
       format: combine(errorFilter(), timestamp(), json()),
     }),
-    new winston.transports.File({
+    new transports.File({
       filename: path.join(__dirname, "../logs/server-info.log"),
       level: "info",
       format: combine(infoFilter(), timestamp(), json()),
@@ -28,4 +29,4 @@ const logger = winston.createLogger({
   ],
 });
 
-module.exports = logger;
+export default logger;
