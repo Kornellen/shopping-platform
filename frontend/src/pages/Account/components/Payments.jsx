@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth, useTheme } from "../../../context";
 import axios from "axios";
 import { pagesVariant } from "../../../assets/themes/themes";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Payments = () => {
   const { theme } = useTheme();
@@ -11,6 +11,8 @@ const Payments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cancelButtonText, setCancelButtonText] = useState("");
+
+  const navigate = useNavigate();
 
   const fetchPayments = async () => {
     try {
@@ -45,7 +47,6 @@ const Payments = () => {
   }
   return (
     <div className={"h-4/6"}>
-      {console.log(payments)}
       {payments?.map((payment, index) => (
         <div key={index} className="payment space-y-3 divide-y-2 m-2">
           <div className="p-2 overflow-auto border-2">
@@ -88,14 +89,6 @@ const Payments = () => {
                             : +payment.productPrices.split(", ")[subindex] *
                                 +payment.quantity.split(", ")[subindex] +
                               "$"}
-                          {console.log(
-                            +payment.productPrices.split(", ")[subindex] +
-                              "    " +
-                              payment.quantity.split(", ")[subindex] ===
-                              undefined
-                              ? 1
-                              : payment.quantity.split(", ")[subindex]
-                          )}
                         </span>
                       </div>
                     </div>
@@ -103,7 +96,7 @@ const Payments = () => {
                 </p>
               </div>
             ))}
-            <div className="w-1/2 text-center flex justify-center items-center ">
+            <div className="w-full text-center flex justify-center items-center">
               <button
                 className="border-2 p-2 w-full m-2 hover:border-red-500 hover:text-red-500 disabled:border-gray-500 disabled:text-gray-500"
                 disabled={payment.status === "cancelled" ? true : false}
@@ -121,6 +114,13 @@ const Payments = () => {
               >
                 {...cancelButtonText ? cancelButtonText : "Cancel"}
               </button>
+              <Link
+                className="border-2 p-2 w-full m-2 hover:border-red-500 hover:text-red-500 disabled:border-gray-500 disabled:text-gray-500"
+                to={"/return"}
+                state={{ userID: userID, orderID: payment.orderID }}
+              >
+                Return
+              </Link>
             </div>
             <div className="p-2">
               <p>

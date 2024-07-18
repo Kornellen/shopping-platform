@@ -18,6 +18,7 @@ import {
   Payment,
   Product,
   Registry,
+  Return,
   SearchItems,
   UserInfos,
   Wishlist,
@@ -81,6 +82,7 @@ const AppRoutes = () => {
           <Route path="/admin/" element={<AdminPanel />} />
           <Route path="/admin/users" element={<AdminUserPanel />} />
           <Route path="/admin/products" element={<AdminProductsPanel />} />
+          <Route path="/return" element={<Return />} />
         </Routes>
       </div>
 

@@ -12,6 +12,7 @@ import Product from "./ProductPage/Product";
 import { AdminPanel, AdminUserPanel, AdminProductsPanel } from "./AdminPanel/";
 import Order from "./Order/Order";
 import Payment from "./Payment/Payment";
+import Return from "./Return/Retrun";
 
 export {
   Account,
@@ -30,4 +31,5 @@ export {
   SearchItems,
   UserInfos,
   Wishlist,
+  Return,
 };

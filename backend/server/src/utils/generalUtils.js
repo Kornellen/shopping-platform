@@ -64,29 +64,33 @@ class GeneralUtils {
   }
 
   sendEmails(to, requestID) {
-    fs.readFile("views/retrunrequest.html", "utf8", (err, returnTemplate) => {
-      if (err) {
-        this.log(err);
-      } else {
-        const template = handleBars.compile(returnTemplate);
-        const transporter = nodemailer.createTransport(email);
+    fs.readFile(
+      "src/views/retrunrequest.html",
+      "utf8",
+      (err, returnTemplate) => {
+        if (err) {
+          this.log(err);
+        } else {
+          const template = handleBars.compile(returnTemplate);
+          const transporter = nodemailer.createTransport(email);
 
-        const fullTemplate = template({ requestID });
+          const fullTemplate = template({ requestID });
 
-        let mailOptions = {
-          from: `Shopping platform <${email.auth.user}>`,
-          to: to,
-          subject: "Retrun request",
-          html: fullTemplate,
-        };
+          let mailOptions = {
+            from: `Shopping platform <${email.auth.user}>`,
+            to: to,
+            subject: "Retrun request",
+            html: fullTemplate,
+          };
 
-        transporter.sendMail(mailOptions, (err) => {
-          if (err) {
-            this.log(err);
-          }
-        });
+          transporter.sendMail(mailOptions, (err) => {
+            if (err) {
+              this.log(err);
+            }
+          });
+        }
       }
-    });
+    );
   }
 }
 

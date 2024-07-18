@@ -60,15 +60,22 @@ class Return {
           const requestID = result.insertId;
 
           this.createConn((connect) => {
-            connect.query(queries.$searchUserEmail, [userID], (err, result) => {
-              connect.release();
-              if (err) {
-                log(err);
-                return res.sendStatus(500);
+            connect.query(
+              queries.$searchUserEmail,
+              [orderID],
+              (err, result) => {
+                connect.release();
+                if (err) {
+                  log(err);
+                  return res.sendStatus(500);
+                }
+
+                result.forEach((email) =>
+                  generalUtils.sendEmails(email.email, requestID)
+                );
+                res.status(200).json({ info: "Request Sent Successfully" });
               }
-              generalUtils.sendEmails(result[0].email, requestID);
-              res.status(200).json({ info: "Request Sent Successfully" });
-            });
+            );
           });
         }
       );

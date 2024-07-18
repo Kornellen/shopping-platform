@@ -23,6 +23,8 @@ class Orders {
 
     const currentDate = generalUtils.getOnlyDate();
 
+    log(shippingMethod);
+
     //getting Addresses
     this.getConn((connect) => {
       connect.query(
@@ -46,6 +48,8 @@ class Orders {
                 return res.sendStatus(500);
               }
 
+              console.log(result);
+
               const cost = result[0].cost;
 
               const fullAmount = totalAmount + cost;
@@ -66,6 +70,15 @@ class Orders {
                     log(err);
                     return res.sendStatus(500);
                   }
+
+                  log([
+                    userID,
+                    currentDate,
+                    fullAmount,
+                    address,
+                    address,
+                    +shippingMethod,
+                  ]);
 
                   if (products.length == 0) {
                     connect.release();

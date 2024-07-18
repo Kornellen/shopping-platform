@@ -47,12 +47,16 @@ class App {
   }
 
   start() {
-    this.setupMiddleware();
-    this.setupRoutes();
-    this.setUpPublic();
-    this.app.listen(this.port, () => {
-      log(`[server]: Started on: http://localhost:${this.port}/api`.cyan);
-    });
+    try {
+      this.setupMiddleware();
+      this.setupRoutes();
+      this.setUpPublic();
+      this.app.listen(this.port, () => {
+        log(`[server]: Started on: http://localhost:${this.port}/api`.cyan);
+      });
+    } catch (error) {
+      logger.error(error);
+    }
   }
 }
 
