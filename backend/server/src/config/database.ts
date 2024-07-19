@@ -1,6 +1,7 @@
-import { config } from "dotenv";
+import { log } from "console";
+import dotenv from "dotenv";
 
-config();
+dotenv.config();
 
 type database = {
   host: string;
@@ -8,6 +9,8 @@ type database = {
   password: string;
   database: string;
 };
+
+log(process.env.DB_USER);
 
 const database = {
   host: "localhost",

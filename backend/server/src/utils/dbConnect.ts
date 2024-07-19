@@ -1,14 +1,16 @@
-const dbconf = require("../config/database");
+import database from "../config/database";
 
 import mysql, { Pool } from "mysql";
 
 class DBConnect {
   private pool: Pool;
   constructor() {
-    this.pool = mysql.createPool(dbconf);
+    this.pool = mysql.createPool(database);
   }
 
-  getConnection(callback: (err: Error, con: mysql.Connection | null) => void) {
+  getConnection(
+    callback: (err: Error, con: mysql.PoolConnection | null) => void
+  ) {
     this.pool.getConnection((err, con) => {
       if (err) {
         return callback(err, null);

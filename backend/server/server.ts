@@ -8,7 +8,7 @@ import { log } from "console";
 colors.enabled;
 
 import logger from "./src/config/logger";
-
+import routes from "./src/routes";
 class App {
   private app: Express;
   private port: number;
@@ -17,7 +17,7 @@ class App {
   constructor() {
     this.app = express();
     this.port = 5174;
-    this.routes = [];
+    this.routes = routes;
   }
 
   setUpMiddleware() {

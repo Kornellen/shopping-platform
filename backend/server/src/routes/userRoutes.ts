@@ -1,14 +1,16 @@
-const express = require("express");
+import { Router, Request, Response } from "express";
 
-const router = express.Router();
-const { body, query } = require("express-validator");
+import { body, query } from "express-validator";
 
-const UserController = require("../controllers/userControllers");
-const validateRequest = require("../middleware/validator");
+import UserController from "../controllers/userController/userControllers";
+
+import validateRequest from "../middleware/validator";
 
 const user = new UserController();
 
-router.post(
+const userRouter = Router();
+
+userRouter.post(
   "/createuser",
   [
     body("username").notEmpty().withMessage("Username is Required"),
@@ -16,22 +18,22 @@ router.post(
     body("password").notEmpty().withMessage("Password is Required"),
     body("firstName").notEmpty().withMessage("First Name is Required"),
     body("lastName").notEmpty().withMessage("Last Name is Required"),
-    body("phoneNumber").isMobilePhone().withMessage("Phone is Required"),
+    body("phoneNumber").isMobilePhone("pl-PL").withMessage("Phone is Required"),
     body("dob").isDate().withMessage("Bithdate is Required"),
   ],
   validateRequest,
-  (req, res) => user.createUser(req, res)
+  (req: Request, res: Response) => user.createUser(req, res)
 );
-router.post(
+userRouter.post(
   "/login",
   [
     body("username").notEmpty().withMessage("Username is required"),
     body("password").notEmpty().withMessage("Password is required"),
   ],
   validateRequest,
-  (req, res) => user.login(req, res)
+  (req: Request, res: Response) => user.login(req, res)
 );
-router.post(
+userRouter.post(
   "/addaddress",
   [
     body("userID").isInt().withMessage("UserID must be an integer"),
@@ -42,10 +44,10 @@ router.post(
     body("country").notEmpty().withMessage("Country is required"),
   ],
   validateRequest,
-  (req, res) => user.addAddresses(req, res)
+  (req: Request, res: Response) => user.addAddresses(req, res)
 );
 
-router.patch(
+userRouter.patch(
   "/updateuserdatas",
   [
     body("userID").isInt().withMessage("UserID must be an integer"),
@@ -53,9 +55,9 @@ router.patch(
     body("phone").optional(),
   ],
   validateRequest,
-  (req, res) => user.updateUserDatas(req, res)
+  (req: Request, res: Response) => user.updateUserDatas(req, res)
 );
-router.patch(
+userRouter.patch(
   "/updateaddresses",
   [
     body("userID").isInt().withMessage("UserID must be an integer"),
@@ -66,10 +68,10 @@ router.patch(
     body("country").optional(),
   ],
   validateRequest,
-  (req, res) => user.updateUserAddress(req, res)
+  (req: Request, res: Response) => user.updateUserAddress(req, res)
 );
 
-router.patch(
+userRouter.patch(
   "/updateusername",
   [
     body("userID").isInt().withMessage("UserID must be an integer"),
@@ -77,9 +79,9 @@ router.patch(
     body("password").notEmpty().withMessage("Password is required"),
   ],
   validateRequest,
-  (req, res) => user.updateUsername(req, res)
+  (req: Request, res: Response) => user.updateUsername(req, res)
 );
-router.patch(
+userRouter.patch(
   "/changePassword",
   [
     body("userID").isInt().withMessage("UserID must be an integer"),
@@ -87,22 +89,24 @@ router.patch(
     body("newPassword").notEmpty().withMessage("New password is required"),
   ],
   validateRequest,
-  (req, res) => user.changePassword(req, res)
+  (req: Request, res: Response) => user.changePassword(req, res)
 );
 
-router.get("/userData", [
+userRouter.get("/userData", [
   query("userID").isString().withMessage("UserID must be an Integer"),
   validateRequest,
-  (req, res) => user.getUserDatas(req, res),
+  (req: Request, res: Response) => user.getUserDatas(req, res),
 ]);
 
-router.get(
+userRouter.get(
   "/addresses",
   query("userID").isString().isInt().withMessage("UserID isn't valid"),
   validateRequest,
-  (req, res) => user.getUserAddresses(req, res)
+  (req: Request, res: Response) => user.getUserAddresses(req, res)
 );
 
-router.get("/users", (req, res) => user.getAllUsers(req, res));
+userRouter.get("/users", (req: Request, res: Response) =>
+  user.getAllUsers(req, res)
+);
 
-module.exports = router;
+export default userRouter;

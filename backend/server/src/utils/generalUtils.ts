@@ -90,5 +90,4 @@ class GeneralUtils {
     );
   }
 }
-
-module.exports = GeneralUtils;
+export default GeneralUtils;

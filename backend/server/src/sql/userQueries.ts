@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   $createUserSQL:
     "INSERT INTO users(username, email, password, firstName, lastName, phoneNumber, birthdate, gender, createdAt, updatedAt) VALUES (?,?,?,?,?,?,?,?,?,?)",
   $createCartSQL:
