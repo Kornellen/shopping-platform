@@ -1,16 +1,7 @@
-import mysql from "mysql";
-import DBConnect from "../../utils/dbConnect";
-import SecurityUtils from "../../utils/securityUtils";
-import GeneralUtils from "../../utils/generalUtils";
 import { Request, Response } from "express";
 
 import { log } from "console";
-import userQueries from "../../sql/userQueries";
 import UserServices from "./services/userServices";
-
-const db = new DBConnect();
-const security = new SecurityUtils();
-const generalUtils = new GeneralUtils();
 
 class UserController {
   private userServices: UserServices;
@@ -22,9 +13,9 @@ class UserController {
   async createUser(req: Request, res: Response) {
     try {
       this.userServices.createUser(req, res);
-    } catch (error: any) {
+    } catch (error) {
       log(error);
-      return res.status(500).send(error.message);
+      return res.sendStatus(500);
     }
   }
 

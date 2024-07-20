@@ -1,13 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const { body, param } = require("express-validator");
-const validateRequest = require("../middleware/validator");
-
-const CartController = require("../controllers/cartControllers");
+import { Router, Request, Response } from "express";
+import { body, param } from "express-validator";
+import validateRequest from "../middleware/validator";
+import CartController from "../controllers/cartController/cartControllers";
 
 const cartControllers = new CartController();
 
-router.post(
+const cartRouter = Router();
+
+cartRouter.post(
   "/cart/:userID/addtocart",
   [
     param("userID").isInt().withMessage("UserID must be integer"),
@@ -15,34 +15,35 @@ router.post(
     body("quantity").notEmpty().withMessage("Quantity is required"),
   ],
   validateRequest,
-  (req, res) => cartControllers.addToCart(req, res)
+  (req: Request, res: Response) => cartControllers.addToCart(req, res)
 );
 
-router.get(
+cartRouter.get(
   "/cart/:userID/",
   [param("userID").isInt().withMessage("UserID must be Integer")],
   validateRequest,
-  (req, res) => cartControllers.loadCart(req, res)
+  (req: Request, res: Response) => cartControllers.loadCart(req, res)
 );
 
-router.patch(
+cartRouter.patch(
   "/cart/:userID/product/:productID/updateQuantity",
   [
     param("userID").notEmpty().withMessage("UserID is required"),
     param("productID").notEmpty().withMessage("ProductID is required"),
   ],
   validateRequest,
-  (req, res) => cartControllers.updateProductQuantity(req, res)
+  (req: Request, res: Response) =>
+    cartControllers.updateProductQuantity(req, res)
 );
 
-router.delete(
+cartRouter.delete(
   "/cart/:userID/deleteFromCart",
   [
     param("userID").isInt().withMessage("UserID must be Integer"),
     body("productID").isInt().withMessage("ProductID must be ID"),
   ],
   validateRequest,
-  (req, res) => cartControllers.deleteFromCart(req, res)
+  (req: Request, res: Response) => cartControllers.deleteFromCart(req, res)
 );
 
-module.exports = router;
+export default cartRouter;

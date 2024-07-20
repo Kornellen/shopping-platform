@@ -1,11 +1,7 @@
-module.exports = {
-  $findUserCart: `
-      SELECT Cart.cartID, Cart.userID, Users.userID
-      FROM Cart
-      LEFT JOIN Users ON Cart.userID = Users.userID
-      WHERE Users.userID = ?`,
-  $addToCartSQL: "INSERT INTO cartitems VALUES (null, ?, ?, ?, ?)",
+export default {
   $loadUserCartSQL: "SELECT * FROM Cart WHERE userID = ?",
+  $addToCartSQL:
+    "INSERT INTO cartitems(cartID, productID, quantity, addedAt) VALUES (?, ?, ?, ?)",
   $loadCartItemNameSQL:
     "SELECT Products.name, Products.price, Products.productID, cartitems.quantity FROM cartitems JOIN products ON products.productID = cartitems.productID WHERE cartitems.cartID = ?",
   $getUserCartIDSQL: "SELECT cartID FROM Cart WHERE userID = ?",

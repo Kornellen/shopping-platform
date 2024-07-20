@@ -52,7 +52,7 @@ class App {
         log(`[server]: Started on: http://localhost:${this.port}/api`.cyan);
       });
     } catch (error) {
-      log(error);
+      throw error;
     }
   }
 }

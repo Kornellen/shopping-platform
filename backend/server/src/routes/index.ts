@@ -1,5 +1,5 @@
 import userRouter from "./userRoutes";
-// const cartRoutes = require("./cartRoutes");
+import cartRouter from "./cartRoutes";
 // const productRoutes = require("./productRoutes");
 // const orderRoutes = require("./ordersRoutes");
 // const reviewRoutes = require("./reviewRoutes");
@@ -8,4 +8,4 @@ import userRouter from "./userRoutes";
 // const paymentRoutes = require("./paymentsRoutes");
 // const utilsRoutes = require("./utilsRoutes");
 
-export default [userRouter];
+export default [userRouter, cartRouter];
