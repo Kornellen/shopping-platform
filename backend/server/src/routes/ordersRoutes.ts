@@ -1,13 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const { body, param } = require("express-validator");
-const validateRequest = require("../middleware/validator");
+import { Router, Response, Request } from "express";
+import validateRequest from "../middleware/validator";
+import { body, param } from "express-validator";
 
-const OrderControllers = require("../controllers/ordersController");
+import OrderController from "../controllers/orderController/ordersController";
 
-const orderController = new OrderControllers();
+const orderRouter = Router();
 
-router.post(
+const orderController = new OrderController();
+
+orderRouter.post(
   "/user/:userID/order/create",
   [
     param("userID").isInt().withMessage("UserID must be Integer"),
@@ -17,34 +18,34 @@ router.post(
       .withMessage("Products must be an Array with Products"),
   ],
   validateRequest,
-  (req, res) => orderController.createOrder(req, res)
+  (req: Request, res: Response) => orderController.createOrder(req, res)
 );
 
-router.get(
+orderRouter.get(
   "/user/:userID/order/orders/",
   [param("userID").isInt().withMessage("UserID must be Integer")],
   validateRequest,
-  (req, res) => orderController.getUserOrders(req, res)
+  (req: Request, res: Response) => orderController.getUserOrders(req, res)
 );
 
-router.get(
+orderRouter.get(
   "/user/:userID/order/orderstatus/:orderID",
   [
     param("userID").isInt().withMessage("UserID must be Integer"),
     param("orderID").isInt().withMessage("OrderID must be Integer"),
   ],
   validateRequest,
-  (req, res) => orderController.getOrderStatus(req, res)
+  (req: Request, res: Response) => orderController.getOrderStatus(req, res)
 );
 
-router.get(
+orderRouter.get(
   "/user/:userID/order/orderstatus/:orderID/cancel",
   [
     param("userID").isInt().withMessage("UserID must be Integer"),
     param("orderID").isInt().withMessage("OrderID must be Integer"),
   ],
   validateRequest,
-  (req, res) => orderController.cancellOrder(req, res)
+  (req: Request, res: Response) => orderController.cancellOrder(req, res)
 );
 
-module.exports = router;
+export default orderRouter;

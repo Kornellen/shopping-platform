@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   $insertPaymentSQL:
     "INSERT INTO payments(orderID, userID, paymentDate, amount, paymentMethodID, status) VALUES (?,?,?,?,?,?)",
   $getPaymentDetailsSQL: "SELECT * FROM payments WHERE orderID = ?",

@@ -10,8 +10,6 @@ type database = {
   database: string;
 };
 
-log(process.env.DB_USER);
-
 const database = {
   host: "localhost",
   user: process.env.DB_USER,

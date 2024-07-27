@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   $getUserRequestsSQL: "SELECT * FROM returnsrequests WHERE userID = ?",
   $addRequestToDBSQL:
     "INSERT INTO returnsrequests(orderID, userID, reason, status, createdAt, updatedAt) VALUES (?,?,?,?,?,?)",

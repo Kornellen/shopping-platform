@@ -1,13 +1,12 @@
-const express = require("express");
-const router = express.Router();
-const { body, param } = require("express-validator");
-const validateRequest = require("../middleware/validator");
+import validateRequest from "../middleware/validator";
+import { body, param } from "express-validator";
+import { Router, Request, Response } from "express";
+import Payments from "../controllers/paymentController/paymentsController";
 
-const paymentControllers = require("../controllers/paymentsController");
+const paymentRouter = Router();
+const paymentController = new Payments();
 
-const paymentController = new paymentControllers();
-
-router.post(
+paymentRouter.post(
   "/user/:userID/order/:orderID/pay",
   [
     param("userID").isInt().withMessage("UserID must be an Integer"),
@@ -18,27 +17,27 @@ router.post(
       .withMessage("PaymentMethodID must be an Integer"),
   ],
   validateRequest,
-  (req, res) => paymentController.createPayment(req, res)
+  (req: Request, res: Response) => paymentController.createPayment(req, res)
 );
 
-router.get(
+paymentRouter.get(
   "/user/:userID/order/:orderID/paymentdetails",
   [
     param("userID").isInt().withMessage("UserID must be an Integer"),
     param("orderID").isInt().withMessage("OrderID must be an Integer"),
   ],
   validateRequest,
-  (req, res) => paymentController.getPaymentDetails(req, res)
+  (req: Request, res: Response) => paymentController.getPaymentDetails(req, res)
 );
 
-router.get(
+paymentRouter.get(
   "/user/:userID/payments",
   [param("userID").isInt().withMessage("UserID must be an Integer")],
   validateRequest,
-  (req, res) => paymentController.getUserPayments(req, res)
+  (req: Request, res: Response) => paymentController.getUserPayments(req, res)
 );
 
-router.patch(
+paymentRouter.patch(
   "/user/:userID/order/:orderID/payment/:paymentID/statusupdate",
   [
     param("userID").isInt().withMessage("UserID must be an Integer"),
@@ -47,7 +46,8 @@ router.patch(
     body("status").isString().withMessage("Status must be a String"),
   ],
   validateRequest,
-  (req, res) => paymentController.updatePaymentStatus(req, res)
+  (req: Request, res: Response) =>
+    paymentController.updatePaymentStatus(req, res)
 );
 
-module.exports = router;
+export default paymentRouter;

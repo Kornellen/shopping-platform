@@ -10,7 +10,7 @@ const db = new DBConnect();
 const generalUtils = new GeneralUtils();
 
 class CartServices {
-  async createConn(): Promise<mysql.PoolConnection> {
+  private async createConn(): Promise<mysql.PoolConnection> {
     return new Promise((resolve, reject) => {
       db.getConnection((err, connection) => {
         if (err) {

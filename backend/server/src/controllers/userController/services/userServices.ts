@@ -13,7 +13,7 @@ const security = new SecurityUtils();
 const generalUtils = new GeneralUtils();
 
 class UserServices {
-  async createConn(): Promise<mysql.PoolConnection> {
+  private async createConn(): Promise<mysql.PoolConnection> {
     return new Promise((resolve, reject) => {
       db.getConnection((err, connection) => {
         if (err) {

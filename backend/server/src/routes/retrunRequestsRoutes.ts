@@ -1,14 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const { body, param, query } = require("express-validator");
-const validateRequest = require("../middleware/validator");
-const path = require("path");
+import { Router, Response, Request } from "express";
+import { body, param, query } from "express-validator";
+import validateRequest from "../middleware/validator";
+import Return from "../controllers/returnController/retrurnController";
+import { join } from "path";
 
-const returnsControllers = require("../controllers/retrurnsController");
+const returnRouter = Router();
 
-const returnsController = new returnsControllers();
+const returnController = new Return();
 
-router.post(
+returnRouter.post(
   "/user/:userID/order/:orderID/requestreturn",
   [
     param("userID").isInt().withMessage("UserID must be an integer"),
@@ -16,10 +16,10 @@ router.post(
     body("reason").isString().withMessage("Reason must be a String"),
   ],
   validateRequest,
-  (req, res) => returnsController.sendRetrunRequest(req, res)
+  (req: Request, res: Response) => returnController.sendRetrunRequest(req, res)
 );
 
-router.patch(
+returnRouter.patch(
   "/returnsrequests/:requestID/update",
   [
     param("requestID").isInt().withMessage("RequestID must be an Integer"),
@@ -27,39 +27,40 @@ router.patch(
     body("reason").optional().isString().withMessage("Reason must be a String"),
   ],
   validateRequest,
-  (req, res) => returnsController.updateReturnRequest(req, res)
+  (req: Request, res: Response) =>
+    returnController.updateReturnRequest(req, res)
 );
 
-router.delete(
+returnRouter.delete(
   "/user/:userID/returnsrequests/:requestID/delete",
   [
     param("userID").isInt().withMessage("UserID Must be an Integer"),
     param("requestID").isInt().withMessage("RequestID must be an Integer"),
   ],
   validateRequest,
-  (req, res) => returnsController.deleteReturnRequest(req, res)
+  (req: Request, res: Response) =>
+    returnController.deleteReturnRequest(req, res)
 );
 
-router.get(
+returnRouter.get(
   "/returnrequests/:requestID",
   [param("requestID").isInt().withMessage("RequestID must be an Integer")],
   validateRequest,
-  (req, res) => returnsController.getRequestDetails(req, res)
+  (req: Request, res: Response) => returnController.getRequestDetails(req, res)
 );
 
-router.get(
+returnRouter.get(
   "/updateRequestStatus.html/update",
   [query("requestID").isInt().withMessage("RequestID must be an Integer")],
   validateRequest,
-  (req, res) =>
-    res.sendFile(path.join(__dirname, "../public/updateRequestStatus.html"))
+  (req: Request, res: Response) =>
+    res.sendFile(join(__dirname, "../public/updateRequestStatus.html"))
 );
 
-router.get(
+returnRouter.get(
   "/user/:userID/returnrequests",
   [param("userID").isInt().withMessage("UserID must be an Integer")],
   validateRequest,
-  (req, res) => returnsController.getUserRequests(req, res)
+  (req: Request, res: Response) => returnController.getUserRequests(req, res)
 );
-
-module.exports = router;
+export default returnRouter;

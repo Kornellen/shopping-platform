@@ -1,13 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const { body, param, query } = require("express-validator");
-const validateRequest = require("../middleware/validator");
+import { Router, Response, Request } from "express";
+import Product from "../controllers/productController/productControllers";
+import validateRequest from "../middleware/validator";
+import { body, query, param } from "express-validator";
 
-const ProductControllers = require("../controllers/productControllers");
+const productRouter = Router();
 
-const productController = new ProductControllers();
+const productController = new Product();
 
-router.post(
+productRouter.post(
   "/product/addproduct",
   [
     body("userID").isInt().withMessage("UserID must be an Integer"),
@@ -18,28 +18,29 @@ router.post(
     body("stockQuantity").notEmpty().withMessage("Stock Qunatity is required"),
   ],
   validateRequest,
-  (req, res) => productController.addProduct(req, res)
+  (req: Request, res: Response) => productController.addProduct(req, res)
 );
 
-router.get("/getallproducts", (req, res) =>
-  productController.getAllProduct(req, res)
+productRouter.get("/getallproducts", (req: Request, res: Response) =>
+  productController.getAllProducts(req, res)
 );
 
-router.get(
+productRouter.get(
   "/product/:productID",
   param("productID").isInt().withMessage("Param ProductID must be Integer"),
   validateRequest,
-  (req, res) => productController.getProductByIDParam(req, res)
+  (req: Request, res: Response) =>
+    productController.getProductByIDParam(req, res)
 );
 
-router.get(
+productRouter.get(
   "/products",
   [query("itemName").isString().withMessage("Product Name must be a String")],
   validateRequest,
-  (req, res) => productController.getProductsByName(req, res)
+  (req: Request, res: Response) => productController.getProductsByName(req, res)
 );
 
-router.patch(
+productRouter.patch(
   "/product/:productID",
   [
     param("productID").isInt().withMessage("Param ProductID must be Integer"),
@@ -62,14 +63,14 @@ router.patch(
       .withMessage("Category ID is required not Category Name"),
   ],
   validateRequest,
-  (req, res) => productController.updateProduct(req, res)
+  (req: Request, res: Response) => productController.updateProduct(req, res)
 );
 
-router.delete(
+productRouter.delete(
   "/product/remove",
   [body("productID").notEmpty().withMessage("ProductID is required")],
   validateRequest,
-  (req, res) => productController.removeProduct(req, res)
+  (req: Request, res: Response) => productController.removeProduct(req, res)
 );
 
-module.exports = router;
+export default productRouter;

@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { log } from "console";
 import UserServices from "./services/userServices";
 
-class UserController {
+export default class UserController {
   private userServices: UserServices;
 
   constructor() {
@@ -95,5 +95,3 @@ class UserController {
     this.userServices.getAllUsers(req, res);
   }
 }
-
-export default UserController;

@@ -1,4 +1,4 @@
-const dynamicQuery = (products, orderID) => {
+const dynamicQuery = (products: any[], orderID: number | string) => {
   const orderedItems = products.map((product) => [
     orderID,
     product.productID,
@@ -19,7 +19,7 @@ const dynamicQuery = (products, orderID) => {
   };
 };
 
-module.exports = {
+export default {
   $getCostOfShippingMethod: `
       SELECT cost
       FROM ShippingMethods

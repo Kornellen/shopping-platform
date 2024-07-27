@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   $addProductSQL:
     "INSERT INTO Products (categoryID, userID, name, description, price, stockQuantity, addedAt, updatedAt) VALUES (?,?,?,?,?,?,?,?)",
   $getProducts:
