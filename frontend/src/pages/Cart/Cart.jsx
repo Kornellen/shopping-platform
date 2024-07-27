@@ -118,7 +118,7 @@ const Cart = () => {
         const url = `/api/cart/${userID}/`;
         const response = await axios.get(url);
 
-        const data = await response.data.productsInCart;
+        const data = await response.data.cartItems;
 
         setCartData(data);
 
